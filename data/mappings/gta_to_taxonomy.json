@@ -1,0 +1,324 @@
+{
+  "_metadata": {
+    "version": "1.0",
+    "description": "Maps Global Trade Alert (GTA) intervention_type codes to the 8-category geopolitical event taxonomy. GTA is the single best source for Trade Policy Actions and a strong secondary source for Sanctions & Financial Restrictions and Regulatory & Sovereignty Shifts. GTA also provides gta_evaluation ('Red' = harmful/discriminatory, 'Green' = liberalizing, 'Amber' = ambiguous) which informs our severity scoring. Validated against: US tariffs on China 2025 (should appear as trade_policy_actions severity 4-5), EU CBAM (carbon border mechanism, regulatory_sovereignty_shifts), Russia import substitution policies.",
+    "gta_evaluation_to_severity": {
+      "Red": "Harmful/trade-discriminatory — primary category for our use case; severity 3-5 depending on scope",
+      "Green": "Liberalizing — may indicate reversal of prior restriction; lower severity, track as de-escalation",
+      "Amber": "Context-dependent — review manually for classification"
+    },
+    "gta_fields_used": [
+      "intervention_type",
+      "implementing_jurisdiction",
+      "affected_jurisdictions",
+      "affected_sectors",
+      "date_announced",
+      "date_implemented",
+      "date_removed",
+      "gta_evaluation",
+      "description",
+      "mast_chapter"
+    ],
+    "mast_classification_note": "GTA uses the MAST (Multi-Agency Support Team) classification for non-tariff measures. MAST chapters are referenced where applicable."
+  },
+
+  "gta_mappings": {
+
+    "tariff_measures": {
+      "label": "Tariff-based measures",
+      "gta_intervention_types": [
+        "Import tariff",
+        "Export tariff",
+        "Most favoured nation tariff",
+        "Tariff rate quota",
+        "Customs surcharge"
+      ],
+      "taxonomy_category": "trade_policy_actions",
+      "event_subtype": "tariff_adjustment",
+      "default_severity": {
+        "Red": 4,
+        "Green": 1,
+        "Amber": 2
+      },
+      "onset_speed": "phased",
+      "expected_duration": "structural",
+      "confidence": "high",
+      "note": "Core trade policy measure. Severity 5 if tariff increase > 25 percentage points or on critical sectors (semiconductors, steel, autos, agriculture). Cross-reference affected_sectors for NAICS mapping.",
+      "validation_note": "US Section 301 China tariffs (2018-2025), EU retaliatory tariffs should appear here as severity 4-5 Red interventions"
+    },
+
+    "import_quotas_and_bans": {
+      "label": "Import quantity restrictions",
+      "gta_intervention_types": [
+        "Import quota",
+        "Import ban",
+        "Import prohibition",
+        "Import licensing requirement",
+        "Import monitoring"
+      ],
+      "taxonomy_category": "trade_policy_actions",
+      "event_subtype": "import_restriction",
+      "default_severity": {
+        "Import ban": 5,
+        "Import prohibition": 5,
+        "Import quota": 3,
+        "Import licensing requirement": 2,
+        "Import monitoring": 1
+      },
+      "onset_speed": "sudden",
+      "expected_duration": "structural",
+      "confidence": "high",
+      "note": "Bans and prohibitions are severity 5 (sudden supply shock). Licensing requirements are lower severity but signal future restriction trajectory."
+    },
+
+    "export_controls_and_bans": {
+      "label": "Export restrictions",
+      "gta_intervention_types": [
+        "Export ban",
+        "Export quota",
+        "Export licensing requirement",
+        "Export tax",
+        "Export prohibition",
+        "Export monitoring"
+      ],
+      "taxonomy_category_primary": "trade_policy_actions",
+      "taxonomy_category_secondary": "technology_controls",
+      "routing_logic": "If affected_sectors contains semiconductor, electronics, dual-use, or military categories (NAICS 3344, 3812, 3489, 5417), classify as technology_controls. Otherwise classify as trade_policy_actions.",
+      "event_subtype": "export_restriction",
+      "default_severity": {
+        "Export ban": 5,
+        "Export quota": 3,
+        "Export licensing requirement": 3,
+        "Export tax": 2
+      },
+      "onset_speed": "sudden",
+      "expected_duration": "structural",
+      "confidence": "high",
+      "note": "Export bans on critical minerals (lithium, cobalt, rare earths) map to resource_energy_disruptions. Export controls on chips/AI/dual-use map to technology_controls. All other export restrictions map to trade_policy_actions.",
+      "validation_note": "China rare earth export restrictions (2023-2025), US chip export controls (Oct 2022, Oct 2023, Oct 2024 rounds) should appear here"
+    },
+
+    "subsidies": {
+      "label": "State aid and subsidies",
+      "gta_intervention_types": [
+        "State aid, subsidy",
+        "Production subsidy",
+        "Export subsidy",
+        "Financial grant",
+        "Tax or social insurance relief",
+        "Government loans at below market rates",
+        "Government equity injection"
+      ],
+      "taxonomy_category": "trade_policy_actions",
+      "event_subtype": "subsidy_program",
+      "default_severity": {
+        "Red": 3,
+        "Green": 1,
+        "Amber": 2
+      },
+      "onset_speed": "phased",
+      "expected_duration": "structural",
+      "confidence": "medium",
+      "note": "Subsidies are trade-distorting (GTA Red) but rarely cause acute business disruption. Include for sector competitiveness analysis. Large industrial policy packages (CHIPS Act, EU Net-Zero Industry Act) warrant severity 4 due to market-distorting scale.",
+      "validation_note": "US CHIPS Act ($52B, 2022), EU Chips Act (2023), China semiconductor fund rounds should appear as severity 4 Red"
+    },
+
+    "trade_remedies": {
+      "label": "Anti-dumping, countervailing duties, safeguards",
+      "gta_intervention_types": [
+        "Anti-dumping measure",
+        "Countervailing duty",
+        "Safeguard measure",
+        "Anti-circumvention measure"
+      ],
+      "taxonomy_category": "trade_policy_actions",
+      "event_subtype": "trade_remedy",
+      "default_severity": {
+        "Red": 3,
+        "Green": 1,
+        "Amber": 2
+      },
+      "onset_speed": "phased",
+      "expected_duration": "medium_term",
+      "confidence": "high",
+      "note": "Trade remedies follow a defined legal process (petition → investigation → provisional → definitive measures). Track announcement date separately from implementation date. Severity 4 if sector is critical or duties > 50%."
+    },
+
+    "local_content_and_investment": {
+      "label": "Local content requirements and FDI restrictions",
+      "gta_intervention_types": [
+        "Local content requirement",
+        "Investment measure",
+        "Foreign investment restrictions",
+        "Foreign investment screening",
+        "Domestic procurement preference",
+        "Buy national / buy local"
+      ],
+      "taxonomy_category": "regulatory_sovereignty_shifts",
+      "event_subtype": "local_content_fdi_restriction",
+      "default_severity": {
+        "Red": 3,
+        "Green": 1,
+        "Amber": 2
+      },
+      "onset_speed": "phased",
+      "expected_duration": "structural",
+      "confidence": "high",
+      "note": "FDI screening expansions (CFIUS, FIRMMA, EU FDI Screening Regulation) are severity 3-4 depending on scope. Buy-local requirements in government procurement are typically lower severity unless company is a major government contractor.",
+      "validation_note": "US CFIUS expansions, EU FDI screening regulation (2020), India's FDI restrictions on Chinese investment should appear here"
+    },
+
+    "sanctions_and_financial_measures": {
+      "label": "Sanctions and financial restrictions",
+      "gta_intervention_types": [
+        "Financial measure",
+        "Sanctions",
+        "Asset freeze",
+        "Payment restriction",
+        "Capital flow restriction"
+      ],
+      "taxonomy_category": "sanctions_financial_restrictions",
+      "event_subtype": "financial_restriction",
+      "default_severity": {
+        "Red": 4,
+        "Green": 1,
+        "Amber": 3
+      },
+      "onset_speed": "sudden",
+      "expected_duration": "structural",
+      "confidence": "high",
+      "note": "GTA captures some financial measures but OFAC/SDN list is the authoritative source for US sanctions. Use GTA for cross-country sanctions coordination and multilateral financial restrictions. Severity 5 for SWIFT exclusion or comprehensive asset freeze.",
+      "validation_note": "Russia sanctions package (Feb-Mar 2022) should appear across GTA + OFAC sources"
+    },
+
+    "technical_barriers": {
+      "label": "Technical barriers to trade (TBT / SPS)",
+      "gta_intervention_types": [
+        "Technical barrier to trade",
+        "Sanitary and phytosanitary measure",
+        "Pre-shipment inspection",
+        "Product standards",
+        "Labelling requirement",
+        "Certification requirement"
+      ],
+      "taxonomy_category": "trade_policy_actions",
+      "event_subtype": "regulatory_trade_barrier",
+      "default_severity": {
+        "Red": 2,
+        "Green": 1,
+        "Amber": 2
+      },
+      "onset_speed": "phased",
+      "expected_duration": "structural",
+      "confidence": "medium",
+      "note": "Most TBT/SPS measures are routine regulatory activity (low geopolitical signal). Include only if: (a) newly imposed and affecting > $1B trade volume, or (b) clearly retaliatory (e.g., China blocking Australian agricultural imports post-COVID criticism). MAST Chapter B (TBT) and Chapter C (SPS)."
+    },
+
+    "data_digital_measures": {
+      "label": "Data localization and digital trade measures",
+      "gta_intervention_types": [
+        "Data localisation",
+        "Digital trade restriction",
+        "E-commerce restriction",
+        "Platform restriction"
+      ],
+      "taxonomy_category": "regulatory_sovereignty_shifts",
+      "event_subtype": "data_localization",
+      "default_severity": {
+        "Red": 4,
+        "Green": 1,
+        "Amber": 3
+      },
+      "onset_speed": "phased",
+      "expected_duration": "structural",
+      "confidence": "high",
+      "note": "Data localization mandates (Russia, China, India) are severity 4 for tech and finance companies. Restrict cloud, financial data flows, cross-border data transfers. Also classify as technology_controls if targeting foreign tech platforms specifically."
+    },
+
+    "public_procurement": {
+      "label": "Public procurement restrictions",
+      "gta_intervention_types": [
+        "Public procurement, state aid",
+        "Government procurement restriction"
+      ],
+      "taxonomy_category": "trade_policy_actions",
+      "event_subtype": "procurement_restriction",
+      "default_severity": {
+        "Red": 2,
+        "Green": 1,
+        "Amber": 2
+      },
+      "onset_speed": "phased",
+      "expected_duration": "structural",
+      "confidence": "medium",
+      "note": "Include for companies heavily dependent on government contracts. Severity 3 if measure explicitly excludes foreign companies from large infrastructure/defense programs."
+    },
+
+    "intellectual_property": {
+      "label": "Intellectual property and technology transfer",
+      "gta_intervention_types": [
+        "Intellectual property protection",
+        "Forced technology transfer",
+        "IP restriction"
+      ],
+      "taxonomy_category": "technology_controls",
+      "event_subtype": "ip_technology_restriction",
+      "default_severity": {
+        "Red": 4,
+        "Green": 1,
+        "Amber": 3
+      },
+      "onset_speed": "phased",
+      "expected_duration": "structural",
+      "confidence": "high",
+      "note": "Forced tech transfer requirements and IP theft risk are severity 4 for high-tech companies. GTA coverage here is partial — supplement with BIS and specialized tech policy tracking."
+    },
+
+    "migration_and_labor": {
+      "label": "Labor mobility restrictions",
+      "gta_intervention_types": [
+        "Migration measure",
+        "Visa restriction",
+        "Labor market measure"
+      ],
+      "taxonomy_category": "regulatory_sovereignty_shifts",
+      "event_subtype": "labor_mobility_restriction",
+      "default_severity": {
+        "Red": 2,
+        "Green": 1,
+        "Amber": 2
+      },
+      "onset_speed": "phased",
+      "expected_duration": "medium_term",
+      "confidence": "medium",
+      "note": "Visa restrictions on skilled workers are severity 3 for companies with globally distributed engineering talent. Brexit-related restrictions are the canonical example."
+    }
+  },
+
+  "gta_severity_override_rules": [
+    {
+      "rule": "Critical mineral export restriction → resource_energy_disruptions",
+      "condition": "intervention_type in ['Export ban', 'Export quota'] AND affected_sectors overlaps ['lithium', 'cobalt', 'rare earth', 'nickel', 'manganese', 'graphite']",
+      "override_category": "resource_energy_disruptions",
+      "override_severity": 5
+    },
+    {
+      "rule": "Semiconductor/AI chip export control → technology_controls",
+      "condition": "intervention_type in ['Export ban', 'Export licensing requirement'] AND affected_sectors overlaps ['semiconductor', 'chip', 'GPU', 'AI hardware', 'dual-use']",
+      "override_category": "technology_controls",
+      "override_severity": 5,
+      "validation_note": "US Oct 2022, Oct 2023, Oct 2024 export control packages; Netherlands ASML EUV restrictions"
+    },
+    {
+      "rule": "Comprehensive bilateral trade restriction → severity 5",
+      "condition": "gta_evaluation = 'Red' AND scope = 'bilateral' AND intervention covers > 50% of bilateral trade value",
+      "override_severity": 5
+    },
+    {
+      "rule": "Liberalizing measure on previously restricted sector → de-escalation flag",
+      "condition": "gta_evaluation = 'Green' AND prior Red intervention exists for same jurisdiction-sector pair",
+      "flag": "de_escalation",
+      "note": "Track as resolution event in the event database; useful for scenario modeling"
+    }
+  ]
+}

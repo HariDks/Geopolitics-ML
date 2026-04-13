@@ -1,0 +1,37 @@
+# Environment and credentials
+.env
+*.env.local
+
+# Database (2.5GB+ — too large for git)
+data/processed/*.db
+data/processed/*.db-wal
+data/processed/*.db-shm
+
+# Raw data downloads (reproducible via pipelines)
+data/raw/
+
+# Model weights (255MB+ — track via git-lfs or rebuild)
+models/event_classifier/saved/model.safetensors
+models/event_classifier/saved/tokenizer.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter
+.ipynb_checkpoints/

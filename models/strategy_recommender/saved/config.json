@@ -1,0 +1,13 @@
+{
+  "total_strategies": 148,
+  "cells_covered": 34,
+  "categories": {
+    "mitigate": 102,
+    "capture": 4,
+    "hedge": 10,
+    "exit": 7,
+    "monitor": 12,
+    "engage": 13
+  },
+  "source": "geopolitical_muscle_matrix_v2.xlsx (Top Priority Cells)"
+}

@@ -1,0 +1,67 @@
+{
+  "_metadata": {
+    "description": "Priority matrix: Frequency x Severity scores for 8 event categories x 10 impact channels = 80 cells. Scores are expert-assigned from Phase 1 (v2, Jan 2026). Impact channel order: [procurement_supply_chain, revenue_market_access, capital_allocation_investment, regulatory_compliance_cost, logistics_operations, innovation_ip, workforce_talent, reputation_stakeholder, financial_treasury, cybersecurity_it]",
+    "score_formula": "priority_score = frequency_score * severity_score",
+    "scale": "1-5 for frequency and severity; 1-25 for priority",
+    "thresholds": {
+      "critical": 25,
+      "high_critical": 20,
+      "high_priority": 15,
+      "medium": 10,
+      "low": 5
+    },
+    "version": "v2 — revised Jan 2026. Armed Conflict and Technology Controls upgraded based on Russia-Ukraine, Red Sea, semiconductor controls evidence."
+  },
+  "impact_channel_order": [
+    "procurement_supply_chain",
+    "revenue_market_access",
+    "capital_allocation_investment",
+    "regulatory_compliance_cost",
+    "logistics_operations",
+    "innovation_ip",
+    "workforce_talent",
+    "reputation_stakeholder",
+    "financial_treasury",
+    "cybersecurity_it"
+  ],
+  "frequency_scores": {
+    "trade_policy_actions":              [5, 5, 4, 4, 5, 3, 2, 3, 4, 2],
+    "sanctions_financial_restrictions":  [4, 4, 3, 5, 3, 3, 2, 4, 5, 3],
+    "armed_conflict_instability":        [4, 4, 3, 3, 5, 2, 4, 4, 4, 4],
+    "regulatory_sovereignty_shifts":     [4, 3, 4, 5, 3, 4, 3, 3, 3, 4],
+    "technology_controls":               [5, 4, 4, 4, 2, 5, 3, 3, 2, 5],
+    "resource_energy_disruptions":       [5, 3, 3, 2, 4, 2, 2, 3, 4, 1],
+    "political_transitions_volatility":  [3, 4, 4, 3, 2, 2, 3, 4, 3, 2],
+    "institutional_alliance_realignment":[2, 3, 3, 3, 2, 2, 2, 3, 3, 2]
+  },
+  "severity_scores": {
+    "trade_policy_actions":              [5, 5, 4, 3, 4, 3, 2, 3, 4, 2],
+    "sanctions_financial_restrictions":  [5, 5, 4, 4, 3, 3, 3, 5, 5, 3],
+    "armed_conflict_instability":        [5, 5, 5, 3, 5, 2, 5, 5, 5, 5],
+    "regulatory_sovereignty_shifts":     [3, 3, 4, 4, 2, 4, 3, 2, 3, 4],
+    "technology_controls":               [5, 5, 4, 4, 3, 5, 4, 3, 2, 5],
+    "resource_energy_disruptions":       [5, 4, 4, 2, 5, 2, 2, 3, 5, 1],
+    "political_transitions_volatility":  [3, 5, 5, 3, 2, 2, 3, 5, 4, 2],
+    "institutional_alliance_realignment":[3, 4, 4, 3, 3, 3, 2, 3, 4, 2]
+  },
+  "priority_scores": {
+    "trade_policy_actions":              [25, 25, 16, 12, 20, 9,  4,  9,  16, 4],
+    "sanctions_financial_restrictions":  [20, 20, 12, 20, 9,  9,  6,  20, 25, 9],
+    "armed_conflict_instability":        [20, 20, 15, 9,  25, 4,  20, 20, 20, 20],
+    "regulatory_sovereignty_shifts":     [12, 9,  16, 20, 6,  16, 9,  6,  9,  16],
+    "technology_controls":               [25, 20, 16, 16, 6,  25, 12, 9,  4,  25],
+    "resource_energy_disruptions":       [25, 12, 12, 4,  20, 4,  4,  9,  20, 1],
+    "political_transitions_volatility":  [9,  20, 20, 9,  4,  4,  9,  20, 12, 4],
+    "institutional_alliance_realignment":[6,  12, 12, 9,  6,  6,  4,  9,  12, 4]
+  },
+  "cells_at_score_25": [
+    {"event": "trade_policy_actions", "channel": "procurement_supply_chain", "score": 25},
+    {"event": "trade_policy_actions", "channel": "revenue_market_access", "score": 25},
+    {"event": "sanctions_financial_restrictions", "channel": "financial_treasury", "score": 25},
+    {"event": "armed_conflict_instability", "channel": "logistics_operations", "score": 25},
+    {"event": "technology_controls", "channel": "procurement_supply_chain", "score": 25},
+    {"event": "technology_controls", "channel": "innovation_ip", "score": 25},
+    {"event": "technology_controls", "channel": "cybersecurity_it", "score": 25},
+    {"event": "resource_energy_disruptions", "channel": "procurement_supply_chain", "score": 25}
+  ]
+}

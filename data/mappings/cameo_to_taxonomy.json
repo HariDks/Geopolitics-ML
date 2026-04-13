@@ -1,0 +1,344 @@
+{
+  "_metadata": {
+    "version": "1.0",
+    "description": "Maps CAMEO event codes (used by GDELT) to the 8-category geopolitical event taxonomy defined in Phase 1. Each entry specifies the taxonomy category, a confidence level for the mapping, and filtering notes. Codes not listed here are excluded from ingestion (diplomatic routine, cooperation, aid — not geopolitically significant for our use case). Validated against: Russia invasion of Ukraine (Feb 2022, CAMEO 190/193/194 → armed_conflict_instability), US tariffs on China (2025, requires GTA supplementation — GDELT CAMEO coverage of trade policy is poor).",
+    "taxonomy_categories": [
+      "trade_policy_actions",
+      "sanctions_financial_restrictions",
+      "armed_conflict_instability",
+      "regulatory_sovereignty_shifts",
+      "technology_controls",
+      "resource_energy_disruptions",
+      "political_transitions_volatility",
+      "institutional_alliance_realignment"
+    ],
+    "confidence_levels": {
+      "high": "Direct, unambiguous mapping — CAMEO code reliably indicates this category",
+      "medium": "Context-dependent — apply additional GoldsteinScale or keyword filters",
+      "low": "Weak signal — use only when supplemented by other source confirmation"
+    },
+    "gdelt_filter_requirements": {
+      "min_num_mentions": 10,
+      "goldstein_scale_conflict_threshold": -5.0,
+      "note": "Apply NumMentions >= 10 to all codes. Apply GoldsteinScale <= -5 only where noted."
+    }
+  },
+
+  "cameo_mappings": {
+
+    "CAMEO_13": {
+      "label": "THREATEN (root)",
+      "note": "Use subcodes below; root code alone is too broad"
+    },
+    "CAMEO_130": {
+      "taxonomy_category": null,
+      "confidence": null,
+      "note": "Generic threat — too ambiguous, skip without subcode"
+    },
+    "CAMEO_131": {
+      "taxonomy_category": "political_transitions_volatility",
+      "confidence": "low",
+      "note": "Non-specific threat (non-force); include only if GoldsteinScale <= -3"
+    },
+    "CAMEO_132": {
+      "taxonomy_category": "political_transitions_volatility",
+      "confidence": "low",
+      "note": "Accusations between states — monitor but low geopolitical signal"
+    },
+    "CAMEO_133": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "medium",
+      "note": "Ultimatum — precursor to conflict; require GoldsteinScale <= -5"
+    },
+    "CAMEO_134": {
+      "taxonomy_category": "sanctions_financial_restrictions",
+      "confidence": "medium",
+      "note": "Threat of administrative sanctions — often precedes actual sanctions"
+    },
+    "CAMEO_135": {
+      "taxonomy_category": "sanctions_financial_restrictions",
+      "confidence": "medium",
+      "note": "Threat of political sanctions — includes threatened asset freezes, entity listings"
+    },
+    "CAMEO_136": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Threat of armed force — strong conflict precursor; require GoldsteinScale <= -7"
+    },
+    "CAMEO_137": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "CBRN threat — extreme severity; always include"
+    },
+    "CAMEO_138": {
+      "taxonomy_category": "trade_policy_actions",
+      "confidence": "medium",
+      "note": "Threat to boycott/embargo/stop aid — maps to trade policy when trade-related; cross-check with GTA"
+    },
+    "CAMEO_139": {
+      "taxonomy_category": null,
+      "confidence": null,
+      "note": "EXCLUDED: Threat to halt negotiations is too vague without treaty/alliance context, which GDELT cannot provide. Was generating noise."
+    },
+
+    "CAMEO_14": {
+      "label": "PROTEST (root)"
+    },
+    "CAMEO_140": {
+      "taxonomy_category": "political_transitions_volatility",
+      "confidence": "medium",
+      "note": "Generic protest; require GoldsteinScale <= -3 and NumMentions >= 20"
+    },
+    "CAMEO_141": {
+      "taxonomy_category": "political_transitions_volatility",
+      "confidence": "medium",
+      "note": "Demonstrate/rally — include large-scale political demonstrations"
+    },
+    "CAMEO_142": {
+      "taxonomy_category": "political_transitions_volatility",
+      "confidence": "low",
+      "note": "Hunger strike — low geopolitical signal unless state-level"
+    },
+    "CAMEO_143": {
+      "taxonomy_category": "political_transitions_volatility",
+      "confidence": "medium",
+      "note": "Strike/boycott — economically significant if sector-wide"
+    },
+    "CAMEO_144": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "medium",
+      "note": "Obstruct passage — blockades, border closures with physical obstruction"
+    },
+    "CAMEO_145": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Violent protest/riot — maps to instability; require GoldsteinScale <= -5"
+    },
+
+    "CAMEO_15": {
+      "label": "EXHIBIT FORCE POSTURE (root)"
+    },
+    "CAMEO_150": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "medium",
+      "note": "Generic force posture — use subcodes where available"
+    },
+    "CAMEO_151": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "low",
+      "note": "Increase police alert — low signal unless associated with civil unrest"
+    },
+    "CAMEO_152": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Increase military alert — strong conflict signal"
+    },
+    "CAMEO_153": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Mobilize troops — direct conflict precursor"
+    },
+    "CAMEO_154": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "medium",
+      "note": "Military exercises — signal of tension; context-dependent"
+    },
+    "CAMEO_155": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "low",
+      "note": "Halt military action — de-escalation signal; track as conflict end marker"
+    },
+
+    "CAMEO_16": {
+      "label": "REDUCE RELATIONS (root)"
+    },
+    "CAMEO_160": {
+      "taxonomy_category": null,
+      "confidence": null,
+      "note": "EXCLUDED: Generic relation reduction is overwhelmingly diplomatic noise. 378k events at GoldsteinScale -3 to -4 with no source URLs. Use subcodes 161-165 only."
+    },
+    "CAMEO_161": {
+      "taxonomy_category": "institutional_alliance_realignment",
+      "confidence": "high",
+      "note": "Reduce diplomatic relations — ambassador expulsions, downgrade of ties"
+    },
+    "CAMEO_162": {
+      "taxonomy_category": "sanctions_financial_restrictions",
+      "confidence": "high",
+      "note": "Expel diplomatic staff — typically accompanies sanctions escalation"
+    },
+    "CAMEO_163": {
+      "taxonomy_category": "sanctions_financial_restrictions",
+      "confidence": "high",
+      "note": "Suspend aid — economic coercion; maps to sanctions channel"
+    },
+    "CAMEO_164": {
+      "taxonomy_category": "institutional_alliance_realignment",
+      "confidence": "high",
+      "note": "Halt negotiations — breakdown of trade/alliance talks"
+    },
+    "CAMEO_165": {
+      "taxonomy_category": "institutional_alliance_realignment",
+      "confidence": "high",
+      "note": "Break relations entirely — severe realignment signal"
+    },
+    "CAMEO_166": {
+      "taxonomy_category": "trade_policy_actions",
+      "confidence": "high",
+      "note": "Impose embargo or boycott — direct trade policy action"
+    },
+
+    "CAMEO_17": {
+      "label": "COERCE (root)"
+    },
+    "CAMEO_170": {
+      "taxonomy_category": "sanctions_financial_restrictions",
+      "confidence": "medium",
+      "note": "Generic coercion — use subcodes"
+    },
+    "CAMEO_171": {
+      "taxonomy_category": "sanctions_financial_restrictions",
+      "confidence": "high",
+      "note": "Impose embargo, boycott, or sanctions — PRIMARY sanctions mapping; cross-reference OFAC source",
+      "validation_note": "Russia SWIFT exclusion (Feb 2022) should appear here"
+    },
+    "CAMEO_172": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Blockade/restrict movement — maritime blockades, border closures; e.g. Red Sea attacks"
+    },
+    "CAMEO_173": {
+      "taxonomy_category": "political_transitions_volatility",
+      "confidence": "high",
+      "note": "State of emergency — domestic political instability signal"
+    },
+    "CAMEO_174": {
+      "taxonomy_category": "regulatory_sovereignty_shifts",
+      "confidence": "medium",
+      "note": "Administrative/political discrimination — could indicate regulatory sovereignty shift"
+    },
+    "CAMEO_175": {
+      "taxonomy_category": "trade_policy_actions",
+      "confidence": "medium",
+      "note": "Halt negotiations on trade — map to trade policy if trade-specific"
+    },
+    "CAMEO_176": {
+      "taxonomy_category": "political_transitions_volatility",
+      "confidence": "medium",
+      "note": "Arrest/detain — political detention; relevant for business-person risk"
+    },
+
+    "CAMEO_18": {
+      "label": "ASSAULT (root)"
+    },
+    "CAMEO_180": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "medium",
+      "note": "Generic assault — use subcodes"
+    },
+    "CAMEO_181": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Abduction/kidnapping — high severity, especially in conflict zones"
+    },
+    "CAMEO_182": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Physical assault — violence against individuals"
+    },
+    "CAMEO_183": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Bombing (non-military) — terrorism; require GoldsteinScale <= -7"
+    },
+    "CAMEO_184": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "medium",
+      "note": "Arson — typically lower severity unless infrastructure target"
+    },
+    "CAMEO_185": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Attempted assassination — high political instability signal"
+    },
+    "CAMEO_186": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Assassination — extreme political instability; always include"
+    },
+
+    "CAMEO_19": {
+      "label": "FIGHT (root)"
+    },
+    "CAMEO_190": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Generic fighting — always include; GoldsteinScale will be strongly negative",
+      "validation_note": "Russia-Ukraine war (Feb 24, 2022) generates dense CAMEO 190/193/194 events"
+    },
+    "CAMEO_191": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Strike/assault (military) — armed engagement"
+    },
+    "CAMEO_192": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Shelling/artillery — sustained conflict"
+    },
+    "CAMEO_193": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Aerial attack — air strikes, drone attacks"
+    },
+    "CAMEO_194": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Engage in war — interstate armed conflict"
+    },
+    "CAMEO_195": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Impose siege — often accompanies blockades"
+    },
+
+    "CAMEO_20": {
+      "label": "USE UNCONVENTIONAL MASS VIOLENCE (root)"
+    },
+    "CAMEO_200": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Generic mass violence — always include"
+    },
+    "CAMEO_201": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Mass expulsion — population displacement; extreme conflict signal"
+    },
+    "CAMEO_202": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Mass killing — atrocities; always include regardless of NumMentions"
+    },
+    "CAMEO_203": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "Ethnic cleansing — extreme severity"
+    },
+    "CAMEO_204": {
+      "taxonomy_category": "armed_conflict_instability",
+      "confidence": "high",
+      "note": "WMD use — maximum severity; always include"
+    },
+
+    "NOTES_ON_GDELT_COVERAGE_GAPS": {
+      "_type": "metadata",
+      "trade_policy_actions": "GDELT has poor coverage of trade policy events. Tariff announcements, trade agreement changes, and customs measures are rarely coded as distinct CAMEO events — they appear diffusely in 13x/17x codes but without specificity. Use Global Trade Alert as the primary source for this category.",
+      "technology_controls": "Export control announcements (BIS Entity List additions, chip export rules) are not captured in CAMEO. Use BIS and Federal Register scraping as primary sources.",
+      "resource_energy_disruptions": "OPEC decisions, commodity shocks, and energy weaponization appear in GDELT but inconsistently. Supplement with commodity price data and specialized energy news feeds.",
+      "regulatory_sovereignty_shifts": "FDI screening decisions, data localization laws, and local content requirements are essentially uncovered by CAMEO. Requires regulatory news feeds or manual ingestion.",
+      "institutional_alliance_realignment": "Treaty changes and multilateral org reforms appear in CAMEO 16x but with low signal-to-noise. Cross-reference with institutional news sources.",
+      "sanctions_financial_restrictions": "CAMEO 17x catches broad coercion but misses many specific sanctions. OFAC SDN list additions are the authoritative source — GDELT is secondary here."
+    }
+  }
+}

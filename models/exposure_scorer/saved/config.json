@@ -1,0 +1,60 @@
+{
+  "feature_names": [
+    "cat_trade_policy_actions",
+    "cat_sanctions_financial_restrictions",
+    "cat_armed_conflict_instability",
+    "cat_regulatory_sovereignty_shifts",
+    "cat_technology_controls",
+    "cat_resource_energy_disruptions",
+    "cat_political_transitions_volatility",
+    "cat_institutional_alliance_realignment",
+    "gics_sector",
+    "mention_sentiment",
+    "car_1_5_seed",
+    "car_1_5_es",
+    "car_1_30_es",
+    "rev_yoy",
+    "gross_margin",
+    "gm_delta_pp",
+    "log_revenue_M",
+    "mention_count",
+    "avg_specificity",
+    "max_specificity",
+    "avg_keywords",
+    "rev_delta_pct"
+  ],
+  "impact_channels": [
+    "procurement_supply_chain",
+    "revenue_market_access",
+    "capital_allocation_investment",
+    "regulatory_compliance_cost",
+    "logistics_operations",
+    "innovation_ip",
+    "workforce_talent",
+    "reputation_stakeholder",
+    "financial_treasury",
+    "cybersecurity_it"
+  ],
+  "event_categories": [
+    "trade_policy_actions",
+    "sanctions_financial_restrictions",
+    "armed_conflict_instability",
+    "regulatory_sovereignty_shifts",
+    "technology_controls",
+    "resource_energy_disruptions",
+    "political_transitions_volatility",
+    "institutional_alliance_realignment"
+  ],
+  "channel2idx": {
+    "procurement_supply_chain": 0,
+    "revenue_market_access": 1,
+    "capital_allocation_investment": 2,
+    "regulatory_compliance_cost": 3,
+    "logistics_operations": 4,
+    "innovation_ip": 5,
+    "workforce_talent": 6,
+    "reputation_stakeholder": 7,
+    "financial_treasury": 8,
+    "cybersecurity_it": 9
+  }
+}

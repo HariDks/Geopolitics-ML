@@ -1,0 +1,42 @@
+{
+  "feature_names": [
+    "cat_trade_policy_actions",
+    "cat_sanctions_financial_restrictions",
+    "cat_armed_conflict_instability",
+    "cat_regulatory_sovereignty_shifts",
+    "cat_technology_controls",
+    "cat_resource_energy_disruptions",
+    "cat_political_transitions_volatility",
+    "cat_institutional_alliance_realignment",
+    "ch_procurement_supply_chain",
+    "ch_revenue_market_access",
+    "ch_capital_allocation_investment",
+    "ch_regulatory_compliance_cost",
+    "ch_logistics_operations",
+    "ch_innovation_ip",
+    "ch_workforce_talent",
+    "ch_reputation_stakeholder",
+    "ch_financial_treasury",
+    "ch_cybersecurity_it",
+    "gics_sector",
+    "mention_sentiment",
+    "car_1_5_seed",
+    "car_1_5_es",
+    "car_1_30_es",
+    "rev_yoy",
+    "gross_margin",
+    "gm_delta_pp",
+    "log_revenue_M",
+    "mention_count",
+    "avg_specificity",
+    "max_specificity",
+    "cogs_delta_pct",
+    "oi_delta_pct"
+  ],
+  "target": "impact_pct (revenue delta or car*100 proxy)",
+  "quantiles": [
+    0.1,
+    0.5,
+    0.9
+  ]
+}

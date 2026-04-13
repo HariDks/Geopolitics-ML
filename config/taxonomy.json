@@ -1,0 +1,175 @@
+{
+  "event_categories": {
+    "trade_policy_actions": {
+      "id": 1,
+      "label": "Trade Policy Actions",
+      "subtypes": [
+        "tariff_increase", "tariff_decrease", "import_quota", "import_ban",
+        "export_restriction", "export_ban", "trade_agreement_change",
+        "trade_agreement_exit", "customs_reclassification", "rules_of_origin_shift",
+        "trade_remedy", "subsidy_program", "procurement_restriction"
+      ],
+      "onset_speed_typical": "days_to_months",
+      "duration_typical": "transient_to_structural",
+      "primary_sources": ["gta", "ofac", "manual"],
+      "gdelt_coverage": "poor",
+      "note": "GTA is primary source. GDELT CAMEO codes 138, 166, 175 provide weak supplementary signal."
+    },
+    "sanctions_financial_restrictions": {
+      "id": 2,
+      "label": "Sanctions & Financial Restrictions",
+      "subtypes": [
+        "asset_freeze", "entity_listing", "swift_exclusion", "secondary_sanctions",
+        "sectoral_sanctions", "export_credit_restriction", "payment_restriction",
+        "capital_flow_restriction", "financial_institution_restriction"
+      ],
+      "onset_speed_typical": "hours_to_days",
+      "duration_typical": "structural",
+      "primary_sources": ["ofac", "gta", "manual"],
+      "gdelt_coverage": "partial",
+      "note": "OFAC SDN list additions are the authoritative source. CAMEO 134, 135, 162, 163, 171 provide supplementary signal."
+    },
+    "armed_conflict_instability": {
+      "id": 3,
+      "label": "Armed Conflict & Instability",
+      "subtypes": [
+        "interstate_war", "civil_conflict", "terrorism", "piracy",
+        "coup", "mass_protest_violent", "insurgency", "military_strike",
+        "maritime_attack", "aerial_bombardment", "assassination"
+      ],
+      "onset_speed_typical": "minutes_to_hours",
+      "duration_typical": "variable",
+      "primary_sources": ["acled", "gdelt"],
+      "gdelt_coverage": "high",
+      "note": "ACLED is primary (precise location, fatalities). GDELT provides volume/global coverage. Validate: Russia invasion Feb 24 2022 should be peak severity 5 in both sources."
+    },
+    "regulatory_sovereignty_shifts": {
+      "id": 4,
+      "label": "Regulatory & Sovereignty Shifts",
+      "subtypes": [
+        "data_localization", "fdi_screening_expansion", "local_content_requirement",
+        "nationalization", "sector_regulation_change", "platform_ban",
+        "foreign_company_restriction", "digital_sovereignty_mandate"
+      ],
+      "onset_speed_typical": "months_to_years",
+      "duration_typical": "structural",
+      "primary_sources": ["gta", "manual", "bis"],
+      "gdelt_coverage": "very_poor",
+      "note": "Primarily captured via GTA (FDI, local content), BIS/Federal Register (tech regulation), and manual ingestion. GDELT is almost useless for this category."
+    },
+    "technology_controls": {
+      "id": 5,
+      "label": "Technology Controls",
+      "subtypes": [
+        "export_control_semiconductor", "export_control_dual_use",
+        "forced_tech_transfer", "ip_restriction", "digital_sovereignty_mandate",
+        "standard_fragmentation", "ai_regulation", "entity_list_addition"
+      ],
+      "onset_speed_typical": "weeks_to_months",
+      "duration_typical": "structural",
+      "primary_sources": ["bis", "gta", "manual"],
+      "gdelt_coverage": "very_poor",
+      "note": "BIS Entity List and Federal Register are primary. GTA captures some. Validate: US Oct 2022 chip export control package is the canonical test case."
+    },
+    "resource_energy_disruptions": {
+      "id": 6,
+      "label": "Resource & Energy Disruptions",
+      "subtypes": [
+        "commodity_supply_shock", "energy_weaponization", "critical_mineral_restriction",
+        "opec_production_change", "pipeline_disruption", "shipping_route_disruption",
+        "refinery_disruption", "mining_disruption"
+      ],
+      "onset_speed_typical": "hours_to_months",
+      "duration_typical": "transient_to_structural",
+      "primary_sources": ["gdelt", "gta", "manual"],
+      "gdelt_coverage": "partial",
+      "note": "Supplement GDELT with commodity price feeds and energy news APIs. GTA covers mineral export restrictions. Validate: Nord Stream disruption (Sep 2022), Red Sea Houthi attacks (Dec 2023+)."
+    },
+    "political_transitions_volatility": {
+      "id": 7,
+      "label": "Political Transitions & Volatility",
+      "subtypes": [
+        "election_significant", "regime_change", "coup", "policy_reversal",
+        "populist_governance_shift", "constitutional_crisis", "government_collapse",
+        "mass_protest_peaceful", "leadership_succession"
+      ],
+      "onset_speed_typical": "days_to_months",
+      "duration_typical": "variable",
+      "primary_sources": ["acled", "gdelt", "manual"],
+      "gdelt_coverage": "medium",
+      "note": "ACLED Strategic Developments capture coups and government events. GDELT 14x/17x codes for protests. Manual ingestion needed for elections with major policy implications."
+    },
+    "institutional_alliance_realignment": {
+      "id": 8,
+      "label": "Institutional & Alliance Realignment",
+      "subtypes": [
+        "wto_dispute_significant", "trade_bloc_formation", "trade_agreement_exit",
+        "military_alliance_change", "multilateral_treaty_withdrawal",
+        "multilateral_org_reform", "new_regional_framework"
+      ],
+      "onset_speed_typical": "months_to_years",
+      "duration_typical": "structural",
+      "primary_sources": ["manual", "gdelt"],
+      "gdelt_coverage": "low",
+      "note": "Slowest-moving category. Primarily manual ingestion from diplomatic news. GDELT 16x/164/165 codes provide some signal. Validate: Brexit timeline, US withdrawal from Paris Agreement/TPP/UNESCO."
+    }
+  },
+
+  "impact_channels": {
+    "procurement_supply_chain": {
+      "id": 1,
+      "label": "Procurement & Supply Chain",
+      "primary_kpis": ["supplier_concentration_hhi", "cogs_variance_pct", "lead_time_deviation", "inventory_cost_delta"]
+    },
+    "revenue_market_access": {
+      "id": 2,
+      "label": "Revenue & Market Access",
+      "primary_kpis": ["revenue_at_risk_by_geo", "market_share_delta_pct", "pricing_elasticity", "customer_concentration"]
+    },
+    "capital_allocation_investment": {
+      "id": 3,
+      "label": "Capital Allocation & Investment",
+      "primary_kpis": ["capex_reallocation_cost", "asset_impairment_probability", "ma_risk_premium", "roi_sensitivity"]
+    },
+    "regulatory_compliance_cost": {
+      "id": 4,
+      "label": "Regulatory Compliance Cost",
+      "primary_kpis": ["compliance_spend_increase", "license_delay_months", "penalty_exposure", "fte_increase"]
+    },
+    "logistics_operations": {
+      "id": 5,
+      "label": "Logistics & Operations",
+      "primary_kpis": ["route_disruption_cost", "transit_time_increase", "downtime_hours", "customs_delay"]
+    },
+    "innovation_ip": {
+      "id": 6,
+      "label": "Innovation & IP",
+      "primary_kpis": ["rd_location_risk_score", "tech_restriction_probability", "patent_variance", "collaboration_impact"]
+    },
+    "workforce_talent": {
+      "id": 7,
+      "label": "Workforce & Talent",
+      "primary_kpis": ["visa_impact_headcount", "hiring_cost_premium_pct", "evacuation_readiness", "talent_pipeline"]
+    },
+    "reputation_stakeholder": {
+      "id": 8,
+      "label": "Reputation & Stakeholder Mgmt",
+      "primary_kpis": ["boycott_probability", "esg_rating_impact", "gov_relationship_score", "media_sentiment"]
+    },
+    "financial_treasury": {
+      "id": 9,
+      "label": "Financial & Treasury",
+      "primary_kpis": ["currency_var", "repatriation_risk_pct", "counterparty_default_prob", "insurance_cost_change"]
+    },
+    "cybersecurity_it": {
+      "id": 10,
+      "label": "Cybersecurity & IT Infrastructure",
+      "primary_kpis": ["threat_level_score", "sovereignty_compliance_cost", "migration_cost", "incident_probability"]
+    }
+  },
+
+  "onset_speed_values": ["sudden", "gradual", "phased"],
+  "expected_duration_values": ["transient", "short_term", "medium_term", "structural"],
+  "strategy_categories": ["mitigate", "hedge", "exit", "capture", "engage", "monitor"],
+  "data_sources": ["gdelt", "acled", "gta", "ofac", "bis", "edgar", "manual"]
+}

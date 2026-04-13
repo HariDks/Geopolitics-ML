@@ -1,0 +1,22 @@
+{
+  "cat2idx": {
+    "trade_policy_actions": 0,
+    "sanctions_financial_restrictions": 1,
+    "armed_conflict_instability": 2,
+    "regulatory_sovereignty_shifts": 3,
+    "technology_controls": 4,
+    "resource_energy_disruptions": 5,
+    "political_transitions_volatility": 6,
+    "institutional_alliance_realignment": 7
+  },
+  "idx2cat": {
+    "0": "trade_policy_actions",
+    "1": "sanctions_financial_restrictions",
+    "2": "armed_conflict_instability",
+    "3": "regulatory_sovereignty_shifts",
+    "4": "technology_controls",
+    "5": "resource_energy_disruptions",
+    "6": "political_transitions_volatility",
+    "7": "institutional_alliance_realignment"
+  }
+}

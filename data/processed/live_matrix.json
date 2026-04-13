@@ -1,0 +1,578 @@
+{
+  "_metadata": {
+    "computed_at": "2026-04-08T12:22:35.396090",
+    "reference_date": "2026-04-08",
+    "total_events_in_db": 7763222,
+    "note": "Frequency scores computed from database events. Severity scores are expert-assigned from Phase 1. Channel-level frequency differentiation requires corporate outcome data (Weeks 5-7)."
+  },
+  "impact_channel_order": [
+    "procurement_supply_chain",
+    "revenue_market_access",
+    "capital_allocation_investment",
+    "regulatory_compliance_cost",
+    "logistics_operations",
+    "innovation_ip",
+    "workforce_talent",
+    "reputation_stakeholder",
+    "financial_treasury",
+    "cybersecurity_it"
+  ],
+  "computed_frequency_scores": {
+    "trade_policy_actions": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "sanctions_financial_restrictions": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "armed_conflict_instability": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+    ],
+    "regulatory_sovereignty_shifts": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "technology_controls": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "resource_energy_disruptions": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "political_transitions_volatility": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+    ],
+    "institutional_alliance_realignment": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  "expert_frequency_scores": {
+    "trade_policy_actions": [
+      5,
+      5,
+      4,
+      4,
+      5,
+      3,
+      2,
+      3,
+      4,
+      2
+    ],
+    "sanctions_financial_restrictions": [
+      4,
+      4,
+      3,
+      5,
+      3,
+      3,
+      2,
+      4,
+      5,
+      3
+    ],
+    "armed_conflict_instability": [
+      4,
+      4,
+      3,
+      3,
+      5,
+      2,
+      4,
+      4,
+      4,
+      4
+    ],
+    "regulatory_sovereignty_shifts": [
+      4,
+      3,
+      4,
+      5,
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+    ],
+    "technology_controls": [
+      5,
+      4,
+      4,
+      4,
+      2,
+      5,
+      3,
+      3,
+      2,
+      5
+    ],
+    "resource_energy_disruptions": [
+      5,
+      3,
+      3,
+      2,
+      4,
+      2,
+      2,
+      3,
+      4,
+      1
+    ],
+    "political_transitions_volatility": [
+      3,
+      4,
+      4,
+      3,
+      2,
+      2,
+      3,
+      4,
+      3,
+      2
+    ],
+    "institutional_alliance_realignment": [
+      2,
+      3,
+      3,
+      3,
+      2,
+      2,
+      2,
+      3,
+      3,
+      2
+    ]
+  },
+  "expert_severity_scores": {
+    "trade_policy_actions": [
+      5,
+      5,
+      4,
+      3,
+      4,
+      3,
+      2,
+      3,
+      4,
+      2
+    ],
+    "sanctions_financial_restrictions": [
+      5,
+      5,
+      4,
+      4,
+      3,
+      3,
+      3,
+      5,
+      5,
+      3
+    ],
+    "armed_conflict_instability": [
+      5,
+      5,
+      5,
+      3,
+      5,
+      2,
+      5,
+      5,
+      5,
+      5
+    ],
+    "regulatory_sovereignty_shifts": [
+      3,
+      3,
+      4,
+      4,
+      2,
+      4,
+      3,
+      2,
+      3,
+      4
+    ],
+    "technology_controls": [
+      5,
+      5,
+      4,
+      4,
+      3,
+      5,
+      4,
+      3,
+      2,
+      5
+    ],
+    "resource_energy_disruptions": [
+      5,
+      4,
+      4,
+      2,
+      5,
+      2,
+      2,
+      3,
+      5,
+      1
+    ],
+    "political_transitions_volatility": [
+      3,
+      5,
+      5,
+      3,
+      2,
+      2,
+      3,
+      5,
+      4,
+      2
+    ],
+    "institutional_alliance_realignment": [
+      3,
+      4,
+      4,
+      3,
+      3,
+      3,
+      2,
+      3,
+      4,
+      2
+    ]
+  },
+  "computed_priority_scores": {
+    "trade_policy_actions": [
+      15,
+      15,
+      12,
+      9,
+      12,
+      9,
+      6,
+      9,
+      12,
+      6
+    ],
+    "sanctions_financial_restrictions": [
+      20,
+      20,
+      16,
+      16,
+      12,
+      12,
+      12,
+      20,
+      20,
+      12
+    ],
+    "armed_conflict_instability": [
+      25,
+      25,
+      25,
+      15,
+      25,
+      10,
+      25,
+      25,
+      25,
+      25
+    ],
+    "regulatory_sovereignty_shifts": [
+      9,
+      9,
+      12,
+      12,
+      6,
+      12,
+      9,
+      6,
+      9,
+      12
+    ],
+    "technology_controls": [
+      5,
+      5,
+      4,
+      4,
+      3,
+      5,
+      4,
+      3,
+      2,
+      5
+    ],
+    "resource_energy_disruptions": [
+      5,
+      4,
+      4,
+      2,
+      5,
+      2,
+      2,
+      3,
+      5,
+      1
+    ],
+    "political_transitions_volatility": [
+      15,
+      25,
+      25,
+      15,
+      10,
+      10,
+      15,
+      25,
+      20,
+      10
+    ],
+    "institutional_alliance_realignment": [
+      6,
+      8,
+      8,
+      6,
+      6,
+      6,
+      4,
+      6,
+      8,
+      4
+    ]
+  },
+  "expert_priority_scores": {
+    "trade_policy_actions": [
+      25,
+      25,
+      16,
+      12,
+      20,
+      9,
+      4,
+      9,
+      16,
+      4
+    ],
+    "sanctions_financial_restrictions": [
+      20,
+      20,
+      12,
+      20,
+      9,
+      9,
+      6,
+      20,
+      25,
+      9
+    ],
+    "armed_conflict_instability": [
+      20,
+      20,
+      15,
+      9,
+      25,
+      4,
+      20,
+      20,
+      20,
+      20
+    ],
+    "regulatory_sovereignty_shifts": [
+      12,
+      9,
+      16,
+      20,
+      6,
+      16,
+      9,
+      6,
+      9,
+      16
+    ],
+    "technology_controls": [
+      25,
+      20,
+      16,
+      16,
+      6,
+      25,
+      12,
+      9,
+      4,
+      25
+    ],
+    "resource_energy_disruptions": [
+      25,
+      12,
+      12,
+      4,
+      20,
+      4,
+      4,
+      9,
+      20,
+      1
+    ],
+    "political_transitions_volatility": [
+      9,
+      20,
+      20,
+      9,
+      4,
+      4,
+      9,
+      20,
+      12,
+      4
+    ],
+    "institutional_alliance_realignment": [
+      6,
+      12,
+      12,
+      9,
+      6,
+      6,
+      4,
+      9,
+      12,
+      4
+    ]
+  },
+  "validation_comparison": {
+    "trade_policy_actions": {
+      "expert_frequency_mean": 3.7,
+      "computed_frequency_score": 3,
+      "divergence_pct": 18.9,
+      "flag_for_review": false,
+      "event_count_in_db": 226811
+    },
+    "sanctions_financial_restrictions": {
+      "expert_frequency_mean": 3.6,
+      "computed_frequency_score": 4,
+      "divergence_pct": 11.1,
+      "flag_for_review": false,
+      "event_count_in_db": 212952
+    },
+    "armed_conflict_instability": {
+      "expert_frequency_mean": 3.7,
+      "computed_frequency_score": 5,
+      "divergence_pct": 35.1,
+      "flag_for_review": true,
+      "event_count_in_db": 5245293
+    },
+    "regulatory_sovereignty_shifts": {
+      "expert_frequency_mean": 3.6,
+      "computed_frequency_score": 3,
+      "divergence_pct": 16.7,
+      "flag_for_review": false,
+      "event_count_in_db": 77638
+    },
+    "technology_controls": {
+      "expert_frequency_mean": 3.7,
+      "computed_frequency_score": 1,
+      "divergence_pct": 73.0,
+      "flag_for_review": true,
+      "event_count_in_db": 200
+    },
+    "resource_energy_disruptions": {
+      "expert_frequency_mean": 2.9,
+      "computed_frequency_score": 1,
+      "divergence_pct": 65.5,
+      "flag_for_review": true,
+      "event_count_in_db": 0
+    },
+    "political_transitions_volatility": {
+      "expert_frequency_mean": 3.0,
+      "computed_frequency_score": 5,
+      "divergence_pct": 66.7,
+      "flag_for_review": true,
+      "event_count_in_db": 1998359
+    },
+    "institutional_alliance_realignment": {
+      "expert_frequency_mean": 2.5,
+      "computed_frequency_score": 2,
+      "divergence_pct": 20.0,
+      "flag_for_review": false,
+      "event_count_in_db": 1969
+    }
+  },
+  "raw_weighted_scores": {
+    "trade_policy_actions": 60065.972,
+    "sanctions_financial_restrictions": 70963.031,
+    "armed_conflict_instability": 943478.822,
+    "regulatory_sovereignty_shifts": 33611.731,
+    "technology_controls": 38.933,
+    "resource_energy_disruptions": 0.0,
+    "political_transitions_volatility": 312651.014,
+    "institutional_alliance_realignment": 1096.791
+  }
+}

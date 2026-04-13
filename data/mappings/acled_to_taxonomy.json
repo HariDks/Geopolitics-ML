@@ -1,0 +1,283 @@
+{
+  "_metadata": {
+    "version": "1.0",
+    "description": "Maps ACLED (Armed Conflict Location & Event Data) event_type and sub_event_type fields to the 8-category geopolitical event taxonomy. ACLED is the primary source for Armed Conflict & Instability and a secondary source for Political Transitions & Volatility. Its strength is precise location data (lat/lon) and fatality counts, which drive severity scoring. Validated against: Russia-Ukraine war (2022-present — dense Battle/Explosion entries for UA/RU), Sudan civil war (2023), Gaza conflict (2023-2024).",
+    "acled_event_types": [
+      "Battles",
+      "Explosions/Remote violence",
+      "Violence against civilians",
+      "Protests",
+      "Riots",
+      "Strategic developments"
+    ],
+    "acled_api_fields_used": [
+      "event_date",
+      "event_type",
+      "sub_event_type",
+      "actor1",
+      "actor2",
+      "inter1",
+      "inter2",
+      "country",
+      "admin1",
+      "location",
+      "latitude",
+      "longitude",
+      "fatalities",
+      "notes"
+    ],
+    "severity_scoring_from_fatalities": {
+      "0": 1,
+      "1-9": 2,
+      "10-49": 3,
+      "50-499": 4,
+      "500+": 5,
+      "note": "Fatality-based severity is a floor — apply max(fatality_severity, default_subtype_severity)"
+    }
+  },
+
+  "acled_mappings": {
+
+    "Battles": {
+      "taxonomy_category": "armed_conflict_instability",
+      "default_severity": 4,
+      "confidence": "high",
+      "note": "All battle events map directly to Armed Conflict. Severity driven by fatalities and actor type.",
+      "sub_event_types": {
+        "Armed clash": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Skirmishes, limited engagements; severity upgraded if fatalities > 10"
+        },
+        "Government regains territory": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 4,
+          "onset_speed": "gradual",
+          "note": "Indicates active territorial conflict; track as ongoing event"
+        },
+        "Non-state actor overtakes territory": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 5,
+          "onset_speed": "sudden",
+          "note": "High-severity instability; significant business disruption risk in affected area"
+        }
+      }
+    },
+
+    "Explosions/Remote violence": {
+      "taxonomy_category": "armed_conflict_instability",
+      "default_severity": 4,
+      "confidence": "high",
+      "note": "Remote violence, IEDs, drone strikes, shelling — all armed conflict indicators.",
+      "sub_event_types": {
+        "Air/drone strike": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 4,
+          "onset_speed": "sudden",
+          "note": "State or non-state actor aerial attack; infrastructure disruption risk"
+        },
+        "Shelling/artillery/missile attack": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 4,
+          "onset_speed": "sudden",
+          "note": "Sustained fire; indicates active frontline or long-range targeting",
+          "validation_note": "Ukraine 2022: dense shelling events should populate RU/UA with severity 4-5"
+        },
+        "Suicide bomb": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 4,
+          "onset_speed": "sudden",
+          "note": "Terrorism indicator"
+        },
+        "Remote explosive/landmine/IED": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Persistent security risk; relevant for route and logistics disruption assessment"
+        },
+        "Grenade": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 2,
+          "onset_speed": "sudden",
+          "note": "Lower severity unless in business-critical area"
+        },
+        "Chemical weapon": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 5,
+          "onset_speed": "sudden",
+          "note": "Always severity 5; typically triggers sanctions cascade"
+        },
+        "Sea mine/underwater IED": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 4,
+          "onset_speed": "sudden",
+          "note": "Maritime security — high logistics disruption risk; e.g., Red Sea mining"
+        },
+        "Missile attack": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 5,
+          "onset_speed": "sudden",
+          "note": "Ballistic or cruise missile strikes; infrastructure destruction risk"
+        }
+      }
+    },
+
+    "Violence against civilians": {
+      "taxonomy_category": "armed_conflict_instability",
+      "default_severity": 4,
+      "confidence": "high",
+      "note": "Targeting of civilian population — key indicator for forced displacement, infrastructure destruction, and corporate evacuation risk.",
+      "sub_event_types": {
+        "Attack": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 4,
+          "onset_speed": "sudden",
+          "note": "Direct attack on civilians"
+        },
+        "Abduction/forced disappearance": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Relevant for workforce safety; indicates hostile actor presence"
+        },
+        "Sexual violence": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Severe human rights indicator; relevant for ESG/reputation channel"
+        },
+        "Looting/property destruction": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Direct asset destruction risk for operating companies"
+        },
+        "Mob violence": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Social unrest escalation"
+        }
+      }
+    },
+
+    "Protests": {
+      "taxonomy_category": "political_transitions_volatility",
+      "default_severity": 2,
+      "confidence": "medium",
+      "note": "Most protests are background noise. Include only if: (a) anti-government and >1000 participants, or (b) targeting foreign companies/governments, or (c) leading to government response. Severity upgrades based on scale and government response.",
+      "sub_event_types": {
+        "Peaceful protest": {
+          "taxonomy_category": "political_transitions_volatility",
+          "default_severity": 1,
+          "onset_speed": "gradual",
+          "note": "Low signal; include only if large-scale (national) or economically targeted",
+          "filter": "Include only if notes contain government, foreign company, or economic policy keywords"
+        },
+        "Protest with intervention": {
+          "taxonomy_category": "political_transitions_volatility",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Government/police intervention indicates elevated political tension"
+        },
+        "Excessive force against protesters": {
+          "taxonomy_category": "political_transitions_volatility",
+          "default_severity": 4,
+          "onset_speed": "sudden",
+          "note": "Significant regime instability signal; also ESG/reputation risk"
+        }
+      }
+    },
+
+    "Riots": {
+      "taxonomy_category": "political_transitions_volatility",
+      "default_severity": 3,
+      "confidence": "medium",
+      "note": "Riots indicate breakdown of public order. Cross-classify as Armed Conflict if fatalities > 10 or if triggered by political event (election, coup).",
+      "sub_event_types": {
+        "Violent demonstration": {
+          "taxonomy_category": "political_transitions_volatility",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Property destruction; local business disruption"
+        },
+        "Mob violence": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Inter-group violence; upgrade to armed_conflict_instability if ethnic/sectarian"
+        }
+      }
+    },
+
+    "Strategic developments": {
+      "taxonomy_category": null,
+      "confidence": "low",
+      "note": "Catch-all ACLED category — requires sub_event_type filtering to be useful. Most map to political_transitions_volatility or institutional_alliance_realignment.",
+      "sub_event_types": {
+        "Headquarters or base established": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 2,
+          "onset_speed": "gradual",
+          "note": "Non-state actor establishing presence; territory control signal"
+        },
+        "Looting/property seized": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Asset seizure — direct financial impact on operators"
+        },
+        "Disruption of weapons use": {
+          "taxonomy_category": "armed_conflict_instability",
+          "default_severity": 2,
+          "onset_speed": "gradual",
+          "note": "De-escalation signal; track as conflict end marker"
+        },
+        "Agreement": {
+          "taxonomy_category": "institutional_alliance_realignment",
+          "default_severity": 2,
+          "onset_speed": "gradual",
+          "note": "Peace agreements, ceasefires; positive instability resolution"
+        },
+        "Coup": {
+          "taxonomy_category": "political_transitions_volatility",
+          "default_severity": 5,
+          "onset_speed": "sudden",
+          "note": "Regime change by force — maximum political instability; always severity 5",
+          "validation_note": "Sudan coup (Oct 2021), Niger coup (Jul 2023) should appear as severity 5"
+        },
+        "Government officials arrested": {
+          "taxonomy_category": "political_transitions_volatility",
+          "default_severity": 4,
+          "onset_speed": "sudden",
+          "note": "Purge indicator; high policy reversal risk"
+        },
+        "Mass arrest": {
+          "taxonomy_category": "political_transitions_volatility",
+          "default_severity": 3,
+          "onset_speed": "sudden",
+          "note": "Crackdown signal"
+        },
+        "Non-violent transfer of territory": {
+          "taxonomy_category": "political_transitions_volatility",
+          "default_severity": 3,
+          "onset_speed": "gradual",
+          "note": "Political settlement; monitor for compliance/regulatory implications"
+        },
+        "Peaceful transfer of power": {
+          "taxonomy_category": "political_transitions_volatility",
+          "default_severity": 2,
+          "onset_speed": "gradual",
+          "note": "Normal election outcome; include if political platform has significant business implications"
+        }
+      }
+    }
+  },
+
+  "acled_deduplication_notes": {
+    "spatial_clustering": "ACLED events in the same country on the same date with the same event_type can represent multiple reports of one event. Group by (country, event_date, event_type, actor1) within 50km radius for deduplication.",
+    "temporal_clustering": "For ongoing conflicts (e.g., Ukraine), daily battle events are separate events, not duplicates — do not over-deduplicate.",
+    "fatality_aggregation": "When grouping events for database storage, sum fatalities across deduplicated cluster, not just take max."
+  }
+}

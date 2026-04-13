@@ -1,0 +1,65 @@
+{
+  "_metadata": {
+    "description": "Exponential decay rates (λ) for time-weighted frequency scoring. Formula: Weight = e^(-λ * t) where t = years since event. Higher λ = faster decay = recent events weighted more heavily. See README Section 1.5 for rationale.",
+    "tuning_status": "Initial expert-assigned values. Backtest against known corporate impacts after 6 months of live data.",
+    "review_schedule": "Quarterly review; flag any cell where time-weighted score deviates > 20% from prior quarter"
+  },
+  "lambda_by_category": {
+    "trade_policy_actions": {
+      "lambda": 0.5,
+      "weight_at_1yr": 0.607,
+      "weight_at_3yr": 0.223,
+      "rationale": "Recurring, accelerating tariff waves. Recent policy shifts (2018, 2022, 2025) are much more predictive than older cycles.",
+      "tuning_notes": "Consider increasing to 0.6 if US-China tariff volatility continues at 2025 pace"
+    },
+    "sanctions_financial_restrictions": {
+      "lambda": 0.4,
+      "weight_at_1yr": 0.670,
+      "weight_at_3yr": 0.301,
+      "rationale": "Rarely reversed; existing sanctions regimes (Iran, Russia, North Korea) remain relevant for years. Historical context stays predictive.",
+      "tuning_notes": "Iran sanctions history (2012-2015 peak) should still have ~40% weight today at λ=0.4"
+    },
+    "armed_conflict_instability": {
+      "lambda": 0.7,
+      "weight_at_1yr": 0.497,
+      "weight_at_3yr": 0.123,
+      "rationale": "Episodic and location-specific. 2015 Syria conflict is a poor predictor of 2025 risk in same region. Recent events (Ukraine 2022, Sudan 2023, Gaza 2023) dominate.",
+      "tuning_notes": "May need to distinguish between active ongoing conflicts (decay should be very low, near 0) vs resolved conflicts"
+    },
+    "regulatory_sovereignty_shifts": {
+      "lambda": 0.3,
+      "weight_at_1yr": 0.741,
+      "weight_at_3yr": 0.407,
+      "rationale": "Structural and cumulative. GDPR (2018), CFIUS FIRRMA (2018), EU FDI Screening (2020) remain highly relevant regulatory precedents.",
+      "tuning_notes": "Lowest decay appropriate; these structural shifts persist and build on each other"
+    },
+    "technology_controls": {
+      "lambda": 0.6,
+      "weight_at_1yr": 0.549,
+      "weight_at_3yr": 0.165,
+      "rationale": "Accelerating rapidly. Each new round of export controls supersedes prior rounds. Oct 2022 controls less predictive than Oct 2024 controls.",
+      "tuning_notes": "Consider higher decay (0.7) given acceleration. Review after 2025 export control package."
+    },
+    "resource_energy_disruptions": {
+      "lambda": 0.6,
+      "weight_at_1yr": 0.549,
+      "weight_at_3yr": 0.165,
+      "rationale": "Cyclical but energy transition adds structural layer. 2022 European energy crisis more predictive than 2014 oil price crash for current period.",
+      "tuning_notes": "Distinguish transient (weather, pipeline accident) vs structural (weaponization, transition). May need separate λ values by subtype."
+    },
+    "political_transitions_volatility": {
+      "lambda": 0.8,
+      "weight_at_1yr": 0.449,
+      "weight_at_3yr": 0.091,
+      "rationale": "Highly time-bound. Past elections rarely predict current political dynamics. Each political cycle is largely independent.",
+      "tuning_notes": "Highest decay appropriate. 2016 elections are essentially irrelevant for 2025 modeling."
+    },
+    "institutional_alliance_realignment": {
+      "lambda": 0.2,
+      "weight_at_1yr": 0.819,
+      "weight_at_3yr": 0.549,
+      "rationale": "Glacial and cumulative. WTO Appellate Body deadlock (2019) still defines multilateral trade enforcement environment today. Alliance realignments persist for decades.",
+      "tuning_notes": "Lowest decay appropriate. Brexit (2016-2020) is still shaping UK-EU trade patterns today."
+    }
+  }
+}
