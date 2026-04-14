@@ -27,6 +27,65 @@ st.set_page_config(
     layout="wide",
 )
 
+# ── Company lookup data ──────────────────────────────────────────────────────
+
+# S&P 500 companies with name, ticker, sector, and approximate annual revenue
+COMPANIES = {
+    "Apple (AAPL)": {"ticker": "AAPL", "revenue": 383_000_000_000, "size": "large", "sector": "Information Technology"},
+    "Microsoft (MSFT)": {"ticker": "MSFT", "revenue": 245_000_000_000, "size": "large", "sector": "Information Technology"},
+    "Amazon (AMZN)": {"ticker": "AMZN", "revenue": 620_000_000_000, "size": "large", "sector": "Consumer Discretionary"},
+    "NVIDIA (NVDA)": {"ticker": "NVDA", "revenue": 130_000_000_000, "size": "large", "sector": "Information Technology"},
+    "Alphabet/Google (GOOGL)": {"ticker": "GOOGL", "revenue": 350_000_000_000, "size": "large", "sector": "Communication Services"},
+    "Meta/Facebook (META)": {"ticker": "META", "revenue": 165_000_000_000, "size": "large", "sector": "Information Technology"},
+    "Tesla (TSLA)": {"ticker": "TSLA", "revenue": 97_000_000_000, "size": "large", "sector": "Consumer Discretionary"},
+    "Berkshire Hathaway (BRK-B)": {"ticker": "BRK-B", "revenue": 364_000_000_000, "size": "large", "sector": "Financials"},
+    "JPMorgan Chase (JPM)": {"ticker": "JPM", "revenue": 177_000_000_000, "size": "large", "sector": "Financials"},
+    "Visa (V)": {"ticker": "V", "revenue": 36_000_000_000, "size": "large", "sector": "Financials"},
+    "UnitedHealth (UNH)": {"ticker": "UNH", "revenue": 400_000_000_000, "size": "large", "sector": "Health Care"},
+    "Johnson & Johnson (JNJ)": {"ticker": "JNJ", "revenue": 85_000_000_000, "size": "large", "sector": "Health Care"},
+    "Exxon Mobil (XOM)": {"ticker": "XOM", "revenue": 344_000_000_000, "size": "large", "sector": "Energy"},
+    "Chevron (CVX)": {"ticker": "CVX", "revenue": 196_000_000_000, "size": "large", "sector": "Energy"},
+    "Procter & Gamble (PG)": {"ticker": "PG", "revenue": 84_000_000_000, "size": "large", "sector": "Consumer Staples"},
+    "Costco (COST)": {"ticker": "COST", "revenue": 242_000_000_000, "size": "large", "sector": "Consumer Staples"},
+    "McDonald's (MCD)": {"ticker": "MCD", "revenue": 26_000_000_000, "size": "large", "sector": "Consumer Discretionary"},
+    "Boeing (BA)": {"ticker": "BA", "revenue": 78_000_000_000, "size": "large", "sector": "Industrials"},
+    "Caterpillar (CAT)": {"ticker": "CAT", "revenue": 67_000_000_000, "size": "large", "sector": "Industrials"},
+    "Lockheed Martin (LMT)": {"ticker": "LMT", "revenue": 68_000_000_000, "size": "large", "sector": "Industrials"},
+    "Raytheon/RTX (RTX)": {"ticker": "RTX", "revenue": 69_000_000_000, "size": "large", "sector": "Industrials"},
+    "Broadcom (AVGO)": {"ticker": "AVGO", "revenue": 51_000_000_000, "size": "large", "sector": "Information Technology"},
+    "Cisco (CSCO)": {"ticker": "CSCO", "revenue": 54_000_000_000, "size": "large", "sector": "Information Technology"},
+    "Intel (INTC)": {"ticker": "INTC", "revenue": 54_000_000_000, "size": "large", "sector": "Information Technology"},
+    "Nike (NKE)": {"ticker": "NKE", "revenue": 51_000_000_000, "size": "large", "sector": "Consumer Discretionary"},
+    "Goldman Sachs (GS)": {"ticker": "GS", "revenue": 51_000_000_000, "size": "large", "sector": "Financials"},
+    "Coca-Cola (KO)": {"ticker": "KO", "revenue": 46_000_000_000, "size": "large", "sector": "Consumer Staples"},
+    "PepsiCo (PEP)": {"ticker": "PEP", "revenue": 92_000_000_000, "size": "large", "sector": "Consumer Staples"},
+    "Walmart (WMT)": {"ticker": "WMT", "revenue": 648_000_000_000, "size": "large", "sector": "Consumer Staples"},
+    "Home Depot (HD)": {"ticker": "HD", "revenue": 157_000_000_000, "size": "large", "sector": "Consumer Discretionary"},
+    "Pfizer (PFE)": {"ticker": "PFE", "revenue": 58_000_000_000, "size": "large", "sector": "Health Care"},
+    "Eli Lilly (LLY)": {"ticker": "LLY", "revenue": 41_000_000_000, "size": "large", "sector": "Health Care"},
+    "Mastercard (MA)": {"ticker": "MA", "revenue": 28_000_000_000, "size": "large", "sector": "Financials"},
+    "Schlumberger (SLB)": {"ticker": "SLB", "revenue": 36_000_000_000, "size": "large", "sector": "Energy"},
+    "FedEx (FDX)": {"ticker": "FDX", "revenue": 88_000_000_000, "size": "large", "sector": "Industrials"},
+    "General Motors (GM)": {"ticker": "GM", "revenue": 172_000_000_000, "size": "large", "sector": "Consumer Discretionary"},
+    "Ford (F)": {"ticker": "F", "revenue": 176_000_000_000, "size": "large", "sector": "Consumer Discretionary"},
+    "Other (enter manually)": {"ticker": "", "revenue": 0, "size": "large", "sector": ""},
+}
+
+# Pre-built event scenarios for quick analysis
+EVENT_SCENARIOS = {
+    "Custom (enter your own)": "",
+    "Red Sea shipping disruption": "Houthi rebels fired anti-ship missiles at container vessels in the Red Sea, forcing major shipping lines to reroute around the Cape of Good Hope",
+    "US-China tariff escalation": "US announced 25% tariffs on all Chinese imports including electronics, semiconductors, and consumer goods",
+    "Russia-Ukraine escalation": "Russian forces launched a major new offensive in eastern Ukraine, triggering additional Western sanctions packages",
+    "OPEC production cut": "OPEC announced a surprise production cut of 2 million barrels per day, sending oil prices surging 8%",
+    "Taiwan Strait tensions": "China conducted large-scale military exercises around Taiwan including live fire drills and naval blockade rehearsals",
+    "Iran nuclear crisis": "IAEA reported Iran enriching uranium to 90% purity, triggering emergency UN Security Council meeting",
+    "Major cyberattack": "State-sponsored hackers launched coordinated ransomware attack on critical infrastructure across multiple countries",
+    "EU regulatory crackdown": "EU passed sweeping new Digital Markets Act enforcement actions against major US tech platforms",
+    "Emerging market debt crisis": "Multiple emerging market currencies collapsed as the Fed raised rates, triggering capital flight from developing economies",
+    "Global supply chain shock": "Major earthquake in Taiwan disrupted semiconductor manufacturing, with TSMC reporting 3-month production delays",
+}
+
 # ── Cached model loading ─────────────────────────────────────────────────────
 
 @st.cache_resource
@@ -52,6 +111,7 @@ def get_db():
 st.sidebar.title("Geopolitical Risk ML")
 page = st.sidebar.radio("Navigate", [
     "Analyze Event",
+    "Portfolio Scanner",
     "Database Explorer",
     "Seed Labels",
     "Model Stats",
@@ -61,19 +121,33 @@ page = st.sidebar.radio("Navigate", [
 
 if page == "Analyze Event":
     st.title("Geopolitical Risk Analysis")
-    st.markdown("Enter an event description and company to get a full risk assessment.")
+    st.markdown("Select an event scenario and company to get a full risk assessment.")
 
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        text = st.text_area(
-            "Event description",
-            value="Houthi rebels fired anti-ship missiles at container vessels in the Red Sea",
-            height=100,
-        )
-    with col2:
-        ticker = st.text_input("Company ticker", value="COST")
-        revenue = st.number_input("Annual revenue (USD)", value=242_000_000_000, step=1_000_000_000, format="%d")
-        company_size = st.selectbox("Company size", ["large", "medium", "small"])
+    # Event selection — dropdown of scenarios OR custom text
+    col_event, col_company = st.columns([3, 2])
+
+    with col_event:
+        scenario = st.selectbox("Event scenario", list(EVENT_SCENARIOS.keys()))
+        if scenario == "Custom (enter your own)":
+            text = st.text_area("Describe the geopolitical event", height=100,
+                               placeholder="e.g., China imposed export controls on rare earth minerals...")
+        else:
+            text = EVENT_SCENARIOS[scenario]
+            st.info(f'"{text}"')
+
+    with col_company:
+        company_name = st.selectbox("Company", list(COMPANIES.keys()))
+        company_info = COMPANIES[company_name]
+
+        if company_name == "Other (enter manually)":
+            ticker = st.text_input("Ticker symbol", value="")
+            revenue = st.number_input("Annual revenue (USD)", value=0, step=1_000_000_000, format="%d")
+            company_size = st.selectbox("Company size", ["large", "medium", "small"])
+        else:
+            ticker = company_info["ticker"]
+            revenue = company_info["revenue"]
+            company_size = company_info["size"]
+            st.caption(f"Ticker: **{ticker}** | Revenue: **${revenue/1e9:.0f}B** | Sector: {company_info['sector']}")
 
     if st.button("Analyze", type="primary"):
         models = load_models()
@@ -138,7 +212,83 @@ if page == "Analyze Event":
                         st.markdown(f"**#{s['rank']} [{s['strategy_category'].upper()}]** {s['strategy_name']}")
                         st.caption(f"Cost: {s['typical_cost']} | Time: {s['implementation_time']} | Score: {s['relevance_score']}")
 
-# ── Page 2: Database Explorer ────────────────────────────────────────────────
+# ── Page 2: Portfolio Scanner ────────────────────────────────────────────────
+
+elif page == "Portfolio Scanner":
+    st.title("Portfolio Risk Scanner")
+    st.markdown("Select companies and an event scenario to see which holdings are most exposed.")
+
+    # Event selection
+    scenario = st.selectbox("Event scenario", [k for k in EVENT_SCENARIOS.keys() if k != "Custom (enter your own)"])
+    event_text = EVENT_SCENARIOS[scenario]
+    st.info(f'"{event_text}"')
+
+    # Portfolio selection
+    all_companies = [k for k in COMPANIES.keys() if k != "Other (enter manually)"]
+    default_portfolio = ["Apple (AAPL)", "Exxon Mobil (XOM)", "Boeing (BA)", "JPMorgan Chase (JPM)",
+                        "NVIDIA (NVDA)", "McDonald's (MCD)", "Costco (COST)", "Lockheed Martin (LMT)",
+                        "Goldman Sachs (GS)", "Pfizer (PFE)"]
+    selected = st.multiselect("Select portfolio companies", all_companies, default=default_portfolio)
+
+    if st.button("Scan Portfolio", type="primary") and selected:
+        models = load_models()
+
+        with st.spinner("Classifying event..."):
+            evt = models["classifier"].predict(event_text)
+        st.subheader(f"Event: {evt['category'].replace('_', ' ').title()} ({evt['confidence']:.0%})")
+
+        results = []
+        progress = st.progress(0)
+        for i, company_name in enumerate(selected):
+            info = COMPANIES[company_name]
+            exp = models["scorer"].score(
+                event_category=evt["category"], ticker=info["ticker"],
+                mention_sentiment=-0.4,
+            )
+            imp = models["estimator"].estimate(
+                event_category=evt["category"],
+                impact_channel=exp["channel_prediction"],
+                ticker=info["ticker"],
+                mention_sentiment=-0.4,
+                revenue_usd=info["revenue"],
+            )
+            results.append({
+                "Company": company_name.split(" (")[0],
+                "Ticker": info["ticker"],
+                "Sector": info["sector"],
+                "Primary Channel": exp["channel_prediction"].replace("_", " ").title(),
+                "Severity": exp["severity_score"],
+                "Impact (Mid %)": imp["impact_mid_pct"],
+                "Impact (Mid $)": imp.get("impact_mid_usd", 0),
+                "Confidence": exp["channel_confidence"],
+            })
+            progress.progress((i + 1) / len(selected))
+
+        results_df = pd.DataFrame(results).sort_values("Severity")
+        progress.empty()
+
+        # Risk heatmap
+        st.subheader("Exposure Ranking")
+        st.dataframe(
+            results_df.style.background_gradient(subset=["Severity"], cmap="RdYlGn_r")
+                .format({"Severity": "{:+.2f}", "Impact (Mid %)": "{:+.1f}%",
+                         "Impact (Mid $)": "${:,.0f}", "Confidence": "{:.0%}"}),
+            use_container_width=True, hide_index=True,
+        )
+
+        # Most and least exposed
+        col1, col2 = st.columns(2)
+        with col1:
+            most = results_df.iloc[0]
+            st.metric("Most Exposed", most["Company"],
+                     delta=f"{most['Severity']:+.2f} severity",
+                     delta_color="inverse")
+        with col2:
+            least = results_df.iloc[-1]
+            st.metric("Least Exposed", least["Company"],
+                     delta=f"{least['Severity']:+.2f} severity")
+
+# ── Page 3: Database Explorer ────────────────────────────────────────────────
 
 elif page == "Database Explorer":
     st.title("Database Explorer")
