@@ -65,13 +65,147 @@ EVENT_DATES = {
 
 # GICS sector lookup from existing seed labels
 def load_gics_map() -> dict[str, str]:
-    """Load ticker → GICS mapping from existing seed labels."""
+    """Load ticker → GICS mapping from seed labels + hardcoded S&P 500 sectors."""
     gics = {}
+    # Seed labels first
     with open(SEED_LABELS_PATH) as f:
         for r in csv.DictReader(f):
             if r.get("sector_gics") and r.get("company_ticker"):
                 gics[r["company_ticker"]] = r["sector_gics"]
+
+    # S&P 500 top 100 sector codes (first 2 digits of GICS)
+    # This ensures auto-labeled companies get correct sector assignment
+    sp500_sectors = {
+        # Energy (10)
+        "XOM": "10", "CVX": "10", "COP": "10", "SLB": "10", "EOG": "10",
+        # Materials (15)
+        "LIN": "15", "SWK": "15", "ADM": "15",
+        # Industrials (20)
+        "BA": "20", "CAT": "20", "GE": "20", "HON": "20", "UPS": "20",
+        "RTX": "20", "DE": "20", "LMT": "20", "GD": "20", "NOC": "20",
+        "FDX": "20", "WM": "20", "GM": "20", "F": "20",
+        # Consumer Discretionary (25)
+        "AMZN": "25", "TSLA": "25", "HD": "25", "MCD": "25", "NKE": "25",
+        "LOW": "25", "TJX": "25", "BKNG": "25", "ABNB": "25",
+        # Consumer Staples (30)
+        "PG": "30", "PEP": "30", "KO": "30", "COST": "30", "PM": "30",
+        "MDLZ": "30", "MO": "30", "TGT": "30", "CL": "30",
+        # Health Care (35)
+        "UNH": "35", "JNJ": "35", "MRK": "35", "ABBV": "35", "LLY": "35",
+        "TMO": "35", "ABT": "35", "DHR": "35", "BMY": "35", "AMGN": "35",
+        "GILD": "35", "ISRG": "35", "MDT": "35", "SYK": "35", "BDX": "35",
+        "ZTS": "35", "CI": "35", "ELV": "35", "HUM": "35",
+        # Financials (40)
+        "BRK-B": "40", "JPM": "40", "V": "40", "MA": "40", "GS": "40",
+        "MS": "40", "SCHW": "40", "BLK": "40", "SPGI": "40", "CB": "40",
+        "PNC": "40", "USB": "40", "CME": "40", "MMC": "40", "PSA": "40",
+        # Information Technology (45)
+        "AAPL": "45", "MSFT": "45", "NVDA": "45", "AVGO": "45", "CSCO": "45",
+        "ACN": "45", "CRM": "45", "TXN": "45", "ORCL": "45", "QCOM": "45",
+        "INTC": "45", "INTU": "45", "ADP": "45", "AMAT": "45", "LRCX": "45",
+        "KLAC": "45", "MU": "45", "META": "45",
+        # Communication Services (50)
+        "GOOGL": "50",
+        # Utilities (55)
+        "NEE": "55", "DUK": "55", "SO": "55", "AEP": "55",
+        # Real Estate (60)
+        "PLD": "60", "EQIX": "60",
+    }
+    for ticker, sector in sp500_sectors.items():
+        if ticker not in gics:
+            gics[ticker] = sector
+
     return gics
+
+
+# GICS sector → primary impact channel mapping
+# First 2 digits of GICS code determine sector
+SECTOR_CHANNEL_MAP = {
+    # Energy (10) → resource/energy or procurement
+    10: {
+        "default": "procurement_supply_chain",
+        "armed_conflict_instability": "logistics_operations",
+        "resource_energy_disruptions": "procurement_supply_chain",
+        "sanctions_financial_restrictions": "revenue_market_access",
+    },
+    # Materials (15) → procurement/supply chain
+    15: {"default": "procurement_supply_chain"},
+    # Industrials (20) → logistics or workforce
+    20: {
+        "default": "logistics_operations",
+        "armed_conflict_instability": "logistics_operations",
+        "trade_policy_actions": "procurement_supply_chain",
+        "political_transitions_volatility": "workforce_talent",
+    },
+    # Consumer Discretionary (25) → revenue/market access or reputation
+    25: {
+        "default": "revenue_market_access",
+        "political_transitions_volatility": "reputation_stakeholder",
+        "armed_conflict_instability": "revenue_market_access",
+    },
+    # Consumer Staples (30) → revenue or reputation
+    30: {
+        "default": "revenue_market_access",
+        "political_transitions_volatility": "reputation_stakeholder",
+    },
+    # Health Care (35) → regulatory compliance or innovation
+    35: {
+        "default": "regulatory_compliance_cost",
+        "technology_controls": "innovation_ip",
+        "trade_policy_actions": "procurement_supply_chain",
+    },
+    # Financials (40) → financial/treasury
+    40: {
+        "default": "financial_treasury",
+        "sanctions_financial_restrictions": "financial_treasury",
+        "political_transitions_volatility": "financial_treasury",
+        "regulatory_sovereignty_shifts": "regulatory_compliance_cost",
+    },
+    # Information Technology (45) → innovation/IP or procurement
+    45: {
+        "default": "innovation_ip",
+        "technology_controls": "innovation_ip",
+        "trade_policy_actions": "procurement_supply_chain",
+        "armed_conflict_instability": "procurement_supply_chain",
+    },
+    # Communication Services (50) → regulatory or reputation
+    50: {
+        "default": "regulatory_compliance_cost",
+        "regulatory_sovereignty_shifts": "regulatory_compliance_cost",
+        "political_transitions_volatility": "reputation_stakeholder",
+    },
+    # Utilities (55) → capital allocation
+    55: {"default": "capital_allocation_investment"},
+    # Real Estate (60) → capital allocation
+    60: {"default": "capital_allocation_investment"},
+}
+
+
+def _assign_channel(event_id: str, event_cat: str, ticker: str, car_5: float,
+                    gics_map: dict, scorer) -> str:
+    """
+    Assign impact channel using GICS sector + event category logic.
+    Falls back to Model 2 prediction when sector is unknown.
+    """
+    gics_code = gics_map.get(ticker, "")
+    sector = 0
+    try:
+        sector = int(str(gics_code)[:2])
+    except (ValueError, TypeError):
+        pass
+
+    if sector in SECTOR_CHANNEL_MAP:
+        sector_map = SECTOR_CHANNEL_MAP[sector]
+        return sector_map.get(event_cat, sector_map["default"])
+
+    # Fallback to Model 2
+    exp = scorer.score(
+        event_category=event_cat,
+        ticker=ticker,
+        mention_sentiment=-0.3 if car_5 and car_5 < 0 else 0.1,
+        car_1_5=car_5 or 0.0,
+    )
+    return exp["channel_prediction"]
 
 
 def generate_candidates(conn, min_confidence: float = 0.5) -> list[dict]:
@@ -126,13 +260,8 @@ def generate_candidates(conn, min_confidence: float = 0.5) -> list[dict]:
         car_5 = es["car_1_5"] if es else 0.0
         car_30 = es["car_1_30"] if es else 0.0
 
-        # Predict channel using Model 2
-        exp = scorer.score(
-            event_category=event_cat,
-            ticker=ticker,
-            mention_sentiment=-0.3 if car_5 and car_5 < 0 else 0.1,
-            car_1_5=car_5 or 0.0,
-        )
+        # Predict channel using sector-aware logic
+        channel = _assign_channel(event_id, event_cat, ticker, car_5, gics_map, scorer)
 
         # Confidence based on: specificity + event match + stock reaction magnitude
         spec_signal = min(row["max_spec"] / 100, 1.0)
@@ -151,7 +280,7 @@ def generate_candidates(conn, min_confidence: float = 0.5) -> list[dict]:
             "company_ticker": ticker,
             "company_name": "",
             "sector_gics": gics_map.get(ticker, ""),
-            "impact_channel": exp["channel_prediction"],
+            "impact_channel": channel,
             "quarter": quarter,
             "mention_text": mention_text,
             "mention_sentiment": round(-0.3 if car_5 and car_5 < 0 else 0.1, 2),
@@ -180,7 +309,7 @@ def generate_candidates(conn, min_confidence: float = 0.5) -> list[dict]:
     es_rows = conn.execute("""
         SELECT es.event_id, es.ticker, es.car_1_5, es.car_1_30
         FROM event_studies es
-        WHERE ABS(es.car_1_5) > 0.08
+        WHERE ABS(es.car_1_5) > 0.05
         ORDER BY ABS(es.car_1_5) DESC
     """).fetchall()
 
@@ -210,27 +339,10 @@ def generate_candidates(conn, min_confidence: float = 0.5) -> list[dict]:
 
         has_mentions = mention_info["cnt"] > 0
 
-        # Predict channel — use Model 2 but override with event-specific
-        # heuristics when the event has a clear primary channel
-        exp = scorer.score(
-            event_category=event_cat,
-            ticker=ticker,
-            mention_sentiment=-0.3 if car_5 < 0 else 0.1,
-            car_1_5=car_5,
-        )
-        channel = exp["channel_prediction"]
-
-        # Override channels for events with well-known primary channels
-        # Model 2 often defaults to logistics for large negative CARs
-        event_channel_override = {
-            "covid_lockdown_start": "revenue_market_access",
-            "russia_invasion_2022": "revenue_market_access",
-            "us_tariffs_2025": "procurement_supply_chain",
-            "india_pakistan_sindoor": "revenue_market_access",
-            "india_demonetization_2016": "revenue_market_access",
-        }
-        if event_id in event_channel_override:
-            channel = event_channel_override[event_id]
+        # Predict channel using sector-aware heuristics
+        # Model 2 has limited accuracy, so we use GICS sector to assign
+        # channels that make economic sense for each company type.
+        channel = _assign_channel(event_id, event_cat, ticker, car_5, gics_map, scorer)
 
         # Confidence: stock reaction is strong, but without EDGAR mention it's
         # less certain the company is specifically exposed (vs market-wide move)
