@@ -90,9 +90,18 @@ class AnalyzeRequest(BaseModel):
 
 # ── Lazy model loading ───────────────────────────────────────────────────────
 
+_classifier = None
 _scorer = None
 _estimator = None
 _recommender = None
+
+
+def get_classifier():
+    global _classifier
+    if _classifier is None:
+        from models.event_classifier.predict import EventClassifier
+        _classifier = EventClassifier()  # Uses ONNX — no PyTorch, no segfault
+    return _classifier
 
 
 def get_scorer():
@@ -117,29 +126,6 @@ def get_recommender():
         from models.strategy_recommender.recommend import StrategyRecommender
         _recommender = StrategyRecommender()
     return _recommender
-
-
-def classify_via_subprocess(text: str) -> dict:
-    """Run Model 1 in a subprocess to avoid PyTorch/SQLite conflict."""
-    code = f"""
-import json
-from models.event_classifier.predict import EventClassifier
-clf = EventClassifier()
-r = clf.predict({json.dumps(text)})
-print(json.dumps(r))
-"""
-    result = subprocess.run(
-        [sys.executable, "-c", code],
-        capture_output=True, text=True, cwd=str(ROOT_DIR),
-        timeout=30,
-    )
-    if result.returncode != 0:
-        raise HTTPException(500, f"Classifier error: {result.stderr[:200]}")
-
-    lines = [l for l in result.stdout.strip().split("\n") if l.strip()]
-    if not lines:
-        raise HTTPException(500, "Classifier returned no output")
-    return json.loads(lines[-1])
 
 
 # ── Endpoints ────────────────────────────────────────────────────────────────
@@ -173,7 +159,8 @@ def stats():
 @app.post("/classify", response_model=ClassifyResponse)
 def classify(req: ClassifyRequest):
     """Classify text into one of 8 geopolitical event categories."""
-    return classify_via_subprocess(req.text)
+    clf = get_classifier()
+    return clf.predict(req.text)
 
 
 @app.post("/exposure", response_model=ExposureResponse)
@@ -222,8 +209,9 @@ def strategies(req: StrategyRequest):
 def analyze(req: AnalyzeRequest):
     """Full pipeline: classify → score exposure → estimate impact → recommend strategies."""
 
-    # Step 1: Classify (subprocess)
-    evt = classify_via_subprocess(req.text)
+    # Step 1: Classify (ONNX — no subprocess needed)
+    clf = get_classifier()
+    evt = clf.predict(req.text)
 
     # Step 2: Exposure
     scorer = get_scorer()
