@@ -109,6 +109,11 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
     category_counts = {c: 0 for c in CATEGORIES}
 
     # ── ACLED: best source for armed_conflict, political_transitions, institutional ──
+    # Cap ACLED at 500 per category so news-style augmentation has enough weight.
+    # Without this, 5000 ACLED-format examples teach the model that armed_conflict
+    # always looks like "On [date], [actors] [action] in [location]" and it fails
+    # on news headlines like "Russian forces invaded Ukraine".
+    acled_cap = min(max_per_cat, 500)
     for cat in ["armed_conflict_instability", "political_transitions_volatility",
                 "institutional_alliance_realignment"]:
         rows = conn.execute(
@@ -119,7 +124,7 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
                AND LENGTH(description_text) > 30
                ORDER BY RANDOM()
                LIMIT ?""",
-            (cat, max_per_cat),
+            (cat, acled_cap),
         ).fetchall()
 
         for r in rows:
@@ -128,6 +133,10 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
             category_counts[cat] += 1
 
     # ── GTA: best source for trade_policy, regulatory, technology ──
+    # Cap GTA at 500 per category so news-style augmentation (~750 oversampled)
+    # has enough relative weight. Without this cap, 5000 GTA-format examples
+    # drown out news examples and the model can't classify news-style tariff text.
+    gta_cap = min(max_per_cat, 500)
     for cat in ["trade_policy_actions", "regulatory_sovereignty_shifts", "technology_controls"]:
         rows = conn.execute(
             """SELECT description_text FROM geopolitical_events
@@ -137,7 +146,7 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
                AND LENGTH(description_text) > 10
                ORDER BY RANDOM()
                LIMIT ?""",
-            (cat, max_per_cat),
+            (cat, gta_cap),
         ).fetchall()
 
         for r in rows:
