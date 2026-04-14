@@ -18,8 +18,7 @@ import sys
 from pathlib import Path
 
 import click
-import torch
-from transformers import DistilBertForSequenceClassification, DistilBertTokenizer
+import numpy as np
 
 MODEL_DIR = Path(__file__).parent / "saved"
 
@@ -36,22 +35,49 @@ CATEGORIES = [
 
 
 class EventClassifier:
-    """Geopolitical event text classifier using fine-tuned DistilBERT."""
+    """Geopolitical event text classifier.
 
-    def __init__(self, model_path: str | Path | None = None):
+    Uses ONNX Runtime with the pure Rust tokenizer by default — zero PyTorch
+    dependency, no segfaults, runs in any process alongside SQLite.
+    Falls back to PyTorch if ONNX model not found.
+    """
+
+    def __init__(self, model_path: str | Path | None = None, max_length: int = 256):
         path = Path(model_path) if model_path else MODEL_DIR
-        self.tokenizer = DistilBertTokenizer.from_pretrained(path)
-        self.model = DistilBertForSequenceClassification.from_pretrained(path)
+        self._max_length = max_length
+        self._onnx_session = None
+        self._torch_model = None
+        self._device = None
+        self._hf_tokenizer = None
+        self._rust_tokenizer = None
 
-        # Use CPU for pipeline compatibility — MPS can segfault when combined
-        # with other models in the same process. MPS is used during training.
-        if torch.cuda.is_available():
-            self.device = torch.device("cuda")
+        onnx_path = path / "model.onnx"
+        tokenizer_json = path / "tokenizer.json"
+
+        if onnx_path.exists() and tokenizer_json.exists():
+            # Pure ONNX path — no torch import at all
+            import onnxruntime as ort
+            from tokenizers import Tokenizer
+            self._onnx_session = ort.InferenceSession(str(onnx_path))
+            self._rust_tokenizer = Tokenizer.from_file(str(tokenizer_json))
+            self._rust_tokenizer.enable_padding(length=max_length, pad_id=0)
+            self._rust_tokenizer.enable_truncation(max_length=max_length)
+            self._backend = "onnx"
         else:
-            self.device = torch.device("cpu")
+            # Fallback to PyTorch
+            import torch
+            from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
+            self._hf_tokenizer = DistilBertTokenizer.from_pretrained(path)
+            self._torch_model = DistilBertForSequenceClassification.from_pretrained(path)
+            self._device = torch.device("cpu")
+            self._torch_model.to(self._device)
+            self._torch_model.eval()
+            self._backend = "pytorch"
 
-        self.model.to(self.device)
-        self.model.eval()
+    def _softmax(self, logits):
+        """Compute softmax from raw logits."""
+        exp = np.exp(logits - np.max(logits))
+        return exp / exp.sum()
 
     def predict(self, text: str, max_length: int = 256) -> dict:
         """
@@ -64,19 +90,26 @@ class EventClassifier:
                 "all_scores": {"armed_conflict_instability": 0.97, ...}
             }
         """
-        encoding = self.tokenizer(
-            text,
-            truncation=True,
-            padding="max_length",
-            max_length=max_length,
-            return_tensors="pt",
-        )
-        input_ids = encoding["input_ids"].to(self.device)
-        attention_mask = encoding["attention_mask"].to(self.device)
-
-        with torch.no_grad():
-            outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
-            probs = torch.softmax(outputs.logits, dim=-1).squeeze().cpu().numpy()
+        if self._backend == "onnx":
+            enc = self._rust_tokenizer.encode(text)
+            input_ids = np.array([enc.ids], dtype=np.int64)
+            attention_mask = np.array([enc.attention_mask], dtype=np.int64)
+            logits = self._onnx_session.run(None, {
+                "input_ids": input_ids,
+                "attention_mask": attention_mask,
+            })[0]
+            probs = self._softmax(logits.squeeze())
+        else:
+            import torch
+            encoding = self._hf_tokenizer(
+                text, truncation=True, padding="max_length",
+                max_length=max_length, return_tensors="pt",
+            )
+            input_ids = encoding["input_ids"].to(self._device)
+            attention_mask = encoding["attention_mask"].to(self._device)
+            with torch.no_grad():
+                outputs = self._torch_model(input_ids=input_ids, attention_mask=attention_mask)
+                probs = torch.softmax(outputs.logits, dim=-1).squeeze().cpu().numpy()
 
         pred_idx = probs.argmax()
         all_scores = {cat: float(round(probs[i], 4)) for i, cat in enumerate(CATEGORIES)}
@@ -92,19 +125,30 @@ class EventClassifier:
         results = []
         for i in range(0, len(texts), batch_size):
             batch_texts = texts[i : i + batch_size]
-            encodings = self.tokenizer(
-                batch_texts,
-                truncation=True,
-                padding="max_length",
-                max_length=max_length,
-                return_tensors="pt",
-            )
-            input_ids = encodings["input_ids"].to(self.device)
-            attention_mask = encodings["attention_mask"].to(self.device)
 
-            with torch.no_grad():
-                outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
-                probs = torch.softmax(outputs.logits, dim=-1).cpu().numpy()
+            if self._backend == "onnx":
+                batch_probs = []
+                for text in batch_texts:
+                    enc = self._rust_tokenizer.encode(text)
+                    input_ids = np.array([enc.ids], dtype=np.int64)
+                    attention_mask = np.array([enc.attention_mask], dtype=np.int64)
+                    logits = self._onnx_session.run(None, {
+                        "input_ids": input_ids,
+                        "attention_mask": attention_mask,
+                    })[0]
+                    batch_probs.append(self._softmax(logits.squeeze()))
+                probs = np.array(batch_probs)
+            else:
+                import torch
+                encodings = self._hf_tokenizer(
+                    batch_texts, truncation=True, padding="max_length",
+                    max_length=max_length, return_tensors="pt",
+                )
+                input_ids = encodings["input_ids"].to(self._device)
+                attention_mask = encodings["attention_mask"].to(self._device)
+                with torch.no_grad():
+                    outputs = self._torch_model(input_ids=input_ids, attention_mask=attention_mask)
+                    probs = torch.softmax(outputs.logits, dim=-1).cpu().numpy()
 
             for j, p in enumerate(probs):
                 pred_idx = p.argmax()
