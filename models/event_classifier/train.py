@@ -191,44 +191,36 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
             labels.append(CAT2IDX[cat])
             category_counts[cat] += 1
 
-    # ── Synthetic augmentation for resource_energy (0 text records in DB) ──
-    # Use seed label mention_text from our CSV + hand-crafted examples
-    resource_energy_examples = [
-        "OPEC announced a surprise production cut of 1.16 million barrels per day, sending oil prices surging 6%.",
-        "China restricted exports of gallium and germanium, critical minerals used in semiconductor manufacturing.",
-        "European natural gas prices surged 400% as Russia reduced pipeline flows through Nord Stream.",
-        "Indonesia banned nickel ore exports to force downstream processing, disrupting global battery supply chains.",
-        "Chile announced nationalization of its lithium industry, affecting SQM and Albemarle operations.",
-        "Ukraine grain crisis: Black Sea blockade halted 25 million tonnes of wheat and corn exports.",
-        "Saudi Arabia and Russia launched an oil price war, crashing Brent crude from $60 to $20 per barrel.",
-        "Critical mineral supply chain disruption as DRC suspended cobalt exports over royalty disputes.",
-        "Australia-China trade war: Beijing imposed 80% tariffs on Australian barley and banned coal imports.",
-        "Energy security concerns mount as Strait of Hormuz tensions threaten 21% of global oil transit.",
-        "Global LNG shortage intensified as Ras Laffan facility in Qatar suffered major attack, losing 17% capacity.",
-        "Rare earth export controls by China target US defense supply chain, affecting F-35 production.",
-        "Oil supply disruption: Nigerian oil theft reduced production by 400,000 barrels per day.",
-        "Libya civil war shut down the Sharara oil field, removing 300,000 bpd from global supply.",
-        "South Africa's Eskom load-shedding crisis cost mining companies $80-110M in lost production.",
-        "Global fertilizer prices tripled after Belarus sanctions and Russia export ban disrupted potash markets.",
-        "Pakistan energy crisis: 12-hour daily power cuts devastated manufacturing output by 30%.",
-        "Copper prices hit record high as Chile mine strikes and Peruvian political instability cut supply.",
-        "Commodity price shock: wheat futures hit 14-year high after Black Sea export corridor collapsed.",
-        "Energy transition metals: lithium prices fell 80% from peak as supply from Australia and Chile surged.",
-        "Global shipping fuel costs surged 40% as Red Sea rerouting added 6,000 nautical miles to Asia-Europe routes.",
-        "OPEC+ agreed to extend production cuts through 2025, keeping 2 million bpd off the market.",
-        "US Strategic Petroleum Reserve release of 180 million barrels failed to contain oil price surge.",
-        "Europe's energy independence push: €300 billion REPowerEU plan to end Russian fossil fuel dependence.",
-        "Critical mineral supply: Congo's state mining company demanded renegotiation of all foreign mining contracts.",
-        "Natural gas rationing in Germany as industrial users face mandatory 15% consumption cuts.",
-        "Global coal shortage: Indian power plants operated below 30% stockpile levels amid record heatwave.",
-        "Cobalt price crash: oversupply from DRC artisanal mining cut prices 50%, hitting Glencore margins.",
-        "Water scarcity crisis: Taiwan chip fabs faced production cuts as drought depleted reservoir levels.",
-        "Food security: global rice export ban by India affected 40% of world trade in the staple grain.",
-    ]
-    for text in resource_energy_examples:
-        texts.append(text)
-        labels.append(CAT2IDX["resource_energy_disruptions"])
-        category_counts["resource_energy_disruptions"] += 1
+    # ── News-style augmentation for ALL categories ──
+    # Loads ~50 news-headline examples per category from a curated JSON file.
+    # These are OVERSAMPLED (repeated multiple times) so the model learns
+    # news-style patterns despite being outnumbered by source-format data.
+    # Without oversampling, 50 news examples get drowned out by 5,000 ACLED/GTA examples.
+    news_augmentation_path = ROOT_DIR / "data" / "seed_labels" / "news_augmentation.json"
+    if news_augmentation_path.exists():
+        import json as _json
+        with open(news_augmentation_path) as f:
+            news_data = _json.load(f)
+        news_added = 0
+        # Repeat each news example multiple times to balance against source-format data.
+        # For large categories (5000 source examples), we need ~500 news examples (10%)
+        # to shift the model's attention. For small categories, even 1x is significant.
+        for cat in CATEGORIES:
+            examples = news_data.get(cat, [])
+            source_count = category_counts.get(cat, 0)
+            # Target: news examples should be ~15% of category total
+            target_news = max(len(examples), int(source_count * 0.15))
+            repeats = max(1, target_news // max(len(examples), 1))
+            for _ in range(repeats):
+                for text in examples:
+                    if category_counts.get(cat, 0) < max_per_cat:
+                        texts.append(text)
+                        labels.append(CAT2IDX[cat])
+                        category_counts[cat] += 1
+                        news_added += 1
+        logger.info(f"  Added {news_added} news-style examples (oversampled) from {news_augmentation_path.name}")
+    else:
+        logger.warning(f"  News augmentation file not found: {news_augmentation_path}")
 
     # Also augment other thin categories from EDGAR
     for cat in ["regulatory_sovereignty_shifts", "sanctions_financial_restrictions"]:
