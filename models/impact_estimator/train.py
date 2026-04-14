@@ -314,12 +314,16 @@ def train_quantile_models(
 ) -> tuple[xgb.XGBRegressor, xgb.XGBRegressor, xgb.XGBRegressor]:
     """
     Train three XGBoost models for quantile regression:
-    - q10: 10th percentile (optimistic / low impact)
+    - q05: 5th percentile (optimistic / low impact)
     - q50: 50th percentile (median / mid impact)
-    - q90: 90th percentile (pessimistic / high impact)
+    - q95: 95th percentile (pessimistic / high impact)
+
+    Using q05/q95 instead of q10/q90 for wider prediction intervals.
+    Target: 90% of actual outcomes fall within [q05, q95].
+    Previous q10/q90 only achieved 60.6% coverage — too narrow.
     """
     models = {}
-    for quantile, name in [(0.1, "q10"), (0.5, "q50"), (0.9, "q90")]:
+    for quantile, name in [(0.05, "q10"), (0.5, "q50"), (0.95, "q90")]:
         logger.info(f"Training {name} (quantile={quantile})...")
         model = xgb.XGBRegressor(
             n_estimators=200,
@@ -349,7 +353,7 @@ def evaluate_models(q10, q50, q90, X_val, y_val, metadata_val):
     pred_mid = q50.predict(X_val)
     pred_high = q90.predict(X_val)
 
-    # Calibration: what fraction of actuals fall within [q10, q90]?
+    # Calibration: what fraction of actuals fall within [q05, q95]?
     in_range = np.sum((y_val >= pred_low) & (y_val <= pred_high))
     coverage = in_range / len(y_val)
 
@@ -454,7 +458,7 @@ def main(eval_only):
             json.dump({
                 "feature_names": FEATURE_NAMES,
                 "target": "impact_pct (revenue delta or car*100 proxy)",
-                "quantiles": [0.1, 0.5, 0.9],
+                "quantiles": [0.05, 0.5, 0.95],
             }, f, indent=2)
 
         logger.info(f"Models saved to {MODEL_DIR}")
