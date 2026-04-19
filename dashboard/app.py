@@ -349,20 +349,15 @@ def display_results(results, event_text, company_name, revenue):
 page = st.sidebar.radio("Navigate", ["Overview", "Preloaded Examples", "Custom Analysis"])
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### Accuracy")
-st.sidebar.markdown("""
-69 blind eval pairs:
-
-| | Top-2 |
-|---|:---:|
-| Without text | 46% |
-| **With text** | **62%** |
-| + secondary | **75%** |
-
-Direction: **90%**
-""")
-st.sidebar.markdown("---")
-st.sidebar.caption("[GitHub](https://github.com/HariDks/Geopolitics-ML) | Built on WEF framework | 7.76M events")
+with st.sidebar.expander("Model performance"):
+    st.markdown("""
+    69 blind eval pairs:
+    - Without text: 46% top-2
+    - **With text: 62% top-2**
+    - With secondary: **75%**
+    - Direction: **90%**
+    """)
+st.sidebar.caption("[GitHub](https://github.com/HariDks/Geopolitics-ML)")
 
 # ════════════════════════════════════════════════════════════════════════════
 # PAGE 1: OVERVIEW
@@ -370,134 +365,132 @@ st.sidebar.caption("[GitHub](https://github.com/HariDks/Geopolitics-ML) | Built 
 
 if page == "Overview":
 
-    # ── Hero ──
-    st.title("Geopolitical Impact Tester")
+    # ── Max width + clean styling ──
     st.markdown("""
-    **Understand how global events affect real companies — in seconds.**
+    <style>
+    .block-container { max-width: 900px; padding-top: 1.5rem; }
+    </style>
+    """, unsafe_allow_html=True)
 
-    Not just *whether* it hurts, but *how* it hurts:
-    through supply chains, revenue, assets, or reputation.
-    """)
+    # ── Hero (centered) ──
+    st.markdown("<h1 style='text-align: center;'>Geopolitical Impact Tester</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 1.15em;'>Understand how global events affect real companies — in seconds.<br>"
+                "Not just <em>whether</em> it hurts, but <em>how</em> it hurts.</p>", unsafe_allow_html=True)
 
-    st.markdown("---")
-
-    # ── Start here ──
-    st.subheader("Start here")
-    st.markdown("Explore how different geopolitical events affect companies.")
-
+    # ── Start here (IMMEDIATELY after hero) ──
+    st.markdown("")
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("**Explore Real Events**")
-        st.caption("Test the model on curated scenarios across industries. Use the sidebar -> **Preloaded Examples**")
+        st.markdown("""
+        <div style="background:#f0f2f6; padding:20px; border-radius:10px; text-align:center; min-height:120px;">
+        <h4>Explore Real Events</h4>
+        <p style="font-size:0.9em;">Curated scenarios across industries<br>
+        <em>Sidebar -> Preloaded Examples</em></p>
+        </div>
+        """, unsafe_allow_html=True)
     with col2:
-        st.markdown("**Run Custom Analysis**")
-        st.caption("Describe any event and analyze its impact on a company. Use the sidebar -> **Custom Analysis**")
+        st.markdown("""
+        <div style="background:#f0f2f6; padding:20px; border-radius:10px; text-align:center; min-height:120px;">
+        <h4>Run Custom Analysis</h4>
+        <p style="font-size:0.9em;">Describe any event, pick a company<br>
+        <em>Sidebar -> Custom Analysis</em></p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown("---")
+    st.divider()
 
-    # ── What this tool does ──
-    st.subheader("What this tool does")
+    # ── Why this exists (credibility early) ──
+    col1, col2 = st.columns([1.3, 1])
+    with col1:
+        st.markdown("#### Why this exists")
+        st.markdown("""
+        Most companies don't systematically quantify geopolitical risk.
+        They rely on judgment, intuition, and static frameworks.
+
+        This project explores whether that process can be **partially automated**
+        using ML and structured reasoning.
+
+        The key insight: **understanding the *mechanism* of impact is easier
+        than estimating its *magnitude*** — especially without company-specific exposure data.
+        """)
+    with col2:
+        st.markdown("#### What powers this")
+        st.markdown("""
+        - **7.7M** geopolitical events from 6 data sources
+        - **600+** labeled company-event impacts
+        - Multi-stage ML pipeline:
+          - Classify the event
+          - Estimate exposure
+          - Predict financial impact
+          - Explain the mechanism
+        """)
+
+    st.divider()
+
+    # ── What this tool does (feature cards) ──
+    st.markdown("#### What you get")
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        st.markdown("**Affected area**")
+        st.caption("Supply chain, revenue, assets, or reputation")
+    with c2:
+        st.markdown("**Financial impact**")
+        st.caption("Range as % of revenue + dollar estimate")
+    with c3:
+        st.markdown("**Mechanism**")
+        st.caption("Why and how the event affects operations")
+    with c4:
+        st.markdown("**Confidence**")
+        st.caption("How reliable this prediction is")
+
+    st.divider()
+
+    # ── System insight (visual card) ──
     st.markdown("""
-    This system analyzes how geopolitical events translate into business impact.
-
-    For any event and company, it estimates:
-    - **Which part of the business is affected** — supply chain, revenue, assets, reputation
-    - **The likely financial impact** — range shown as % of revenue and dollar estimate
-    - **The underlying mechanism** — how the event actually affects operations
-    - **How confident the system is** — based on the quality of available signals
-    """)
-
-    st.markdown("---")
-
-    # ── How to interpret results ──
-    st.subheader("How to interpret the output")
-    st.markdown("""
-    Each result includes:
-    - A **financial impact estimate** based on patterns from similar historical events
-    - A **primary mechanism** — the main way the business is affected
-    - An **operational severity** rating — how disruptive the event is operationally
-    - A **reliability level** — higher when event descriptions are detailed
-
-    Think of this as a **structured first-pass analysis** — not a final answer.
-    """)
-
-    st.markdown("---")
-
-    # ── System insight ──
-    st.subheader("System insight")
-    st.info("""
-    The model is strongest at identifying *how* events affect companies
-    when the mechanism is clearly described in text.
-
+    <div style="background:#1a3a5c; color:white; padding:20px; border-radius:10px; margin:10px 0;">
+    <b>System Insight</b><br><br>
+    The model is strongest at identifying <em>how</em> events affect companies
+    when the mechanism is clearly described in text.<br><br>
     It is less reliable when company-specific exposure is unknown —
-    for example, where revenue comes from or where operations are concentrated.
+    for example, where revenue comes from or where operations are concentrated.<br><br>
+    In those cases, the system provides a <b>generic estimate</b> based on similar events.
+    </div>
+    """, unsafe_allow_html=True)
 
-    In those cases, the system provides a **generic estimate** based on similar events.
-    """)
-
-    st.markdown("---")
-
-    # ── What powers this ──
-    st.subheader("What powers this")
-    st.markdown("""
-    - **7.7 million** geopolitical events across multiple global data sources
-    - **600+** labeled company-event impact examples
-    - A multi-stage system that:
-      - classifies the event
-      - estimates exposure patterns
-      - predicts financial impact
-      - explains the mechanism
-    """)
-
-    st.markdown("---")
+    st.divider()
 
     # ── What it gets right ──
-    st.subheader("What this gets right (and where it struggles)")
+    st.markdown("#### Accuracy")
     st.markdown("""
-    **Correctly identifies** whether an event is likely to help or hurt (~90% of the time)
-
-    **Captures the main business mechanism** (~62-75% accuracy, depending on text quality)
-
-    **Less reliable** when company exposure is unclear (e.g., concentrated geographic operations)
-
-    **Does not fully capture** second-order effects (e.g., commodity price shifts or market reactions)
+    - **Gets direction right ~90%** of the time (will this help or hurt?)
+    - **Captures the main mechanism ~62-75%** (depends on text quality)
+    - **Less reliable** when company exposure is unclear (concentrated geography)
+    - **Does not fully capture** second-order effects (commodity prices, market sentiment)
     """)
 
-    st.markdown("---")
+    # ── How to interpret (collapsed) ──
+    with st.expander("How to interpret the output"):
+        st.markdown("""
+        Each result includes:
+        - A **financial impact estimate** — based on patterns from similar historical events
+        - A **primary mechanism** — the main way the business is affected
+        - An **operational severity** rating — how disruptive the event is operationally
+        - A **reliability level** — higher when event descriptions are detailed
 
-    # ── Why this exists ──
-    st.subheader("Why this exists")
-    st.markdown("""
-    Most companies do not systematically quantify geopolitical risk.
-    They rely on judgment, intuition, and static frameworks.
+        Think of this as a **structured first-pass analysis** — not a final answer.
+        """)
 
-    This project explores whether that process can be partially automated
-    using machine learning and structured reasoning.
-
-    The key takeaway:
-
-    **Understanding the *mechanism* of impact is easier than estimating its *magnitude*** —
-    especially without detailed company exposure data.
-    """)
-
-    st.markdown("---")
+    st.divider()
 
     # ── Feedback ──
-    st.subheader("Help improve this system")
+    st.markdown("#### Help improve this system")
     st.markdown("""
-    Your feedback highlights where the model gets things wrong —
-    and that's how it improves.
-
-    After running an analysis, you can:
-    - Mark whether the result was useful
-    - Correct the primary mechanism
-    - Share what was missed
+    Your feedback highlights where the model gets things wrong — and that's how it improves.
+    After running an analysis, you can mark whether the result was useful,
+    correct the primary mechanism, or share what was missed.
     """)
 
-    st.markdown("---")
-
-    st.caption("This tool is designed to explore patterns in how geopolitical events affect companies. "
-               "It is not financial advice.")
+    st.caption("This tool explores patterns in how geopolitical events affect companies. It is not financial advice.")
 
 
 # ════════════════════════════════════════════════════════════════════════════
