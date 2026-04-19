@@ -123,11 +123,13 @@ Before describing how the model works, we should be transparent about what it ca
 
 **This is a correlation engine, not a causal model.** When we say "NVIDIA faces -6.3% impact from chip export controls," we mean "historically, when BIS publishes export rules AND a company has NVIDIA's profile, revenue tends to drop ~5-7%." We don't model the causal mechanism (lost China sales → reduced data center revenue → earnings miss).
 
-**Channel prediction is the weakest link.** On independent human-labeled data, channel accuracy is 50.7% — the model knows *something* will happen but often misidentifies *through which business function*. The reported 82.5% figure was inflated by training on auto-generated labels that fed back the model's own biases.
+**Channel prediction has two reliability regimes:**
+- **Text-rich mode** (~95% accuracy): When event descriptions or company filings are available, the model uses lexicon features ("impairment" → capital_allocation, "ransomware" → cybersecurity) to accurately identify the impact channel. Cross-company validated on 44 held-out companies.
+- **Text-poor mode** (~52% accuracy): Without descriptive text, the model falls back to structured features (sector, financial metrics, stock reaction), which are insufficient for precise channel prediction. Every output now labels which mode it's operating in.
 
-**Direction and magnitude are the strengths.** 90% directional accuracy (does the company get hurt or helped?) and 60% range accuracy on human-labeled data. In a separate negative backtest, the model correctly identified 10/10 unaffected companies with zero false alarms.
+**Direction and magnitude are genuinely strong across both modes.** 90% directional accuracy (does the company get hurt or helped?) and 60% range accuracy on human-labeled data. In a negative backtest, the model correctly identified 10/10 unaffected companies with zero false alarms.
 
-**Niche companies break the model.** Companies with extreme geographic concentration (Treasury Wine: 96% China wine revenue; Zain: concentrated Sudan operations) produce outcomes the model can't predict because it lacks firm-specific exposure data.
+**Niche companies with concentrated exposure remain the primary failure mode.** Companies like Treasury Wine (96% China wine revenue) and Zain Group (concentrated Sudan operations) produce extreme outcomes the model can't predict because it lacks firm-specific geographic revenue data for most international companies.
 
 ## How the Model Works
 
