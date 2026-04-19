@@ -119,10 +119,36 @@ def run_analysis(event_text, ticker, revenue):
     return {"evt": evt, "exp": exp, "imp": imp}
 
 
-# ── Header ───────────────────────────────────────────────────────────────────
+# ── Header + Landing ─────────────────────────────────────────────────────────
 
 st.title("Geopolitical Impact Tester")
-st.caption("Test how a geopolitical event affects a specific company's business.")
+
+# Show landing page only when no results are loaded
+if not st.session_state.results:
+    st.markdown("""
+    **Pick a geopolitical event. Pick a company. See what happens.**
+
+    This tool uses ML models trained on **7.76 million geopolitical events** to estimate
+    how a specific event would affect a specific company — which part of the business gets
+    hit, how bad it could be, and why the model thinks so.
+
+    **What you'll get:**
+    - The most likely **impact channel** (supply chain? revenue? assets? reputation?)
+    - A **financial impact range** in dollars
+    - An **explanation** of which keywords in the event drove the prediction
+    - A **confidence level** — the model tells you when it's guessing
+
+    **What this is NOT:**
+    - Not financial advice
+    - Not a crystal ball — it's pattern-matching on historical data
+    - Not perfect — it gets the direction right ~90% of the time, but the specific channel ~62% of the time
+
+    **Your feedback matters.** This model improves with human input. After each analysis,
+    you can tell us if the prediction made sense or not. Every correction makes the next
+    prediction better.
+
+    ---
+    """)
 
 # ── Quick Scenarios ──────────────────────────────────────────────────────────
 
