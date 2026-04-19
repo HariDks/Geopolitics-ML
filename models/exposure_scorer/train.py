@@ -287,6 +287,7 @@ CHANNEL_LEXICONS = {
         "revenue", "sales", "market access", "demand", "customer", "orders",
         "banned", "boycott", "export", "import ban", "market share", "lost",
         "decline in sales", "represented", "accounted for", "fell",
+        "tariff", "restricted", "cannot sell", "lost access",
     ],
     "procurement_supply_chain": [
         "supply", "supply chain", "supplier", "procurement", "input cost",

@@ -89,11 +89,12 @@ class GeopoliticalRiskPipeline:
         # Step 1: Classify the event
         event_result = self.classifier.predict(text)
 
-        # Step 2: Score company exposure
+        # Step 2: Score company exposure (pass event text for lexicon features)
         exposure_result = self.scorer.score(
             event_category=event_result["category"],
             ticker=ticker,
             mention_sentiment=-0.5 if event_result["confidence"] > 0.7 else -0.3,
+            event_text=text,
         )
 
         # Step 3: Estimate financial impact

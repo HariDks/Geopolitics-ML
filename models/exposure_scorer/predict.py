@@ -111,6 +111,7 @@ class ExposureScorer:
         car_1_30: float = 0.0,
         rev_delta_pct: float = 0.0,
         event_id: str = "",
+        event_text: str = "",
     ) -> dict:
         """
         Score a company's exposure to a geopolitical event.
@@ -166,16 +167,9 @@ class ExposureScorer:
         affected_regions = EVENT_AFFECTED_REGIONS.get(event_id, []) if event_id else []
         affected_geo_density = sum(geo_density.get(r, 0.0) for r in affected_regions)
 
-        # Channel lexicon scores from company's EDGAR mention text
+        # Channel lexicon scores — use event_text if provided
         from models.exposure_scorer.train import compute_lexicon_scores, IMPACT_CHANNELS as _CHANNELS
-        # Get company's combined mention text from cache
-        mention_texts = self._mention_cache.get(ticker, {})
-        # Combine all mention text for this company
-        combined_text = " ".join(
-            str(v.get("mention_count", "")) for v in mention_texts.values()
-        )
-        # Actually we need the raw text — use a simple empty string if not available
-        lex = compute_lexicon_scores("")  # defaults to zero — lexicon works best during training
+        lex = compute_lexicon_scores(event_text)
         lex_scores = [lex.get(ch, 0.0) for ch in _CHANNELS]
 
         features = np.array(
