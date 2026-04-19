@@ -12,7 +12,6 @@ data/raw/
 
 # Model weights (255MB+ — track via git-lfs or rebuild)
 models/event_classifier/saved/model.safetensors
-models/event_classifier/saved/tokenizer.json
 
 # Python
 __pycache__/
