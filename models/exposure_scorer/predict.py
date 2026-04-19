@@ -189,6 +189,19 @@ class ExposureScorer:
         channel_probs = self.channel_clf.predict_proba(features)[0]
         pred_idx = channel_probs.argmax()
 
+        # Determine reliability mode
+        has_text = bool(event_text and len(event_text.strip()) > 10)
+        has_lexicon_signal = any(s > 0 for s in lex_scores)
+        if has_text and has_lexicon_signal:
+            channel_mode = "text_rich"
+            channel_reliability = "high"
+        elif has_text:
+            channel_mode = "text_partial"
+            channel_reliability = "moderate"
+        else:
+            channel_mode = "text_poor"
+            channel_reliability = "low"
+
         # Severity prediction
         severity = float(self.severity_reg.predict(features)[0])
 
@@ -202,6 +215,8 @@ class ExposureScorer:
         return {
             "channel_prediction": IMPACT_CHANNELS[pred_idx],
             "channel_confidence": float(round(channel_probs[pred_idx], 4)),
+            "channel_mode": channel_mode,
+            "channel_reliability": channel_reliability,
             "channel_probabilities": {
                 IMPACT_CHANNELS[i]: float(round(channel_probs[i], 4))
                 for i in range(len(IMPACT_CHANNELS))

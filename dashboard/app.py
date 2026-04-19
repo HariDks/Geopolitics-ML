@@ -228,7 +228,7 @@ if page == "Analyze Event":
         col1.metric("Event Type", evt["category"].replace("_", " ").title(),
                     delta=f"{evt['confidence']:.0%} confidence")
         col2.metric("Primary Exposure", exp["channel_prediction"].replace("_", " ").title(),
-                    delta=f"{exp['channel_confidence']:.0%} confidence")
+                    delta=f"{exp.get('channel_reliability', 'unknown')} reliability")
         col3.metric("Severity", f"{exp['severity_score']:+.2f}",
                     delta="damaging" if exp['severity_score'] < -0.3 else "moderate" if exp['severity_score'] < 0 else "opportunity",
                     delta_color="inverse" if exp['severity_score'] < -0.3 else "normal")

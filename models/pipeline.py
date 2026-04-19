@@ -118,7 +118,9 @@ class GeopoliticalRiskPipeline:
 
         return {
             "disclaimer": "Predictions are based on historical correlations, not causal analysis. "
-                          "Direction accuracy: ~90%. Channel accuracy: ~50%. "
+                          "Direction accuracy: ~90%. "
+                          "Channel accuracy depends on text availability: ~95% with event text (text_rich mode), "
+                          "~52% without (text_poor mode). Check channel_reliability field. "
                           "Companies with concentrated geographic exposure may see larger actual impacts.",
             "input": {
                 "text": text[:200],
@@ -132,6 +134,8 @@ class GeopoliticalRiskPipeline:
             "exposure": {
                 "primary_channel": exposure_result["channel_prediction"],
                 "channel_confidence": exposure_result["channel_confidence"],
+                "channel_mode": exposure_result.get("channel_mode", "unknown"),
+                "channel_reliability": exposure_result.get("channel_reliability", "unknown"),
                 "severity_score": exposure_result["severity_score"],
                 "top_3_channels": exposure_result["top_3_channels"],
             },
