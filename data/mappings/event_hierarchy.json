@@ -1,0 +1,264 @@
+{
+  "_description": "Three-level event hierarchy: Crisis > Episode > Observation. A crisis is an overarching geopolitical situation. An episode is a discrete action within a crisis. An observation is a single data source's record of an episode.",
+  "_schema": {
+    "crisis_id": "Unique ID for the overarching situation",
+    "crisis_name": "Human-readable name",
+    "crisis_start": "When the crisis began",
+    "crisis_category": "Primary taxonomy category",
+    "episodes": [
+      {
+        "episode_id": "Unique ID for this discrete action",
+        "episode_date": "Date of this specific action",
+        "episode_type": "What kind of action (invasion, sanction_round, corporate_exit, etc.)",
+        "seed_label_event_ids": ["event_ids in seed_labels.csv that map to this episode"]
+      }
+    ]
+  },
+  "crises": [
+    {
+      "crisis_id": "CRISIS-russia-ukraine-2022",
+      "crisis_name": "Russia-Ukraine War",
+      "crisis_start": "2022-02-24",
+      "crisis_end": null,
+      "crisis_category": "armed_conflict_instability",
+      "secondary_categories": ["sanctions_financial_restrictions", "resource_energy_disruptions"],
+      "affected_regions": ["RU", "UA", "EU"],
+      "episodes": [
+        {
+          "episode_id": "EP-russia-invasion",
+          "episode_date": "2022-02-24",
+          "episode_type": "military_invasion",
+          "description": "Russian forces launched full-scale invasion from multiple directions",
+          "seed_label_event_ids": ["russia_invasion_2022", "russia_ukraine_invasion_2022"]
+        },
+        {
+          "episode_id": "EP-russia-sanctions-r1",
+          "episode_date": "2022-02-25",
+          "episode_type": "sanctions_round",
+          "description": "First round of Western sanctions on Russian banks, officials, oligarchs",
+          "seed_label_event_ids": ["russia_sanctions_2022"]
+        },
+        {
+          "episode_id": "EP-russia-swift-exclusion",
+          "episode_date": "2022-02-26",
+          "episode_type": "financial_restriction",
+          "description": "Russia excluded from SWIFT banking system",
+          "seed_label_event_ids": []
+        },
+        {
+          "episode_id": "EP-russia-corporate-exits",
+          "episode_date": "2022-03-01",
+          "episode_type": "corporate_action",
+          "description": "Wave of corporate exits — BP, Shell, McDonald's, etc. leaving Russia",
+          "seed_label_event_ids": ["russia_corporate_exit_2022"]
+        },
+        {
+          "episode_id": "EP-ukraine-grain-blockade",
+          "episode_date": "2022-05-01",
+          "episode_type": "commodity_disruption",
+          "description": "Black Sea grain exports blocked, global wheat prices surge",
+          "seed_label_event_ids": ["ukraine_grain_crisis_2022"]
+        },
+        {
+          "episode_id": "EP-ukraine-airspace-closure",
+          "episode_date": "2022-02-24",
+          "episode_type": "logistics_disruption",
+          "description": "Ukrainian and Russian airspace closed to commercial flights",
+          "seed_label_event_ids": ["ukraine_airspace_closure_2022"]
+        },
+        {
+          "episode_id": "EP-russia-energy-weaponization",
+          "episode_date": "2022-06-01",
+          "episode_type": "energy_disruption",
+          "description": "Russia reduced gas flows through Nord Stream, European energy crisis intensified",
+          "seed_label_event_ids": ["eu_energy_crisis_2022", "eu_energy_crisis_peak"]
+        }
+      ]
+    },
+    {
+      "crisis_id": "CRISIS-us-china-tech-decoupling",
+      "crisis_name": "US-China Technology Decoupling",
+      "crisis_start": "2018-03-22",
+      "crisis_end": null,
+      "crisis_category": "technology_controls",
+      "secondary_categories": ["trade_policy_actions", "sanctions_financial_restrictions"],
+      "affected_regions": ["CN", "US", "TW"],
+      "episodes": [
+        {
+          "episode_id": "EP-trade-war-start",
+          "episode_date": "2018-03-22",
+          "episode_type": "tariff_announcement",
+          "description": "Trump announced Section 301 tariffs on Chinese goods",
+          "seed_label_event_ids": ["us_china_trade_war_start", "us_china_trade_war_2018"]
+        },
+        {
+          "episode_id": "EP-huawei-entity-list",
+          "episode_date": "2019-05-15",
+          "episode_type": "entity_listing",
+          "description": "Huawei added to BIS entity list",
+          "seed_label_event_ids": ["us_entity_list_huawei_2019", "us_huawei_5g_ban_2019"]
+        },
+        {
+          "episode_id": "EP-chip-controls-oct2022",
+          "episode_date": "2022-10-07",
+          "episode_type": "export_control_rule",
+          "description": "BIS published rules restricting advanced semiconductor exports to China",
+          "seed_label_event_ids": ["us_chip_export_controls_oct2022", "us_chip_export_oct2022", "us_chip_export_controls_2022_2024"]
+        },
+        {
+          "episode_id": "EP-chip-controls-oct2023",
+          "episode_date": "2023-10-17",
+          "episode_type": "export_control_update",
+          "description": "Updated BIS rules closing A800/H800 loopholes",
+          "seed_label_event_ids": ["us_chip_export_controls_oct2023", "us_chip_export_oct2023"]
+        },
+        {
+          "episode_id": "EP-china-gallium-germanium",
+          "episode_date": "2023-07-03",
+          "episode_type": "counter_restriction",
+          "description": "China restricted exports of gallium and germanium in retaliation",
+          "seed_label_event_ids": ["china_gallium_germanium_export_controls_2023"]
+        }
+      ]
+    },
+    {
+      "crisis_id": "CRISIS-covid-pandemic",
+      "crisis_name": "COVID-19 Pandemic",
+      "crisis_start": "2020-01-30",
+      "crisis_end": "2023-05-05",
+      "crisis_category": "armed_conflict_instability",
+      "secondary_categories": ["political_transitions_volatility", "trade_policy_actions"],
+      "affected_regions": ["CN", "US", "EU", "other_asia", "LATAM", "AF"],
+      "episodes": [
+        {
+          "episode_id": "EP-covid-pandemic-declaration",
+          "episode_date": "2020-03-11",
+          "episode_type": "pandemic_declaration",
+          "description": "WHO declared COVID-19 a global pandemic",
+          "seed_label_event_ids": ["covid_lockdown_start"]
+        },
+        {
+          "episode_id": "EP-covid-china-lockdowns-2022",
+          "episode_date": "2022-03-28",
+          "episode_type": "regional_lockdown",
+          "description": "China zero-COVID lockdowns in Shanghai, Zhengzhou",
+          "seed_label_event_ids": ["china_covid_lockdowns_2022", "covid_zhengzhou_lockdown_2022"]
+        }
+      ]
+    },
+    {
+      "crisis_id": "CRISIS-middle-east-escalation-2023",
+      "crisis_name": "Middle East Escalation (Hamas, Houthi, Iran)",
+      "crisis_start": "2023-10-07",
+      "crisis_end": null,
+      "crisis_category": "armed_conflict_instability",
+      "secondary_categories": ["resource_energy_disruptions", "logistics_operations"],
+      "affected_regions": ["IL", "PS", "YE", "IR", "MENA"],
+      "episodes": [
+        {
+          "episode_id": "EP-hamas-attack",
+          "episode_date": "2023-10-07",
+          "episode_type": "terrorist_attack",
+          "description": "Hamas launched surprise attack on Israel killing 1200 people",
+          "seed_label_event_ids": ["israel_hamas_2023", "israel_hamas_war_2023"]
+        },
+        {
+          "episode_id": "EP-red-sea-attacks",
+          "episode_date": "2023-12-15",
+          "episode_type": "shipping_disruption",
+          "description": "Houthi rebels began attacking commercial vessels in the Red Sea",
+          "seed_label_event_ids": ["red_sea_houthi_2023", "red_sea_houthi_attacks_2023"]
+        },
+        {
+          "episode_id": "EP-iran-israel-missiles",
+          "episode_date": "2024-04-13",
+          "episode_type": "military_escalation",
+          "description": "Iran launched missile and drone attack on Israel",
+          "seed_label_event_ids": ["iran_israel_conflict_2023", "iran_israel_missiles_2024", "iran_israel_conflict_2024"]
+        },
+        {
+          "episode_id": "EP-us-iran-war",
+          "episode_date": "2026-02-28",
+          "episode_type": "interstate_war",
+          "description": "US and Israel struck Iran, Strait of Hormuz effectively closed",
+          "seed_label_event_ids": ["us_iran_war_2026", "operation_epic_fury_2026", "strait_of_hormuz_closure_2026"]
+        }
+      ]
+    },
+    {
+      "crisis_id": "CRISIS-australia-china-trade",
+      "crisis_name": "Australia-China Trade War",
+      "crisis_start": "2020-04-01",
+      "crisis_end": "2024-03-28",
+      "crisis_category": "trade_policy_actions",
+      "secondary_categories": [],
+      "affected_regions": ["AU", "CN"],
+      "episodes": [
+        {
+          "episode_id": "EP-china-barley-tariff",
+          "episode_date": "2020-05-18",
+          "episode_type": "tariff_imposition",
+          "description": "China imposed 80% tariffs on Australian barley",
+          "seed_label_event_ids": []
+        },
+        {
+          "episode_id": "EP-china-wine-tariff",
+          "episode_date": "2020-11-28",
+          "episode_type": "tariff_imposition",
+          "description": "China imposed 218% tariffs on Australian wine",
+          "seed_label_event_ids": ["australia_china_wine_tariff_2020"]
+        },
+        {
+          "episode_id": "EP-china-coal-ban",
+          "episode_date": "2020-10-13",
+          "episode_type": "import_ban",
+          "description": "China unofficially banned Australian coal imports",
+          "seed_label_event_ids": ["australia_china_coal_ban_2020"]
+        },
+        {
+          "episode_id": "EP-china-lobster-ban",
+          "episode_date": "2020-11-02",
+          "episode_type": "import_ban",
+          "description": "China blocked Australian lobster imports",
+          "seed_label_event_ids": ["australia_china_lobster_ban_2020"]
+        }
+      ]
+    },
+    {
+      "crisis_id": "CRISIS-india-demonetization",
+      "crisis_name": "India Demonetization",
+      "crisis_start": "2016-11-08",
+      "crisis_end": "2017-06-30",
+      "crisis_category": "political_transitions_volatility",
+      "secondary_categories": [],
+      "affected_regions": ["IN"],
+      "episodes": [
+        {
+          "episode_id": "EP-demonetization-announcement",
+          "episode_date": "2016-11-08",
+          "episode_type": "policy_shock",
+          "description": "PM Modi announced 500/1000 rupee notes invalid, 86% of currency voided",
+          "seed_label_event_ids": ["india_demonetization_2016", "india_demonetization_nov2016"]
+        }
+      ]
+    },
+    {
+      "crisis_id": "CRISIS-us-tariffs-2025",
+      "crisis_name": "US Universal Tariffs 2025",
+      "crisis_start": "2025-01-20",
+      "crisis_end": null,
+      "crisis_category": "trade_policy_actions",
+      "secondary_categories": [],
+      "affected_regions": ["CN", "EU", "CA", "MX", "other_asia"],
+      "episodes": [
+        {
+          "episode_id": "EP-tariffs-universal",
+          "episode_date": "2025-04-02",
+          "episode_type": "tariff_announcement",
+          "description": "Trump announced universal baseline tariff on all imports",
+          "seed_label_event_ids": ["us_tariffs_2025", "us_tariffs_2025_april", "us_tariffs_2025_universal"]
+        }
+      ]
+    }
+  ]
+}
