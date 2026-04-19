@@ -76,30 +76,33 @@ class ExposureScorer:
         if ticker in self._fin_cache:
             return
 
-        conn = get_db_connection()
+        try:
+            conn = get_db_connection()
 
-        # Latest financial delta
-        row = conn.execute("""
-            SELECT * FROM financial_deltas
-            WHERE ticker = ? AND revenue_standalone IS NOT NULL
-            ORDER BY fiscal_year DESC, fiscal_period DESC
-            LIMIT 1
-        """, (ticker,)).fetchone()
-        self._fin_cache[ticker] = dict(row) if row else {}
+            row = conn.execute("""
+                SELECT * FROM financial_deltas
+                WHERE ticker = ? AND revenue_standalone IS NOT NULL
+                ORDER BY fiscal_year DESC, fiscal_period DESC
+                LIMIT 1
+            """, (ticker,)).fetchone()
+            self._fin_cache[ticker] = dict(row) if row else {}
 
-        # Mention signals by category
-        rows = conn.execute("""
-            SELECT primary_category,
-                   COUNT(*) as mention_count,
-                   AVG(specificity_score) as avg_specificity,
-                   MAX(specificity_score) as max_specificity,
-                   AVG(keyword_count) as avg_keywords
-            FROM geopolitical_mentions
-            WHERE ticker = ?
-            GROUP BY primary_category
-        """, (ticker,)).fetchall()
-        self._mention_cache[ticker] = {r["primary_category"]: dict(r) for r in rows}
-        conn.close()
+            rows = conn.execute("""
+                SELECT primary_category,
+                       COUNT(*) as mention_count,
+                       AVG(specificity_score) as avg_specificity,
+                       MAX(specificity_score) as max_specificity,
+                       AVG(keyword_count) as avg_keywords
+                FROM geopolitical_mentions
+                WHERE ticker = ?
+                GROUP BY primary_category
+            """, (ticker,)).fetchall()
+            self._mention_cache[ticker] = {r["primary_category"]: dict(r) for r in rows}
+            conn.close()
+        except Exception:
+            # Database not available (e.g., Streamlit Cloud deployment)
+            self._fin_cache[ticker] = {}
+            self._mention_cache[ticker] = {}
 
     def score(
         self,

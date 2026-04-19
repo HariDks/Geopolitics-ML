@@ -75,24 +75,28 @@ class ImpactEstimator:
     def _load_company_data(self, ticker: str):
         if ticker in self._fin_cache:
             return
-        conn = get_db_connection()
-        row = conn.execute("""
-            SELECT * FROM financial_deltas
-            WHERE ticker = ? AND revenue_standalone IS NOT NULL
-            ORDER BY fiscal_year DESC, fiscal_period DESC LIMIT 1
-        """, (ticker,)).fetchone()
-        self._fin_cache[ticker] = dict(row) if row else {}
+        try:
+            conn = get_db_connection()
+            row = conn.execute("""
+                SELECT * FROM financial_deltas
+                WHERE ticker = ? AND revenue_standalone IS NOT NULL
+                ORDER BY fiscal_year DESC, fiscal_period DESC LIMIT 1
+            """, (ticker,)).fetchone()
+            self._fin_cache[ticker] = dict(row) if row else {}
 
-        rows = conn.execute("""
-            SELECT primary_category,
-                   COUNT(*) as mention_count,
-                   AVG(specificity_score) as avg_specificity,
-                   MAX(specificity_score) as max_specificity
-            FROM geopolitical_mentions WHERE ticker = ?
-            GROUP BY primary_category
-        """, (ticker,)).fetchall()
-        self._mention_cache[ticker] = {r["primary_category"]: dict(r) for r in rows}
-        conn.close()
+            rows = conn.execute("""
+                SELECT primary_category,
+                       COUNT(*) as mention_count,
+                       AVG(specificity_score) as avg_specificity,
+                       MAX(specificity_score) as max_specificity
+                FROM geopolitical_mentions WHERE ticker = ?
+                GROUP BY primary_category
+            """, (ticker,)).fetchall()
+            self._mention_cache[ticker] = {r["primary_category"]: dict(r) for r in rows}
+            conn.close()
+        except Exception:
+            self._fin_cache[ticker] = {}
+            self._mention_cache[ticker] = {}
 
     def estimate(
         self,
