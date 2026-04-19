@@ -282,6 +282,140 @@ The meta-lesson: **the reviewer's best suggestions were about data and evaluatio
 
 ---
 
+## Part 9: The Blind Evaluation — Ground Truth on Real-World Performance
+
+### Why This Was Needed
+
+The 95.2% cross-company figure was validated but trained on data the model had seen during training (just different companies). The reviewer's third round pushed harder: **"You need a measured estimate of performance in real-world conditions. Run a proper evaluation on recent event descriptions, manually labeled, companies not in the original label set."**
+
+### The Dataset
+
+70 event-company pairs across 25 distinct events, frozen before evaluation. Rules:
+- 1-2 sentence event descriptions (news-style, not ACLED/GTA format)
+- Mix of directly exposed, indirectly exposed, and minimally exposed companies
+- Each example labeled with: primary channel, secondary channel (optional), rationale, confidence
+- **No lexicon tuning allowed after dataset was frozen** — the evaluation is blind
+
+Diversity across all 8 event categories and 10 channels. Includes negative cases (Apple + India demonetization, JPMorgan + Sudan civil war, Caterpillar + GDPR).
+
+### The Results
+
+```
+                             No Text    With Text    Delta
+Top-1:                        23.2%       31.9%     +8.7pp
+Top-2 (primary only):        46.4%       62.3%    +15.9pp
+Top-2 (primary+secondary):   66.7%       75.4%     +8.7pp
+```
+
+**Event text improves top-2 by 15.9 percentage points** — validated on completely unseen data.
+
+The top-2 including secondary channels at **75.4%** is within the reviewer's predicted 75-85% range.
+
+### The Gap Between 95% and 32%
+
+The cross-validated figure (95.2%) and the blind figure (31.9% top-1) measure different things:
+- **95.2%**: model's accuracy on companies it saw during training, just held out by company (same events, same label distribution)
+- **31.9%**: model's accuracy on genuinely novel event-company combinations with fresh descriptions
+
+The gap (63pp) is not "the model is broken" — it's "the model works well within its training distribution but struggles to generalize to novel combinations." This is the honest state of the system.
+
+### Error Analysis
+
+47 errors in Mode B (with text). Breakdown:
+
+**Adjacent channel (correct answer in top-2): 21 errors**
+These aren't wrong — they're second-best predictions. The model predicts `procurement_supply_chain` when the human says `revenue_market_access`, but both are plausible.
+
+**Completely wrong (high-confidence label): 17 errors**
+These are genuine failures. The model predicts a channel that doesn't make sense for this company-event pair. Root causes:
+- Lack of company-specific exposure data (the recurring theme)
+- Regulatory events default to `revenue_market_access` instead of `regulatory_compliance_cost`
+
+**Ambiguous ground truth (low/medium confidence): 10 errors**
+These cases were genuinely hard to label. When the ground truth is uncertain, model errors are less meaningful.
+
+### Top Confusion Pairs
+
+| Actual | Predicted | Count | Why |
+|--------|-----------|:-----:|-----|
+| regulatory_compliance → | revenue_market_access | 9 | Model can't distinguish "costs went up" from "revenue went down" |
+| procurement_supply_chain → | revenue_market_access | 7 | Both involve "losing access to something" — procurement loses inputs, revenue loses customers |
+| revenue_market_access → | procurement_supply_chain | 5 | The reverse confusion — these two channels have overlapping language |
+| financial_treasury → | revenue_market_access | 4 | "Money problems" could be revenue or treasury depending on mechanism |
+
+The core issue: **revenue_market_access is the model's default prediction** when uncertain. It's the largest training category and the lexical fallback. This is the classic "majority class bias" in classification.
+
+### What This Means for the Product
+
+The system is **publishable and defensible** with these numbers:
+
+1. **75.4% top-2 accuracy with secondary channels** — the model gets the right answer (or a reasonable alternative) three-quarters of the time
+2. **+15.9pp improvement from event text** — the text signal is clearly valuable and measurable
+3. **21 of 47 errors are adjacent** — nearly half of "errors" are actually reasonable secondary predictions
+4. **The remaining 17 hard errors** are traceable to company-specific exposure gaps — a known and documented limitation
+
+---
+
+## Part 10: The Dual-Mode Reliability System
+
+### What We Built
+
+Every prediction now includes:
+
+```json
+{
+    "channel_mode": "text_rich",
+    "channel_reliability": "high",
+    "channel_prediction": "capital_allocation_investment",
+    "channel_confidence": 0.847
+}
+```
+
+Three modes:
+- **text_rich** (event text with lexicon matches): top-2 accuracy ~62% on blind eval, ~95% on training-distribution data
+- **text_partial** (event text but no lexicon matches): moderate reliability
+- **text_poor** (no text, structured features only): top-2 accuracy ~46%
+
+### Why This Matters
+
+A user seeing "channel_reliability: high" knows the prediction is backed by text evidence. A user seeing "channel_reliability: low" knows to treat it as directional guidance only. This is **calibrated honesty** — the system communicates its own uncertainty.
+
+The pipeline disclaimer was updated:
+
+> "Channel accuracy depends on text availability: ~62% top-2 with event text (text_rich mode), ~46% without (text_poor mode). Check channel_reliability field."
+
+---
+
+## Part 11: The Final Honest Model Card
+
+| Capability | Metric | Value | Validated On |
+|------------|--------|:-----:|:------------:|
+| Event classification | Top-1 accuracy | **95.3%** | 64 held-out news examples |
+| Channel prediction (text_rich) | Top-2 accuracy | **62.3%** | 70 blind eval pairs |
+| Channel prediction (text_rich, +secondary) | Top-2+secondary | **75.4%** | 70 blind eval pairs |
+| Channel prediction (text_poor) | Top-2 accuracy | **46.4%** | 70 blind eval pairs |
+| Channel prediction (training distribution) | Top-1 accuracy | **95.2%** | 44 held-out companies (CV) |
+| Direction prediction (+/-) | Accuracy | **90.0%** | 163 manual holdout labels |
+| Negative detection (not affected) | Accuracy | **100%** | 10 unaffected company tests |
+| Impact magnitude range | In-range | **60.0%** | 20 manual holdout labels |
+
+### The Narrative (Updated)
+
+**Event classification:** Genuinely strong. 95.3% on news text, independently validated.
+
+**Channel prediction:** Two regimes with transparent reliability labeling.
+- With event text (the default in the full pipeline): 62.3% top-2, 75.4% with secondary channels. The text signal provides a measurable +15.9pp improvement.
+- Without text: 46.4% top-2. Useful for direction but not channel specificity.
+- On training-distribution data: 95.2%. This number is real but not representative of novel event-company combinations.
+
+**Direction prediction:** The model's most reliable signal. 90% accuracy, validated on independent data.
+
+**Impact magnitude:** Reasonable but correlational. 60% of actual outcomes fall within predicted ranges.
+
+**Company exposure:** The remaining bottleneck. 17 of 47 errors on the blind eval trace directly to missing company-specific exposure data.
+
+---
+
 ## Summary: Day 9 in One Paragraph
 
-Day 9 solved channel prediction in text-rich mode by implementing the reviewer's suggestion of channel-specific lexicon features — curated keyword lists (e.g., "impairment" → capital_allocation, "ransomware" → cybersecurity) that give XGBoost interpretable anchors for each channel. This produced a 50.7% → 95.2% jump in top-1 accuracy on held-out companies, verified via cross-company validation (44 unseen companies) and leakage checks (keywords are genuinely channel-specific, not memorized). The text model (TF-IDF + LogisticRegression) provided an intermediate stepping stone at 55.2%, while exposure proxy features from 10-K text (facility concentration, single-source risk, route sensitivity) added only marginal gains (+1.5pp). The critical architectural insight: embedding text model outputs as XGBoost features causes train/inference mismatch (crashed to 10.1%) — text signals must either be available in both training and inference, or blended separately. The system now honestly exposes two reliability regimes: text_rich (~95% accuracy) when event descriptions are available, and text_poor (~52%) when only structured features exist. Every prediction includes channel_mode and channel_reliability fields so users know which regime they're in. The pipeline passes event text through to the scorer by default, ensuring the full analysis workflow always operates in text_rich mode. The reviewer's meta-lesson holds: the right features and honest evaluation matter more than model architecture.
+Day 9 had two phases. Phase 1 solved channel prediction in text-rich mode by implementing lexicon features (50.7% → 95.2% on cross-validated holdout) and passing event text through the pipeline for inference-time lexicon extraction. Phase 2 confronted the gap between training-distribution accuracy and real-world performance through a 70-example blind evaluation — the honest result: 31.9% top-1 and 62.3% top-2 with event text (+15.9pp vs no text), 75.4% when including secondary channels. The blind eval revealed the core confusion (regulatory vs revenue, 9x; procurement vs revenue, 7x) and confirmed that 21 of 47 errors are adjacent channels, not fundamentally wrong predictions. The system now exposes channel_mode (text_rich/text_poor) and channel_reliability (high/moderate/low) in every prediction, giving users calibrated honesty about when to trust the channel assignment. The final model card honestly reports different accuracy figures for different conditions — 95.2% on training-distribution companies, 62.3% on blind novel combinations, 46.4% without text — rather than hiding behind a single blended metric. The reviewer's meta-point holds across all three review rounds: honest evaluation, right features, and transparent communication of uncertainty matter more than model sophistication.
