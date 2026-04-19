@@ -83,6 +83,7 @@ def evaluate():
             ticker=ticker,
             mention_sentiment=sentiment,
             car_1_5=float(actual_car) if actual_car else 0.0,
+            event_id=event_id,
         )
 
         pred_channel = exp["channel_prediction"]

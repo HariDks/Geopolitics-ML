@@ -110,6 +110,7 @@ class ExposureScorer:
         car_1_5: float = 0.0,
         car_1_30: float = 0.0,
         rev_delta_pct: float = 0.0,
+        event_id: str = "",
     ) -> dict:
         """
         Score a company's exposure to a geopolitical event.
@@ -147,12 +148,17 @@ class ExposureScorer:
 
         cat_features = [1.0 if c == event_category else 0.0 for c in EVENT_CATEGORIES]
 
+        # Geographic concentration — % of revenue in affected region
+        from models.exposure_scorer.train import compute_geo_concentration
+        geo_conc = compute_geo_concentration(ticker, event_id) if ticker and event_id else 0.0
+
         features = np.array(
             cat_features + [
                 gics_sector, mention_sentiment, car_1_5, car_1_5, car_1_30,
                 rev_yoy, gm, gm_delta, log_rev,
                 mention_count, avg_spec, max_spec, avg_kw,
                 rev_delta_pct,
+                geo_conc,
             ],
             dtype=np.float32,
         ).reshape(1, -1)

@@ -30,6 +30,80 @@ from pathlib import Path
 import click
 import numpy as np
 import xgboost as xgb
+
+# Load geographic exposure data
+GEO_EXPOSURE_PATH = Path(__file__).parent.parent.parent / "data" / "mappings" / "company_geo_exposure.json"
+_geo_exposure = {}
+if GEO_EXPOSURE_PATH.exists():
+    with open(GEO_EXPOSURE_PATH) as f:
+        _geo_exposure = json.load(f)
+        _geo_exposure.pop("_description", None)
+        _geo_exposure.pop("_source", None)
+
+# Map event → affected regions (ISO2 codes or region tags)
+EVENT_AFFECTED_REGIONS = {
+    "russia_invasion_2022": ["RU", "UA", "EU"],
+    "russia_corporate_exit_2022": ["RU"],
+    "russia_sanctions_2022": ["RU"],
+    "us_chip_export_controls_oct2022": ["CN", "TW"],
+    "us_chip_export_oct2022": ["CN", "TW"],
+    "us_chip_export_oct2023": ["CN", "TW"],
+    "covid_lockdown_start": ["CN", "US", "EU", "other_asia"],
+    "red_sea_houthi_2023": ["MENA", "other_asia"],
+    "red_sea_houthi_attacks_2023": ["MENA", "other_asia"],
+    "us_tariffs_2025": ["CN", "other_asia", "EU"],
+    "us_tariffs_2025_april": ["CN", "other_asia", "EU"],
+    "us_china_trade_war_start": ["CN"],
+    "us_china_trade_war_2018": ["CN"],
+    "xinjiang_boycott_2021": ["CN"],
+    "xinjiang_cotton_ban_2021": ["CN"],
+    "israel_hamas_2023": ["IL", "MENA"],
+    "iran_sanctions_2018": ["IR", "MENA"],
+    "us_iran_war_2026": ["IR", "MENA"],
+    "india_demonetization_2016": ["IN"],
+    "india_demonetization_nov2016": ["IN"],
+    "india_pakistan_sindoor": ["IN", "PK"],
+    "india_pakistan_sindoor_2025": ["IN", "PK"],
+    "india_pakistan_operation_sindoor_2025": ["IN", "PK"],
+    "brexit_referendum": ["EU", "UK"],
+    "brexit_financial_relocation_2021": ["EU", "UK"],
+    "eu_energy_crisis_peak": ["EU", "RU"],
+    "notpetya_2017": ["UA", "RU", "EU"],
+    "panama_mine_closure_2023": ["PA"],
+    "panama_mining_contract_2023": ["PA"],
+    "chile_lithium_nationalization": ["CL"],
+    "sudan_civil_war_2023": ["SD"],
+    "australia_china_wine_tariff_2020": ["CN", "AU"],
+    "australia_china_coal_ban_2020": ["CN", "AU"],
+    "australia_china_lobster_ban_2020": ["CN", "AU"],
+    "argentina_milei_deregulation_2024": ["AR"],
+    "solarwinds_hack_2020": ["US"],
+    "myanmar_coup_2021": ["MM"],
+    "indonesia_nickel_ban_2020": ["ID"],
+    "opec_price_war_2014": ["MENA"],
+    "suez_blockage_2021": ["MENA"],
+}
+
+
+def compute_geo_concentration(ticker: str, event_id: str) -> float:
+    """
+    Compute % of revenue/operations in regions affected by this event.
+    Returns 0-100 (percentage).
+    Higher = more concentrated exposure to the affected region.
+    """
+    geo = _geo_exposure.get(ticker, {})
+    if not geo:
+        return 0.0
+
+    affected = EVENT_AFFECTED_REGIONS.get(event_id, [])
+    if not affected:
+        return 0.0
+
+    total_exposed = 0.0
+    for region in affected:
+        total_exposed += geo.get(region, 0.0)
+
+    return min(total_exposed, 100.0)
 from sklearn.metrics import (
     classification_report,
     mean_absolute_error,
@@ -294,6 +368,9 @@ def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, list
         # Revenue delta from seed label
         rev_delta = safe_float(label.get("revenue_delta_pct"), 0.0)
 
+        # Geographic concentration — % of revenue in affected region
+        geo_conc = compute_geo_concentration(ticker, event_id)
+
         # Feature vector
         features = (
             cat_features  # 8 features: event category one-hot
@@ -312,6 +389,7 @@ def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, list
                 max_specificity, # max mention specificity
                 avg_keywords,    # avg keyword count per mention
                 rev_delta,       # revenue delta from seed label
+                geo_conc,        # % revenue in affected region
             ]
         )
 
@@ -440,7 +518,7 @@ FEATURE_NAMES = (
         "gics_sector", "mention_sentiment", "car_1_5_seed", "car_1_5_es",
         "car_1_30_es", "rev_yoy", "gross_margin", "gm_delta_pp",
         "log_revenue_M", "mention_count", "avg_specificity", "max_specificity",
-        "avg_keywords", "rev_delta_pct",
+        "avg_keywords", "rev_delta_pct", "geo_concentration_pct",
     ]
 )
 

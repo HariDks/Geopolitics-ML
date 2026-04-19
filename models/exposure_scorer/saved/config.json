@@ -21,7 +21,8 @@
     "avg_specificity",
     "max_specificity",
     "avg_keywords",
-    "rev_delta_pct"
+    "rev_delta_pct",
+    "geo_concentration_pct"
   ],
   "impact_channels": [
     "procurement_supply_chain",
