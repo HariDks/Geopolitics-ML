@@ -270,6 +270,40 @@ def safe_float(val, default=0.0):
         return default
 
 
+# Load exposure proxies
+PROXY_PATH = ROOT_DIR / "data" / "mappings" / "company_exposure_proxies.json"
+exposure_proxies = {}
+if PROXY_PATH.exists():
+    with open(PROXY_PATH) as f:
+        exposure_proxies = json.load(f)
+        exposure_proxies.pop("_description", None)
+
+# Text channel model for generating text-based probabilities
+_text_model = None
+_text_vectorizer = None
+
+
+def _get_text_channel_probs(mention_text: str) -> np.ndarray:
+    """Get channel probabilities from the text model for a mention."""
+    global _text_model, _text_vectorizer
+    if _text_model is None:
+        import pickle
+        text_model_path = MODEL_DIR / "text_channel_model.pkl"
+        if text_model_path.exists():
+            with open(text_model_path, "rb") as f:
+                data = pickle.load(f)
+                _text_model = data["model"]
+                _text_vectorizer = data["vectorizer"]
+        else:
+            return np.zeros(len(IMPACT_CHANNELS))
+
+    if not mention_text or len(mention_text) < 10:
+        return np.zeros(len(IMPACT_CHANNELS))
+
+    X = _text_vectorizer.transform([mention_text])
+    return _text_model.predict_proba(X)[0]
+
+
 def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, list[dict]]:
     """
     Build feature matrix from all available data sources.
@@ -371,25 +405,42 @@ def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, list
         # Geographic concentration — % of revenue in affected region
         geo_conc = compute_geo_concentration(ticker, event_id)
 
-        # Feature vector
+        # Exposure proxies from 10-K text
+        proxy = exposure_proxies.get(ticker, {})
+        facility_score = proxy.get("facility_concentration_score", 0.0)
+        single_source = proxy.get("single_source_risk_score", 0.0)
+        asset_exit = proxy.get("asset_exit_score", 0.0)
+        route_sensitivity = proxy.get("route_sensitivity_score", 0.0)
+
+        # Region-specific mention density for affected region
+        geo_density = proxy.get("geo_mention_density", {})
+        affected_regions = EVENT_AFFECTED_REGIONS.get(event_id, [])
+        affected_geo_density = sum(geo_density.get(r, 0.0) for r in affected_regions)
+
+        # Feature vector (no text model probs — those are blended separately at inference)
         features = (
             cat_features  # 8 features: event category one-hot
             + [
-                sector,          # GICS sector code
-                sentiment,       # mention sentiment (-1 to 1)
-                car_5,           # seed label car_1_5
-                es_car_5,        # event study car_1_5
-                es_car_30,       # event study car_1_30
-                rev_yoy,         # revenue YoY from XBRL
-                gm,              # gross margin
-                gm_delta,        # gross margin change
-                log_rev,         # log revenue (company size proxy)
-                mention_count,   # EDGAR mention count
-                avg_specificity, # avg mention specificity
-                max_specificity, # max mention specificity
-                avg_keywords,    # avg keyword count per mention
-                rev_delta,       # revenue delta from seed label
-                geo_conc,        # % revenue in affected region
+                sector,               # GICS sector code
+                sentiment,            # mention sentiment (-1 to 1)
+                car_5,                # seed label car_1_5
+                es_car_5,             # event study car_1_5
+                es_car_30,            # event study car_1_30
+                rev_yoy,              # revenue YoY from XBRL
+                gm,                   # gross margin
+                gm_delta,             # gross margin change
+                log_rev,              # log revenue (company size proxy)
+                mention_count,        # EDGAR mention count
+                avg_specificity,      # avg mention specificity
+                max_specificity,      # max mention specificity
+                avg_keywords,         # avg keyword count per mention
+                rev_delta,            # revenue delta from seed label
+                geo_conc,             # % revenue in affected region
+                facility_score,       # facility/plant mention concentration
+                single_source,        # single-source supplier risk
+                asset_exit,           # impairment/exit history
+                route_sensitivity,    # shipping route mentions
+                affected_geo_density, # mention density for affected regions
             ]
         )
 
@@ -519,6 +570,8 @@ FEATURE_NAMES = (
         "car_1_30_es", "rev_yoy", "gross_margin", "gm_delta_pp",
         "log_revenue_M", "mention_count", "avg_specificity", "max_specificity",
         "avg_keywords", "rev_delta_pct", "geo_concentration_pct",
+        "facility_score", "single_source_risk", "asset_exit_score",
+        "route_sensitivity", "affected_geo_density",
     ]
 )
 

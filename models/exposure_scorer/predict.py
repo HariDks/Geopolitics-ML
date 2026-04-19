@@ -149,8 +149,22 @@ class ExposureScorer:
         cat_features = [1.0 if c == event_category else 0.0 for c in EVENT_CATEGORIES]
 
         # Geographic concentration — % of revenue in affected region
-        from models.exposure_scorer.train import compute_geo_concentration
+        from models.exposure_scorer.train import (
+            compute_geo_concentration, exposure_proxies,
+            EVENT_AFFECTED_REGIONS, _get_text_channel_probs,
+        )
         geo_conc = compute_geo_concentration(ticker, event_id) if ticker and event_id else 0.0
+
+        # Exposure proxies from 10-K text
+        proxy = exposure_proxies.get(ticker, {})
+        facility_score = proxy.get("facility_concentration_score", 0.0)
+        single_source = proxy.get("single_source_risk_score", 0.0)
+        asset_exit = proxy.get("asset_exit_score", 0.0)
+        route_sensitivity = proxy.get("route_sensitivity_score", 0.0)
+
+        geo_density = proxy.get("geo_mention_density", {})
+        affected_regions = EVENT_AFFECTED_REGIONS.get(event_id, []) if event_id else []
+        affected_geo_density = sum(geo_density.get(r, 0.0) for r in affected_regions)
 
         features = np.array(
             cat_features + [
@@ -159,6 +173,8 @@ class ExposureScorer:
                 mention_count, avg_spec, max_spec, avg_kw,
                 rev_delta_pct,
                 geo_conc,
+                facility_score, single_source, asset_exit,
+                route_sensitivity, affected_geo_density,
             ],
             dtype=np.float32,
         ).reshape(1, -1)

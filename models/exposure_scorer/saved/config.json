@@ -22,7 +22,12 @@
     "max_specificity",
     "avg_keywords",
     "rev_delta_pct",
-    "geo_concentration_pct"
+    "geo_concentration_pct",
+    "facility_score",
+    "single_source_risk",
+    "asset_exit_score",
+    "route_sensitivity",
+    "affected_geo_density"
   ],
   "impact_channels": [
     "procurement_supply_chain",
