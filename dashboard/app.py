@@ -1,5 +1,5 @@
 """
-Geopolitical Impact Tester — Test how geopolitical events affect companies.
+Geopolitical Impact Tester — Multi-page Streamlit app.
 """
 
 import csv
@@ -17,16 +17,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 st.set_page_config(page_title="Geopolitical Impact Tester", layout="wide")
 
-# ── Session state init ───────────────────────────────────────────────────────
-
-if "results" not in st.session_state:
-    st.session_state.results = None
-if "event_text" not in st.session_state:
-    st.session_state.event_text = ""
-if "company_name" not in st.session_state:
-    st.session_state.company_name = "Apple (AAPL)"
-
-# ── Data ─────────────────────────────────────────────────────────────────────
+# ── Shared data ──────────────────────────────────────────────────────────────
 
 COMPANIES = {
     "Apple (AAPL)": {"ticker": "AAPL", "revenue": 383e9, "sector": "Information Technology"},
@@ -51,25 +42,28 @@ COMPANIES = {
     "FedEx (FDX)": {"ticker": "FDX", "revenue": 88e9, "sector": "Industrials"},
     "Coca-Cola (KO)": {"ticker": "KO", "revenue": 46e9, "sector": "Consumer Staples"},
     "Chevron (CVX)": {"ticker": "CVX", "revenue": 196e9, "sector": "Energy"},
-    "Johnson & Johnson (JNJ)": {"ticker": "JNJ", "revenue": 85e9, "sector": "Health Care"},
     "Home Depot (HD)": {"ticker": "HD", "revenue": 157e9, "sector": "Consumer Discretionary"},
     "Other (enter manually)": {"ticker": "", "revenue": 0, "sector": ""},
 }
 
-QUICK_SCENARIOS = [
-    # High impact — dramatic events with clear financial consequences
-    {"label": "BP Rosneft $25B write-down", "text": "BP announced exit from its 19.75 percent Rosneft stake resulting in pre-tax impairment charges of 25.5 billion dollars after Russia invaded Ukraine and Western sanctions forced corporate exits", "company": "Exxon Mobil (XOM)"},
-    {"label": "NotPetya destroys Maersk IT", "text": "NotPetya ransomware destroyed 45000 PCs and 4000 servers at Maersk costing 300 million dollars in lost revenue and IT rebuilding across global shipping operations", "company": "FedEx (FDX)"},
-    # Moderate impact — significant but not catastrophic
-    {"label": "Chip controls hit NVIDIA $400M", "text": "US Bureau of Industry and Security restricted exports of advanced AI chips including A100 and H100 to China reducing NVIDIA revenue by approximately 400 million dollars per quarter", "company": "NVIDIA (NVDA)"},
-    {"label": "Xinjiang boycott wipes H&M from China", "text": "Xinjiang forced labor allegations triggered consumer boycott in China wiping H&M from all Chinese e-commerce platforms and costing Nike 15 percent of Greater China revenue", "company": "Nike (NKE)"},
-    # Supply chain / logistics disruption
-    {"label": "Red Sea rerouting +40% freight", "text": "Houthi rebels fired anti-ship missiles at commercial vessels in the Red Sea forcing rerouting around Cape of Good Hope adding 14 days transit time and surging freight costs 40 percent", "company": "FedEx (FDX)"},
-    {"label": "OPEC cut spikes jet fuel costs", "text": "OPEC announced surprise production cut of 2 million barrels per day sending oil prices surging 8 percent and jet fuel costs spiking forcing airlines to defer aircraft orders", "company": "Boeing (BA)"},
-    # Regulatory / compliance
-    {"label": "EU forces Apple to open App Store", "text": "EU passed Digital Markets Act requiring Apple to allow third-party app stores sideloading and alternative payment systems threatening up to 10 percent of App Store commission revenue", "company": "Apple (AAPL)"},
-    # Broad tariff impact
-    {"label": "25% China tariffs hit Walmart", "text": "US imposed 25 percent tariffs on all Chinese imports forcing Walmart to absorb billions in cost increases on consumer goods electronics and household products sourced from China", "company": "Walmart (WMT)"},
+# Preloaded scenarios — one per severity tier, correct event->company pairing
+PRELOADED = [
+    {"event": "Russia invaded Ukraine forcing BP to exit its 19.75% Rosneft stake resulting in $25.5B pre-tax impairment",
+     "company": "Exxon Mobil (XOM)", "tag": "Severe", "label": "Russia invasion -> Exxon Mobil"},
+    {"event": "NotPetya ransomware destroyed 45,000 PCs and 4,000 servers at Maersk costing $300M in lost revenue and forced complete IT rebuild",
+     "company": "FedEx (FDX)", "tag": "Significant", "label": "NotPetya ransomware -> FedEx"},
+    {"event": "US Bureau of Industry and Security restricted exports of advanced AI chips including A100 and H100 to China reducing revenue by $400M per quarter",
+     "company": "NVIDIA (NVDA)", "tag": "Significant", "label": "Chip export controls -> NVIDIA"},
+    {"event": "Xinjiang forced labor allegations triggered consumer boycott in China wiping H&M from platforms and costing Western brands 15% of Greater China revenue",
+     "company": "Nike (NKE)", "tag": "Moderate", "label": "Xinjiang boycott -> Nike"},
+    {"event": "EU passed Digital Markets Act requiring third-party app stores and alternative payment systems threatening up to 10% of App Store commission revenue",
+     "company": "Apple (AAPL)", "tag": "Moderate", "label": "EU Digital Markets Act -> Apple"},
+    {"event": "Houthi rebels fired anti-ship missiles at commercial vessels in the Red Sea forcing rerouting around Cape of Good Hope adding 14 days transit and 40% freight cost surge",
+     "company": "Costco (COST)", "tag": "Moderate", "label": "Red Sea rerouting -> Costco"},
+    {"event": "OPEC announced surprise production cut of 2 million barrels per day sending oil prices surging 8% and spiking jet fuel costs for airlines globally",
+     "company": "Boeing (BA)", "tag": "Moderate", "label": "OPEC production cut -> Boeing"},
+    {"event": "US imposed 25% tariffs on all Chinese imports forcing retailers to absorb billions in cost increases on consumer goods and electronics",
+     "company": "Walmart (WMT)", "tag": "Moderate", "label": "China tariffs -> Walmart"},
 ]
 
 CHANNEL_DESCRIPTIONS = {
@@ -113,24 +107,156 @@ def save_feedback(data: dict):
 
 
 def run_analysis(event_text, ticker, revenue):
-    """Run the full pipeline and store results in session state."""
     clf, scorer, estimator = load_models()
     evt = clf.predict(event_text)
-    exp = scorer.score(event_category=evt["category"], ticker=ticker,
-                       mention_sentiment=-0.4, event_text=event_text)
-    imp = estimator.estimate(event_category=evt["category"],
-                              impact_channel=exp["channel_prediction"],
+    exp = scorer.score(event_category=evt["category"], ticker=ticker, mention_sentiment=-0.4, event_text=event_text)
+    imp = estimator.estimate(event_category=evt["category"], impact_channel=exp["channel_prediction"],
                               ticker=ticker, mention_sentiment=-0.4, revenue_usd=revenue)
     return {"evt": evt, "exp": exp, "imp": imp}
 
 
-# ── Header ───────────────────────────────────────────────────────────────────
+def display_results(results, event_text, company_name, revenue):
+    """Render analysis results."""
+    evt, exp, imp = results["evt"], results["exp"], results["imp"]
 
-st.title("Geopolitical Impact Tester")
+    probs = exp["channel_probabilities"]
+    ranked = sorted(probs.items(), key=lambda x: -x[1])
+    ch1, ch2 = ranked[0][0], ranked[1][0]
+    reliability = exp.get("channel_reliability", "unknown")
+    mode = exp.get("channel_mode", "unknown")
 
-# ── Landing page (only on first visit) ───────────────────────────────────────
+    mid = imp["impact_mid_pct"]
+    if abs(mid) < 0.3:
+        severity_label, severity_color = "Minimal", "warning"
+    elif mid < -5:
+        severity_label, severity_color = "Severe negative", "error"
+    elif mid < -2:
+        severity_label, severity_color = "Significant negative", "error"
+    elif mid < 0:
+        severity_label, severity_color = "Moderate negative", "warning"
+    elif mid > 5:
+        severity_label, severity_color = "Severe positive", "success"
+    elif mid > 2:
+        severity_label, severity_color = "Significant positive", "success"
+    else:
+        severity_label, severity_color = "Moderate positive", "warning"
 
-if not st.session_state.results:
+    company_short = company_name.split(" (")[0]
+    ch1_short = ch1.replace("_", " ").title()
+    ch1_desc = CHANNEL_DESCRIPTIONS.get(ch1, "")
+
+    if reliability == "high": conf_badge = "High (text-rich)"
+    elif reliability == "moderate": conf_badge = "Moderate"
+    else: conf_badge = "Low (limited signals)"
+
+    # Summary banner
+    summary = (
+        f"**{severity_label}** impact on {company_short}, "
+        f"primarily through **{ch1_short.lower()}** ({ch1_desc.lower()}). "
+        f"Estimated range: **{fmt_usd(imp.get('impact_low_usd', 0))} to "
+        f"{fmt_usd(imp.get('impact_high_usd', 0))}** on ${revenue/1e9:.0f}B revenue. "
+        f"Confidence: **{conf_badge}**."
+    )
+
+    if severity_color == "error": st.error(f"### {summary}")
+    elif severity_color == "success": st.success(f"### {summary}")
+    else: st.warning(f"### {summary}")
+
+    # Explanation
+    st.markdown("#### Why this prediction?")
+    from models.exposure_scorer.train import compute_lexicon_scores, CHANNEL_LEXICONS
+    lex = compute_lexicon_scores(event_text)
+    event_lower = event_text.lower()
+
+    for channel, keywords in CHANNEL_LEXICONS.items():
+        matched = [kw for kw in keywords if kw in event_lower]
+        if matched:
+            ch_display = channel.replace("_", " ").title()
+            is_pred = channel in (ch1, ch2)
+            kw_str = ", ".join(f'"{m}"' for m in matched[:3])
+            st.markdown(f"- **[{'+'if is_pred else ' '}]** Detected {kw_str} -> {ch_display}")
+
+    st.caption(f"Mode: **{mode}** | Confidence: **{reliability}**")
+
+    # Channels
+    st.markdown("#### Impact Channels")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.metric(ch1.replace("_", " ").title(), f"{ranked[0][1]:.0%}", delta="Primary")
+        st.caption(CHANNEL_DESCRIPTIONS.get(ch1, ""))
+    with c2:
+        st.metric(ch2.replace("_", " ").title(), f"{ranked[1][1]:.0%}", delta="Secondary")
+        st.caption(CHANNEL_DESCRIPTIONS.get(ch2, ""))
+
+    # Limitation
+    st.info(
+        f"**Limitation:** This prediction does not include company-specific exposure data. "
+        f"Actual impact may differ if {company_short} has concentrated operations in the affected region."
+    )
+
+    # Diagnostics
+    with st.expander("Full diagnostics"):
+        st.markdown(f"**Event:** {evt['category'].replace('_', ' ').title()} ({evt['confidence']:.0%})")
+        st.dataframe(pd.DataFrame([
+            {"Channel": ch.replace("_", " ").title(), "Probability": f"{p:.1%}"}
+            for ch, p in ranked
+        ]), use_container_width=True, hide_index=True)
+
+    # Feedback
+    st.divider()
+    st.markdown("#### Was this useful?")
+    fc1, fc2 = st.columns(2)
+    useful = fc1.radio("Helpful?", ["--", "Yes", "No"], horizontal=True, key=f"fb_u_{company_name}")
+    ch_correct = fc2.radio("Primary channel correct?", ["--", "Yes", "No"], horizontal=True, key=f"fb_c_{company_name}")
+
+    if ch_correct == "No":
+        st.selectbox("What should the primary channel be?",
+                     ["(select)"] + [ch.replace("_", " ").title() for ch in CHANNEL_DESCRIPTIONS.keys()],
+                     key=f"fb_corr_{company_name}")
+        st.text_input("Optional comment", key=f"fb_comm_{company_name}")
+
+    if st.button("Submit Feedback", key=f"fb_sub_{company_name}"):
+        if useful != "--" or ch_correct != "--":
+            save_feedback({
+                "timestamp": datetime.now().isoformat(),
+                "event_text": event_text[:500],
+                "company": company_name,
+                "predicted_channel_1": ch1, "predicted_channel_2": ch2,
+                "reliability": reliability,
+                "useful": useful if useful != "--" else "",
+                "channel_correct": ch_correct if ch_correct != "--" else "",
+                "suggested_channel": st.session_state.get(f"fb_corr_{company_name}", ""),
+                "comment": st.session_state.get(f"fb_comm_{company_name}", ""),
+            })
+            st.success("Feedback saved!")
+
+
+# ── Sidebar navigation ──────────────────────────────────────────────────────
+
+page = st.sidebar.radio("Navigate", ["Overview", "Preloaded Examples", "Custom Analysis"])
+
+st.sidebar.markdown("---")
+st.sidebar.markdown("### Accuracy")
+st.sidebar.markdown("""
+69 blind eval pairs:
+
+| | Top-2 |
+|---|:---:|
+| Without text | 46% |
+| **With text** | **62%** |
+| + secondary | **75%** |
+
+Direction: **90%**
+""")
+st.sidebar.markdown("---")
+st.sidebar.caption("[GitHub](https://github.com/HariDks/Geopolitics-ML) | Built on WEF framework | 7.76M events")
+
+# ════════════════════════════════════════════════════════════════════════════
+# PAGE 1: OVERVIEW
+# ════════════════════════════════════════════════════════════════════════════
+
+if page == "Overview":
+    st.title("Geopolitical Impact Tester")
 
     st.markdown("### What if you could stress-test any company against any geopolitical event?")
     st.markdown("""
@@ -150,17 +276,17 @@ if not st.session_state.results:
     with col2:
         st.markdown("""
         #### What's under the hood
-        - **7.76 million** geopolitical events ingested from 6 data sources
-        - **602 labeled** company-event impact pairs used for training
-        - **4 ML models** chained together: classify the event, score company exposure, estimate financial impact, explain the mechanism
-        - Backtested against **10 real events** across 5 continents — predicted NVIDIA's export control hit within 1.3 percentage points
+        - **7.76 million** geopolitical events from 6 data sources
+        - **602 labeled** company-event impact pairs
+        - **4 ML models** chained: classify event, score exposure, estimate impact, explain mechanism
+        - Backtested against **10 real events** across 5 continents
         """)
     with col3:
         st.markdown("""
         #### What it's honest about
-        - Gets the **direction right ~90%** of the time (will this hurt or help?)
-        - Gets the **specific channel right ~62-75%** of the time (depends on text quality)
-        - Struggles with companies that have **concentrated geographic exposure** (we'll tell you when)
+        - Gets the **direction right ~90%** of the time
+        - Gets the **specific channel right ~62-75%** (depends on text quality)
+        - Struggles with **concentrated geographic exposure**
         - This is **not financial advice** — it's pattern-matching on historical data
         """)
 
@@ -171,243 +297,73 @@ if not st.session_state.results:
 
     This started as a research project inspired by the WEF's *Building Geopolitical Muscle* report (2026),
     which found that only ~20% of global firms systematically quantify their geopolitical exposure.
-    The other 80% rely on gut feeling and heat maps.
 
     We wanted to see: **can you build that capability with ML instead of a 40-person team?**
 
     Over several days of development, we ingested data from GDELT, ACLED, Global Trade Alert, OFAC, BIS, and SEC EDGAR.
     We trained a DistilBERT event classifier (95% accuracy on news text), an XGBoost exposure scorer,
-    a quantile regression impact estimator, and a retrieval-based strategy recommender. Then we broke it,
-    diagnosed why, added lexicon features, and got channel prediction from 50% to 75%.
+    a quantile regression impact estimator, and a retrieval-based strategy recommender.
 
     The biggest lesson? **The right features matter more than the right model.** Adding 10 curated keyword
     lists ("impairment" = capital allocation, "ransomware" = cybersecurity) did more than any architecture change.
 
     **Your feedback makes this better.** After every analysis, you can tell us if the prediction made sense.
-    Every correction helps us understand where the model fails — and that's how it improves.
+    Every correction helps the model improve.
     """)
 
     st.markdown("---")
+    st.markdown("**Ready?** Use the sidebar to navigate to **Preloaded Examples** or **Custom Analysis**.")
 
-# ── Quick Scenarios ──────────────────────────────────────────────────────────
 
-st.subheader("Try an example")
-cols = st.columns(4)
-for i, scenario in enumerate(QUICK_SCENARIOS):
-    if cols[i % 4].button(scenario["label"], use_container_width=True, key=f"scenario_{i}", type="secondary"):
-        st.session_state.event_text = scenario["text"]
-        st.session_state.company_name = scenario["company"]
-        st.session_state.used_preset = True
-        info = COMPANIES[scenario["company"]]
-        st.session_state.results = run_analysis(scenario["text"], info["ticker"], info["revenue"])
+# ════════════════════════════════════════════════════════════════════════════
+# PAGE 2: PRELOADED EXAMPLES
+# ════════════════════════════════════════════════════════════════════════════
 
-st.divider()
+elif page == "Preloaded Examples":
+    st.title("Preloaded Examples")
+    st.caption("Click any scenario to see the full analysis. Each pairs a specific geopolitical event with a specific company.")
 
-# ── Custom Input Panel ───────────────────────────────────────────────────────
+    for scenario in PRELOADED:
+        event = scenario["event"]
+        company_name = scenario["company"]
+        tag = scenario["tag"]
+        label = scenario["label"]
+        info = COMPANIES[company_name]
 
-st.markdown("**Or describe your own scenario:**")
+        with st.expander(f"**{label}** — *{tag} impact*"):
+            st.markdown(f"**Event:** {event}")
+            st.markdown(f"**Company:** {company_name} | ${info['revenue']/1e9:.0f}B revenue | {info['sector']}")
+            st.markdown("---")
 
-col_text, col_company = st.columns([3, 2])
+            # Run on demand
+            results = run_analysis(event, info["ticker"], info["revenue"])
+            display_results(results, event, company_name, info["revenue"])
 
-with col_text:
-    event_text = st.text_area("Event description", height=80,
-                               placeholder="Describe a geopolitical event in 1-3 sentences...",
-                               key="event_input_main")
 
-with col_company:
-    company_keys = list(COMPANIES.keys())
-    company_name = st.selectbox("Company", company_keys, key="company_select")
+# ════════════════════════════════════════════════════════════════════════════
+# PAGE 3: CUSTOM ANALYSIS
+# ════════════════════════════════════════════════════════════════════════════
+
+elif page == "Custom Analysis":
+    st.title("Custom Analysis")
+    st.caption("Describe any geopolitical event and select a company to analyze.")
+
+    event_text = st.text_area("Describe the geopolitical event (1-3 sentences)", height=100,
+                               placeholder="e.g., China restricted exports of gallium and germanium critical minerals used in semiconductor manufacturing...")
+
+    company_name = st.selectbox("Company", list(COMPANIES.keys()))
     info = COMPANIES[company_name]
 
     if company_name == "Other (enter manually)":
-        ticker = st.text_input("Ticker")
-        revenue = st.number_input("Annual revenue (USD)", value=0, step=1_000_000_000, format="%d")
+        c1, c2 = st.columns(2)
+        ticker = c1.text_input("Ticker")
+        revenue = c2.number_input("Annual revenue (USD)", value=0, step=1_000_000_000, format="%d")
     else:
         ticker = info["ticker"]
         revenue = info["revenue"]
         st.caption(f"**{ticker}** | ${revenue/1e9:.0f}B revenue | {info['sector']}")
 
-if st.button("Analyze Impact", type="primary", disabled=not event_text, use_container_width=True):
-    st.session_state.event_text = event_text
-    st.session_state.company_name = company_name
-    st.session_state.used_preset = False
-    st.session_state.results = run_analysis(event_text, ticker, revenue)
-
-# ── Results ──────────────────────────────────────────────────────────────────
-
-if st.session_state.results:
-    r = st.session_state.results
-    evt, exp, imp = r["evt"], r["exp"], r["imp"]
-
-    probs = exp["channel_probabilities"]
-    ranked = sorted(probs.items(), key=lambda x: -x[1])
-    ch1, ch2 = ranked[0][0], ranked[1][0]
-    reliability = exp.get("channel_reliability", "unknown")
-    mode = exp.get("channel_mode", "unknown")
-
-    mid = imp["impact_mid_pct"]
-    if abs(mid) < 0.3:
-        severity_label = "Minimal"
-        severity_color = "warning"       # yellow
-    elif mid < -5:
-        severity_label = "Severe negative"
-        severity_color = "error"         # red
-    elif mid < -2:
-        severity_label = "Significant negative"
-        severity_color = "error"         # red
-    elif mid < 0:
-        severity_label = "Moderate negative"
-        severity_color = "warning"       # yellow
-    elif mid > 5:
-        severity_label = "Severe positive"
-        severity_color = "success"       # green
-    elif mid > 2:
-        severity_label = "Significant positive"
-        severity_color = "success"       # green
-    else:
-        severity_label = "Moderate positive"
-        severity_color = "warning"       # yellow
-
-    company_short = st.session_state.company_name.split(" (")[0]
-    ch1_short = ch1.replace("_", " ").title()
-    ch1_desc = CHANNEL_DESCRIPTIONS.get(ch1, "")
-
-    if reliability == "high": conf_badge = "High (text-rich)"
-    elif reliability == "moderate": conf_badge = "Moderate"
-    else: conf_badge = "Low (limited text signals)"
-
-    st.divider()
-
-    # ── Summary card (THE takeaway — must be first and unmissable) ────────
-
-    summary_text = (
-        f"**{severity_label}** impact on {company_short}, "
-        f"primarily through **{ch1_short.lower()}** "
-        f"({ch1_desc.lower()}). "
-        f"Estimated range: **{fmt_usd(imp.get('impact_low_usd', 0))} to "
-        f"{fmt_usd(imp.get('impact_high_usd', 0))}** "
-        f"on ${revenue/1e9:.0f}B revenue. "
-        f"Confidence: **{conf_badge}**."
-    )
-
-    if severity_color == "error":
-        st.error(f"### {summary_text}")
-    elif severity_color == "success":
-        st.success(f"### {summary_text}")
-    else:
-        st.warning(f"### {summary_text}")
-
-    # ── Explanation ──────────────────────────────────────────────────────
-
-    st.markdown("#### Why this prediction?")
-
-    from models.exposure_scorer.train import compute_lexicon_scores, CHANNEL_LEXICONS
-    lex = compute_lexicon_scores(st.session_state.event_text)
-    event_lower = st.session_state.event_text.lower()
-
-    signals = []
-    for channel, keywords in CHANNEL_LEXICONS.items():
-        matched = [kw for kw in keywords if kw in event_lower]
-        if matched:
-            ch_display = channel.replace("_", " ").title()
-            is_predicted = channel in (ch1, ch2)
-            signals.append((channel, matched, ch_display, is_predicted))
-
-    if signals:
-        for channel, matched, ch_display, is_predicted in signals:
-            kw_str = ", ".join(f'"{m}"' for m in matched[:3])
-            icon = "+" if is_predicted else " "
-            st.markdown(f"- **[{icon}]** Detected {kw_str} -> {ch_display}")
-    else:
-        st.markdown("- No channel-specific keywords detected in event text")
-
-    st.caption(f"Mode: **{mode}** | Confidence: **{reliability}**"
-               + (" — descriptive event text provided." if reliability == "high"
-                  else " — provide more descriptive text to improve accuracy." if reliability == "low"
-                  else "."))
-
-    # ── Channels ─────────────────────────────────────────────────────────
-
-    st.markdown("#### Impact Channels")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.metric(ch1.replace("_", " ").title(), f"{ranked[0][1]:.0%}", delta="Primary")
-        st.caption(CHANNEL_DESCRIPTIONS.get(ch1, ""))
-    with col2:
-        st.metric(ch2.replace("_", " ").title(), f"{ranked[1][1]:.0%}", delta="Secondary")
-        st.caption(CHANNEL_DESCRIPTIONS.get(ch2, ""))
-
-    # ── System insight ───────────────────────────────────────────────────
-
-    st.info(
-        f"**Limitation:** This prediction does not include company-specific exposure data "
-        f"(geographic revenue, supplier network, asset locations). "
-        f"Actual impact may differ if {company_short} has concentrated operations in the affected region."
-    )
-
-    # ── Diagnostics ──────────────────────────────────────────────────────
-
-    with st.expander("Full diagnostics"):
-        st.markdown(f"**Event:** {evt['category'].replace('_', ' ').title()} ({evt['confidence']:.0%})")
-        st.dataframe(pd.DataFrame([
-            {"Channel": ch.replace("_", " ").title(), "Probability": f"{p:.1%}"}
-            for ch, p in ranked
-        ]), use_container_width=True, hide_index=True)
-
-    # ── Feedback (persisted in session state) ────────────────────────────
-
-    st.divider()
-    st.markdown("#### Was this useful?")
-
-    fb_col1, fb_col2 = st.columns(2)
-    useful = fb_col1.radio("Helpful?", ["--", "Yes", "No"], horizontal=True, key="fb_useful")
-    ch_correct = fb_col2.radio("Primary channel correct?", ["--", "Yes", "No"], horizontal=True, key="fb_ch")
-
-    if ch_correct == "No":
-        st.selectbox("What should the primary channel be?",
-                     ["(select)"] + [ch.replace("_", " ").title() for ch in CHANNEL_DESCRIPTIONS.keys()],
-                     key="fb_correction")
-        st.text_input("Optional comment", key="fb_comment")
-
-    if st.button("Submit Feedback"):
-        if useful != "--" or ch_correct != "--":
-            save_feedback({
-                "timestamp": datetime.now().isoformat(),
-                "event_text": st.session_state.event_text[:500],
-                "company": st.session_state.company_name,
-                "ticker": ticker,
-                "predicted_channel_1": ch1,
-                "predicted_channel_2": ch2,
-                "reliability": reliability,
-                "useful": useful if useful != "--" else "",
-                "channel_correct": ch_correct if ch_correct != "--" else "",
-                "suggested_channel": st.session_state.get("fb_correction", ""),
-                "comment": st.session_state.get("fb_comment", ""),
-            })
-            st.success("Feedback saved!")
-
-# ── Sidebar ──────────────────────────────────────────────────────────────────
-
-with st.sidebar:
-    st.markdown("### How it works")
-    st.markdown("""
-    1. **Classify** the event (8 categories)
-    2. **Score** exposure using text + structured signals
-    3. **Estimate** financial impact (low / base / high)
-    4. **Explain** which keywords drove the prediction
-    """)
-    st.markdown("---")
-    st.markdown("### Accuracy")
-    st.markdown("""
-    69 blind eval pairs:
-
-    | | Top-2 |
-    |---|:---:|
-    | Without text | 46% |
-    | **With text** | **62%** |
-    | + secondary | **75%** |
-
-    Direction: **90%**
-    """)
-    st.markdown("---")
-    st.caption("[GitHub](https://github.com/HariDks/Geopolitics-ML) | Built on WEF framework | 7.76M events")
+    if st.button("Analyze Impact", type="primary", disabled=not event_text, use_container_width=True):
+        results = run_analysis(event_text, ticker, revenue)
+        st.divider()
+        display_results(results, event_text, company_name, revenue)
