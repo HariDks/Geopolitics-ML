@@ -246,11 +246,27 @@ if st.session_state.results:
     mode = exp.get("channel_mode", "unknown")
 
     mid = imp["impact_mid_pct"]
-    if abs(mid) < 0.5: severity_label = "Minimal"
-    elif mid < -3: severity_label = "Significant negative"
-    elif mid < 0: severity_label = "Moderate negative"
-    elif mid > 3: severity_label = "Significant positive"
-    else: severity_label = "Moderate positive"
+    if abs(mid) < 0.3:
+        severity_label = "Minimal"
+        severity_color = "warning"       # yellow
+    elif mid < -5:
+        severity_label = "Severe negative"
+        severity_color = "error"         # red
+    elif mid < -2:
+        severity_label = "Significant negative"
+        severity_color = "error"         # red
+    elif mid < 0:
+        severity_label = "Moderate negative"
+        severity_color = "warning"       # yellow
+    elif mid > 5:
+        severity_label = "Severe positive"
+        severity_color = "success"       # green
+    elif mid > 2:
+        severity_label = "Significant positive"
+        severity_color = "success"       # green
+    else:
+        severity_label = "Moderate positive"
+        severity_color = "warning"       # yellow
 
     company_short = st.session_state.company_name.split(" (")[0]
     ch1_short = ch1.replace("_", " ").title()
@@ -274,9 +290,9 @@ if st.session_state.results:
         f"Confidence: **{conf_badge}**."
     )
 
-    if mid < -1:
+    if severity_color == "error":
         st.error(f"### {summary_text}")
-    elif mid > 1:
+    elif severity_color == "success":
         st.success(f"### {summary_text}")
     else:
         st.warning(f"### {summary_text}")
