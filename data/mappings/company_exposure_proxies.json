@@ -1,0 +1,3264 @@
+{
+  "_description": "Exposure proxies extracted from EDGAR 10-K/10-Q text",
+  "AAPL": {
+    "n_paragraphs": 352,
+    "geo_mention_density": {
+      "China": 0.273,
+      "Russia": 0.0,
+      "Europe": 0.182,
+      "MiddleEast": 0.023,
+      "India": 0.091,
+      "LatAm": 0.0,
+      "Africa": 0.023,
+      "SoutheastAsia": 0.057,
+      "Japan_Korea": 0.136
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.273
+      },
+      {
+        "region": "Europe",
+        "density": 0.182
+      },
+      {
+        "region": "Japan_Korea",
+        "density": 0.136
+      },
+      {
+        "region": "India",
+        "density": 0.091
+      },
+      {
+        "region": "SoutheastAsia",
+        "density": 0.057
+      }
+    ],
+    "facility_concentration_score": 0.295,
+    "facility_by_region": {
+      "China": 32,
+      "Europe": 8,
+      "India": 16,
+      "SoutheastAsia": 16,
+      "Japan_Korea": 32
+    },
+    "single_source_risk_score": 0.182,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ABBV": {
+    "n_paragraphs": 78,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ABNB": {
+    "n_paragraphs": 266,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.008,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.008
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ABT": {
+    "n_paragraphs": 141,
+    "geo_mention_density": {
+      "China": 0.028,
+      "Russia": 0.0,
+      "Europe": 0.255,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.255
+      },
+      {
+        "region": "China",
+        "density": 0.028
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ACN": {
+    "n_paragraphs": 109,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.037,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Africa",
+        "density": 0.037
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ADM": {
+    "n_paragraphs": 138,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.029,
+      "Europe": 0.007,
+      "MiddleEast": 0.0,
+      "India": 0.594,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.014,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.594
+      },
+      {
+        "region": "Russia",
+        "density": 0.029
+      },
+      {
+        "region": "SoutheastAsia",
+        "density": 0.014
+      },
+      {
+        "region": "Europe",
+        "density": 0.007
+      }
+    ],
+    "facility_concentration_score": 0.051,
+    "facility_by_region": {
+      "Russia": 4,
+      "Europe": 1,
+      "India": 2
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ADP": {
+    "n_paragraphs": 129,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.016,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.016
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "AEP": {
+    "n_paragraphs": 130,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.031,
+      "India": 0.092,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.092
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.031
+      }
+    ],
+    "facility_concentration_score": 0.015,
+    "facility_by_region": {
+      "India": 2
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "AMAT": {
+    "n_paragraphs": 195,
+    "geo_mention_density": {
+      "China": 0.282,
+      "Russia": 0.0,
+      "Europe": 0.031,
+      "MiddleEast": 0.118,
+      "India": 0.041,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.021,
+      "Japan_Korea": 0.179
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.282
+      },
+      {
+        "region": "Japan_Korea",
+        "density": 0.179
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.118
+      },
+      {
+        "region": "India",
+        "density": 0.041
+      },
+      {
+        "region": "Europe",
+        "density": 0.031
+      }
+    ],
+    "facility_concentration_score": 0.159,
+    "facility_by_region": {
+      "China": 8,
+      "Europe": 4,
+      "MiddleEast": 7,
+      "SoutheastAsia": 4,
+      "Japan_Korea": 8
+    },
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 2
+  },
+  "AMGN": {
+    "n_paragraphs": 147,
+    "geo_mention_density": {
+      "China": 0.027,
+      "Russia": 0.0,
+      "Europe": 0.027,
+      "MiddleEast": 0.027,
+      "India": 0.007,
+      "LatAm": 0.027,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.027
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.027
+      },
+      {
+        "region": "Europe",
+        "density": 0.027
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.027
+      },
+      {
+        "region": "LatAm",
+        "density": 0.027
+      },
+      {
+        "region": "Japan_Korea",
+        "density": 0.027
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "AMZN": {
+    "n_paragraphs": 229,
+    "geo_mention_density": {
+      "China": 0.096,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.052,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.096
+      },
+      {
+        "region": "India",
+        "density": 0.052
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "AVGO": {
+    "n_paragraphs": 579,
+    "geo_mention_density": {
+      "China": 0.031,
+      "Russia": 0.0,
+      "Europe": 0.007,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.048,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "SoutheastAsia",
+        "density": 0.048
+      },
+      {
+        "region": "China",
+        "density": 0.031
+      },
+      {
+        "region": "Europe",
+        "density": 0.007
+      }
+    ],
+    "facility_concentration_score": 0.035,
+    "facility_by_region": {
+      "China": 4,
+      "SoutheastAsia": 16
+    },
+    "single_source_risk_score": 0.273,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "BA": {
+    "n_paragraphs": 622,
+    "geo_mention_density": {
+      "China": 0.045,
+      "Russia": 0.013,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.113,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.113
+      },
+      {
+        "region": "China",
+        "density": 0.045
+      },
+      {
+        "region": "Russia",
+        "density": 0.013
+      }
+    ],
+    "facility_concentration_score": 0.013,
+    "facility_by_region": {
+      "India": 8
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.273,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 16
+  },
+  "BDX": {
+    "n_paragraphs": 217,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.037,
+      "MiddleEast": 0.0,
+      "India": 0.028,
+      "LatAm": 0.037,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.037
+      },
+      {
+        "region": "LatAm",
+        "density": 0.037
+      },
+      {
+        "region": "India",
+        "density": 0.028
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "BKNG": {
+    "n_paragraphs": 159,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.025,
+      "MiddleEast": 0.025,
+      "India": 0.075,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.075
+      },
+      {
+        "region": "Europe",
+        "density": 0.025
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.025
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "BLK": {
+    "n_paragraphs": 14,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "BMY": {
+    "n_paragraphs": 230,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.026,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.078
+    },
+    "top_regions": [
+      {
+        "region": "Japan_Korea",
+        "density": 0.078
+      },
+      {
+        "region": "Europe",
+        "density": 0.026
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.182,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "BRK-B": {
+    "n_paragraphs": 98,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.143,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.143
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "CAT": {
+    "n_paragraphs": 239,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.075,
+      "MiddleEast": 0.0,
+      "India": 0.54,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.54
+      },
+      {
+        "region": "Europe",
+        "density": 0.075
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.273,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "CB": {
+    "n_paragraphs": 64,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.062,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.062
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "CI": {
+    "n_paragraphs": 51,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "CL": {
+    "n_paragraphs": 158,
+    "geo_mention_density": {
+      "China": 0.259,
+      "Russia": 0.152,
+      "Europe": 0.063,
+      "MiddleEast": 0.316,
+      "India": 0.089,
+      "LatAm": 0.038,
+      "Africa": 0.101,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "MiddleEast",
+        "density": 0.316
+      },
+      {
+        "region": "China",
+        "density": 0.259
+      },
+      {
+        "region": "Russia",
+        "density": 0.152
+      },
+      {
+        "region": "Africa",
+        "density": 0.101
+      },
+      {
+        "region": "India",
+        "density": 0.089
+      }
+    ],
+    "facility_concentration_score": 0.044,
+    "facility_by_region": {
+      "Russia": 7
+    },
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 8
+  },
+  "CME": {
+    "n_paragraphs": 148,
+    "geo_mention_density": {
+      "China": 0.027,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.257,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.014,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.257
+      },
+      {
+        "region": "China",
+        "density": 0.027
+      },
+      {
+        "region": "SoutheastAsia",
+        "density": 0.014
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "COP": {
+    "n_paragraphs": 171,
+    "geo_mention_density": {
+      "China": 0.018,
+      "Russia": 0.006,
+      "Europe": 0.105,
+      "MiddleEast": 0.035,
+      "India": 0.07,
+      "LatAm": 0.351,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.018,
+      "Japan_Korea": 0.018
+    },
+    "top_regions": [
+      {
+        "region": "LatAm",
+        "density": 0.351
+      },
+      {
+        "region": "Europe",
+        "density": 0.105
+      },
+      {
+        "region": "India",
+        "density": 0.07
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.035
+      },
+      {
+        "region": "China",
+        "density": 0.018
+      }
+    ],
+    "facility_concentration_score": 0.053,
+    "facility_by_region": {
+      "Europe": 3,
+      "LatAm": 3,
+      "Japan_Korea": 3
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "COST": {
+    "n_paragraphs": 459,
+    "geo_mention_density": {
+      "China": 0.096,
+      "Russia": 0.0,
+      "Europe": 0.044,
+      "MiddleEast": 0.0,
+      "India": 0.017,
+      "LatAm": 0.052,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.092
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.096
+      },
+      {
+        "region": "Japan_Korea",
+        "density": 0.092
+      },
+      {
+        "region": "LatAm",
+        "density": 0.052
+      },
+      {
+        "region": "Europe",
+        "density": 0.044
+      },
+      {
+        "region": "India",
+        "density": 0.017
+      }
+    ],
+    "facility_concentration_score": 0.27,
+    "facility_by_region": {
+      "China": 36,
+      "Europe": 20,
+      "India": 4,
+      "LatAm": 22,
+      "Japan_Korea": 42
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 16
+  },
+  "CRM": {
+    "n_paragraphs": 320,
+    "geo_mention_density": {
+      "China": 0.019,
+      "Russia": 0.019,
+      "Europe": 0.009,
+      "MiddleEast": 0.025,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "MiddleEast",
+        "density": 0.025
+      },
+      {
+        "region": "China",
+        "density": 0.019
+      },
+      {
+        "region": "Russia",
+        "density": 0.019
+      },
+      {
+        "region": "Europe",
+        "density": 0.009
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "CSCO": {
+    "n_paragraphs": 220,
+    "geo_mention_density": {
+      "China": 0.018,
+      "Russia": 0.005,
+      "Europe": 0.0,
+      "MiddleEast": 0.005,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.018
+      },
+      {
+        "region": "Russia",
+        "density": 0.005
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.005
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "CVX": {
+    "n_paragraphs": 100,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.04,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.06,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "LatAm",
+        "density": 0.06
+      },
+      {
+        "region": "Russia",
+        "density": 0.04
+      }
+    ],
+    "facility_concentration_score": 0.02,
+    "facility_by_region": {
+      "LatAm": 2
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.062,
+    "revenue_concentration_mentions": 0
+  },
+  "DE": {
+    "n_paragraphs": 165,
+    "geo_mention_density": {
+      "China": 0.024,
+      "Russia": 0.079,
+      "Europe": 0.158,
+      "MiddleEast": 0.073,
+      "India": 0.224,
+      "LatAm": 0.145,
+      "Africa": 0.048,
+      "SoutheastAsia": 0.012,
+      "Japan_Korea": 0.012
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.224
+      },
+      {
+        "region": "Europe",
+        "density": 0.158
+      },
+      {
+        "region": "LatAm",
+        "density": 0.145
+      },
+      {
+        "region": "Russia",
+        "density": 0.079
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.073
+      }
+    ],
+    "facility_concentration_score": 0.255,
+    "facility_by_region": {
+      "China": 4,
+      "Europe": 12,
+      "India": 4,
+      "LatAm": 12,
+      "Africa": 8,
+      "SoutheastAsia": 2
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "DHR": {
+    "n_paragraphs": 122,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.033,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.033
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.033
+      },
+      {
+        "region": "Japan_Korea",
+        "density": 0.033
+      }
+    ],
+    "facility_concentration_score": 0.033,
+    "facility_by_region": {
+      "Europe": 4
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "DUK": {
+    "n_paragraphs": 118,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.136,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.136
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ELV": {
+    "n_paragraphs": 38,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.053,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.053
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "EOG": {
+    "n_paragraphs": 149,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.409,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.409
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "EQIX": {
+    "n_paragraphs": 293,
+    "geo_mention_density": {
+      "China": 0.038,
+      "Russia": 0.457,
+      "Europe": 0.184,
+      "MiddleEast": 0.126,
+      "India": 0.048,
+      "LatAm": 0.0,
+      "Africa": 0.007,
+      "SoutheastAsia": 0.014,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Russia",
+        "density": 0.457
+      },
+      {
+        "region": "Europe",
+        "density": 0.184
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.126
+      },
+      {
+        "region": "India",
+        "density": 0.048
+      },
+      {
+        "region": "China",
+        "density": 0.038
+      }
+    ],
+    "facility_concentration_score": 0.041,
+    "facility_by_region": {
+      "Europe": 4,
+      "MiddleEast": 2,
+      "India": 2,
+      "Africa": 2,
+      "SoutheastAsia": 2
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.062,
+    "revenue_concentration_mentions": 0
+  },
+  "F": {
+    "n_paragraphs": 74,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.054,
+      "MiddleEast": 0.0,
+      "India": 0.095,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.095
+      },
+      {
+        "region": "Europe",
+        "density": 0.054
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "FDX": {
+    "n_paragraphs": 92,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.022,
+      "Europe": 0.033,
+      "MiddleEast": 0.022,
+      "India": 0.152,
+      "LatAm": 0.076,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.152
+      },
+      {
+        "region": "LatAm",
+        "density": 0.076
+      },
+      {
+        "region": "Europe",
+        "density": 0.033
+      },
+      {
+        "region": "Russia",
+        "density": 0.022
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.022
+      }
+    ],
+    "facility_concentration_score": 0.065,
+    "facility_by_region": {
+      "India": 6
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.062,
+    "revenue_concentration_mentions": 0
+  },
+  "GD": {
+    "n_paragraphs": 201,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.01,
+      "MiddleEast": 0.01,
+      "India": 0.284,
+      "LatAm": 0.0,
+      "Africa": 0.01,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.284
+      },
+      {
+        "region": "Europe",
+        "density": 0.01
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.01
+      },
+      {
+        "region": "Africa",
+        "density": 0.01
+      }
+    ],
+    "facility_concentration_score": 0.02,
+    "facility_by_region": {
+      "India": 4
+    },
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 12
+  },
+  "GE": {
+    "n_paragraphs": 134,
+    "geo_mention_density": {
+      "China": 0.06,
+      "Russia": 0.082,
+      "Europe": 0.022,
+      "MiddleEast": 0.082,
+      "India": 0.097,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.007
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.097
+      },
+      {
+        "region": "Russia",
+        "density": 0.082
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.082
+      },
+      {
+        "region": "China",
+        "density": 0.06
+      },
+      {
+        "region": "Europe",
+        "density": 0.022
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 6
+  },
+  "GILD": {
+    "n_paragraphs": 140,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.014,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.014
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "GM": {
+    "n_paragraphs": 198,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.02,
+      "Europe": 0.061,
+      "MiddleEast": 0.02,
+      "India": 0.01,
+      "LatAm": 0.02,
+      "Africa": 0.02,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.02
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.061
+      },
+      {
+        "region": "Russia",
+        "density": 0.02
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.02
+      },
+      {
+        "region": "LatAm",
+        "density": 0.02
+      },
+      {
+        "region": "Africa",
+        "density": 0.02
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "GOOGL": {
+    "n_paragraphs": 214,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.056,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.056
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 4
+  },
+  "GS": {
+    "n_paragraphs": 35,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.086,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.086
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "HD": {
+    "n_paragraphs": 117,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.017,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.017
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "HON": {
+    "n_paragraphs": 190,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.042,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.042
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "HUM": {
+    "n_paragraphs": 73,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.055,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.055
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "INTC": {
+    "n_paragraphs": 242,
+    "geo_mention_density": {
+      "China": 0.248,
+      "Russia": 0.066,
+      "Europe": 0.017,
+      "MiddleEast": 0.124,
+      "India": 0.008,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.248
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.124
+      },
+      {
+        "region": "Russia",
+        "density": 0.066
+      },
+      {
+        "region": "Europe",
+        "density": 0.017
+      },
+      {
+        "region": "India",
+        "density": 0.008
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.182,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "INTU": {
+    "n_paragraphs": 172,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ISRG": {
+    "n_paragraphs": 226,
+    "geo_mention_density": {
+      "China": 0.106,
+      "Russia": 0.053,
+      "Europe": 0.0,
+      "MiddleEast": 0.08,
+      "India": 0.186,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.212
+    },
+    "top_regions": [
+      {
+        "region": "Japan_Korea",
+        "density": 0.212
+      },
+      {
+        "region": "India",
+        "density": 0.186
+      },
+      {
+        "region": "China",
+        "density": 0.106
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.08
+      },
+      {
+        "region": "Russia",
+        "density": 0.053
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "JNJ": {
+    "n_paragraphs": 162,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.006,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.006
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "JPM": {
+    "n_paragraphs": 21,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "KLAC": {
+    "n_paragraphs": 277,
+    "geo_mention_density": {
+      "China": 0.307,
+      "Russia": 0.032,
+      "Europe": 0.043,
+      "MiddleEast": 0.058,
+      "India": 0.029,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.025,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.307
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.058
+      },
+      {
+        "region": "Europe",
+        "density": 0.043
+      },
+      {
+        "region": "Russia",
+        "density": 0.032
+      },
+      {
+        "region": "India",
+        "density": 0.029
+      }
+    ],
+    "facility_concentration_score": 0.166,
+    "facility_by_region": {
+      "China": 20,
+      "Europe": 12,
+      "MiddleEast": 7,
+      "SoutheastAsia": 7
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.182,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "KO": {
+    "n_paragraphs": 74,
+    "geo_mention_density": {
+      "China": 0.054,
+      "Russia": 0.0,
+      "Europe": 0.162,
+      "MiddleEast": 0.0,
+      "India": 0.081,
+      "LatAm": 0.054,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.027,
+      "Japan_Korea": 0.162
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.162
+      },
+      {
+        "region": "Japan_Korea",
+        "density": 0.162
+      },
+      {
+        "region": "India",
+        "density": 0.081
+      },
+      {
+        "region": "China",
+        "density": 0.054
+      },
+      {
+        "region": "LatAm",
+        "density": 0.054
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "LIN": {
+    "n_paragraphs": 252,
+    "geo_mention_density": {
+      "China": 0.024,
+      "Russia": 0.345,
+      "Europe": 0.008,
+      "MiddleEast": 0.0,
+      "India": 0.151,
+      "LatAm": 0.143,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.008,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Russia",
+        "density": 0.345
+      },
+      {
+        "region": "India",
+        "density": 0.151
+      },
+      {
+        "region": "LatAm",
+        "density": 0.143
+      },
+      {
+        "region": "China",
+        "density": 0.024
+      },
+      {
+        "region": "Europe",
+        "density": 0.008
+      }
+    ],
+    "facility_concentration_score": 0.119,
+    "facility_by_region": {
+      "Russia": 30
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "LLY": {
+    "n_paragraphs": 137,
+    "geo_mention_density": {
+      "China": 0.015,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.073
+    },
+    "top_regions": [
+      {
+        "region": "Japan_Korea",
+        "density": 0.073
+      },
+      {
+        "region": "China",
+        "density": 0.015
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "LMT": {
+    "n_paragraphs": 228,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.031,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.031
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "LOW": {
+    "n_paragraphs": 162,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.025,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.025
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "LRCX": {
+    "n_paragraphs": 266,
+    "geo_mention_density": {
+      "China": 0.06,
+      "Russia": 0.015,
+      "Europe": 0.015,
+      "MiddleEast": 0.023,
+      "India": 0.06,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.06
+      },
+      {
+        "region": "India",
+        "density": 0.06
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.023
+      },
+      {
+        "region": "Russia",
+        "density": 0.015
+      },
+      {
+        "region": "Europe",
+        "density": 0.015
+      }
+    ],
+    "facility_concentration_score": 0.06,
+    "facility_by_region": {
+      "China": 2,
+      "Europe": 4,
+      "India": 10
+    },
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "MA": {
+    "n_paragraphs": 69,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.014,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "LatAm",
+        "density": 0.014
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "MCD": {
+    "n_paragraphs": 150,
+    "geo_mention_density": {
+      "China": 0.013,
+      "Russia": 0.047,
+      "Europe": 0.02,
+      "MiddleEast": 0.053,
+      "India": 0.127,
+      "LatAm": 0.02,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.02
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.127
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.053
+      },
+      {
+        "region": "Russia",
+        "density": 0.047
+      },
+      {
+        "region": "Europe",
+        "density": 0.02
+      },
+      {
+        "region": "LatAm",
+        "density": 0.02
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "MDLZ": {
+    "n_paragraphs": 161,
+    "geo_mention_density": {
+      "China": 0.006,
+      "Russia": 0.161,
+      "Europe": 0.112,
+      "MiddleEast": 0.037,
+      "India": 0.273,
+      "LatAm": 0.068,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.273
+      },
+      {
+        "region": "Russia",
+        "density": 0.161
+      },
+      {
+        "region": "Europe",
+        "density": 0.112
+      },
+      {
+        "region": "LatAm",
+        "density": 0.068
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.037
+      }
+    ],
+    "facility_concentration_score": 0.161,
+    "facility_by_region": {
+      "Russia": 22,
+      "India": 4
+    },
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.364,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "MDT": {
+    "n_paragraphs": 147,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.109,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.109
+      }
+    ],
+    "facility_concentration_score": 0.027,
+    "facility_by_region": {
+      "Europe": 4
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "META": {
+    "n_paragraphs": 142,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.169,
+      "Europe": 0.085,
+      "MiddleEast": 0.042,
+      "India": 0.042,
+      "LatAm": 0.007,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Russia",
+        "density": 0.169
+      },
+      {
+        "region": "Europe",
+        "density": 0.085
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.042
+      },
+      {
+        "region": "India",
+        "density": 0.042
+      },
+      {
+        "region": "LatAm",
+        "density": 0.007
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "MO": {
+    "n_paragraphs": 102,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "MRK": {
+    "n_paragraphs": 123,
+    "geo_mention_density": {
+      "China": 0.098,
+      "Russia": 0.0,
+      "Europe": 0.22,
+      "MiddleEast": 0.0,
+      "India": 0.008,
+      "LatAm": 0.016,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.016,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.22
+      },
+      {
+        "region": "China",
+        "density": 0.098
+      },
+      {
+        "region": "LatAm",
+        "density": 0.016
+      },
+      {
+        "region": "SoutheastAsia",
+        "density": 0.016
+      },
+      {
+        "region": "India",
+        "density": 0.008
+      }
+    ],
+    "facility_concentration_score": 0.033,
+    "facility_by_region": {
+      "LatAm": 2,
+      "SoutheastAsia": 2
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "MS": {
+    "n_paragraphs": 36,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.167,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.167
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "MSFT": {
+    "n_paragraphs": 209,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.01,
+      "LatAm": 0.0,
+      "Africa": 0.019,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Africa",
+        "density": 0.019
+      },
+      {
+        "region": "India",
+        "density": 0.01
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "MU": {
+    "n_paragraphs": 219,
+    "geo_mention_density": {
+      "China": 0.014,
+      "Russia": 0.0,
+      "Europe": 0.023,
+      "MiddleEast": 0.0,
+      "India": 0.041,
+      "LatAm": 0.0,
+      "Africa": 0.018,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.041
+      },
+      {
+        "region": "Europe",
+        "density": 0.023
+      },
+      {
+        "region": "Africa",
+        "density": 0.018
+      },
+      {
+        "region": "China",
+        "density": 0.014
+      }
+    ],
+    "facility_concentration_score": 0.027,
+    "facility_by_region": {
+      "India": 6
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "NEE": {
+    "n_paragraphs": 163,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.374,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.374
+      }
+    ],
+    "facility_concentration_score": 0.037,
+    "facility_by_region": {
+      "India": 6
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "NKE": {
+    "n_paragraphs": 103,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.058,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.058
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "NOC": {
+    "n_paragraphs": 257,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.023,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.031
+    },
+    "top_regions": [
+      {
+        "region": "Japan_Korea",
+        "density": 0.031
+      },
+      {
+        "region": "India",
+        "density": 0.023
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "NVDA": {
+    "n_paragraphs": 752,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.005,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.005,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.005
+      },
+      {
+        "region": "SoutheastAsia",
+        "density": 0.005
+      }
+    ],
+    "facility_concentration_score": 0.005,
+    "facility_by_region": {
+      "SoutheastAsia": 4
+    },
+    "single_source_risk_score": 0.182,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ORCL": {
+    "n_paragraphs": 348,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.006,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.034
+    },
+    "top_regions": [
+      {
+        "region": "Japan_Korea",
+        "density": 0.034
+      },
+      {
+        "region": "India",
+        "density": 0.006
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "PEP": {
+    "n_paragraphs": 163,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.025,
+      "Europe": 0.037,
+      "MiddleEast": 0.0,
+      "India": 0.098,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.098
+      },
+      {
+        "region": "Europe",
+        "density": 0.037
+      },
+      {
+        "region": "Russia",
+        "density": 0.025
+      }
+    ],
+    "facility_concentration_score": 0.025,
+    "facility_by_region": {
+      "Russia": 4
+    },
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "PG": {
+    "n_paragraphs": 154,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.13,
+      "Europe": 0.026,
+      "MiddleEast": 0.0,
+      "India": 0.143,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.143
+      },
+      {
+        "region": "Russia",
+        "density": 0.13
+      },
+      {
+        "region": "Europe",
+        "density": 0.026
+      }
+    ],
+    "facility_concentration_score": 0.013,
+    "facility_by_region": {
+      "India": 2
+    },
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.182,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "PLD": {
+    "n_paragraphs": 95,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.126,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.126
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "PM": {
+    "n_paragraphs": 306,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.029,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.029
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.182,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "PNC": {
+    "n_paragraphs": 111,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "PSA": {
+    "n_paragraphs": 245,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.057,
+      "MiddleEast": 0.0,
+      "India": 0.024,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.057
+      },
+      {
+        "region": "India",
+        "density": 0.024
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "QCOM": {
+    "n_paragraphs": 213,
+    "geo_mention_density": {
+      "China": 0.183,
+      "Russia": 0.0,
+      "Europe": 0.028,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.183
+      },
+      {
+        "region": "Europe",
+        "density": 0.028
+      }
+    ],
+    "facility_concentration_score": 0.028,
+    "facility_by_region": {
+      "Europe": 6
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "RTX": {
+    "n_paragraphs": 248,
+    "geo_mention_density": {
+      "China": 0.121,
+      "Russia": 0.173,
+      "Europe": 0.032,
+      "MiddleEast": 0.117,
+      "India": 0.161,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Russia",
+        "density": 0.173
+      },
+      {
+        "region": "India",
+        "density": 0.161
+      },
+      {
+        "region": "China",
+        "density": 0.121
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.117
+      },
+      {
+        "region": "Europe",
+        "density": 0.032
+      }
+    ],
+    "facility_concentration_score": 0.052,
+    "facility_by_region": {
+      "MiddleEast": 13
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.062,
+    "revenue_concentration_mentions": 0
+  },
+  "SCHW": {
+    "n_paragraphs": 97,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 2
+  },
+  "SLB": {
+    "n_paragraphs": 169,
+    "geo_mention_density": {
+      "China": 0.036,
+      "Russia": 0.118,
+      "Europe": 0.118,
+      "MiddleEast": 0.018,
+      "India": 0.024,
+      "LatAm": 0.006,
+      "Africa": 0.006,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Russia",
+        "density": 0.118
+      },
+      {
+        "region": "Europe",
+        "density": 0.118
+      },
+      {
+        "region": "China",
+        "density": 0.036
+      },
+      {
+        "region": "India",
+        "density": 0.024
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.018
+      }
+    ],
+    "facility_concentration_score": 0.024,
+    "facility_by_region": {
+      "Russia": 4
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "SO": {
+    "n_paragraphs": 147,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.014,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.014
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "SPGI": {
+    "n_paragraphs": 186,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.011,
+      "Europe": 0.0,
+      "MiddleEast": 0.011,
+      "India": 0.237,
+      "LatAm": 0.011,
+      "Africa": 0.005,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.237
+      },
+      {
+        "region": "Russia",
+        "density": 0.011
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.011
+      },
+      {
+        "region": "LatAm",
+        "density": 0.011
+      },
+      {
+        "region": "Africa",
+        "density": 0.005
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "SWK": {
+    "n_paragraphs": 180,
+    "geo_mention_density": {
+      "China": 0.011,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.3,
+      "LatAm": 0.022,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.3
+      },
+      {
+        "region": "LatAm",
+        "density": 0.022
+      },
+      {
+        "region": "China",
+        "density": 0.011
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.062,
+    "revenue_concentration_mentions": 0
+  },
+  "SYK": {
+    "n_paragraphs": 156,
+    "geo_mention_density": {
+      "China": 0.038,
+      "Russia": 0.013,
+      "Europe": 0.077,
+      "MiddleEast": 0.013,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.013,
+      "Japan_Korea": 0.038
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.077
+      },
+      {
+        "region": "China",
+        "density": 0.038
+      },
+      {
+        "region": "Japan_Korea",
+        "density": 0.038
+      },
+      {
+        "region": "Russia",
+        "density": 0.013
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.013
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "TGT": {
+    "n_paragraphs": 94,
+    "geo_mention_density": {
+      "China": 0.021,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.053,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.053
+      },
+      {
+        "region": "China",
+        "density": 0.021
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "TJX": {
+    "n_paragraphs": 96,
+    "geo_mention_density": {
+      "China": 0.01,
+      "Russia": 0.042,
+      "Europe": 0.125,
+      "MiddleEast": 0.042,
+      "India": 0.0,
+      "LatAm": 0.021,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.125
+      },
+      {
+        "region": "Russia",
+        "density": 0.042
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.042
+      },
+      {
+        "region": "LatAm",
+        "density": 0.021
+      },
+      {
+        "region": "China",
+        "density": 0.01
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.062,
+    "revenue_concentration_mentions": 0
+  },
+  "TMO": {
+    "n_paragraphs": 83,
+    "geo_mention_density": {
+      "China": 0.096,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.096
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.182,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "TSLA": {
+    "n_paragraphs": 256,
+    "geo_mention_density": {
+      "China": 0.023,
+      "Russia": 0.0,
+      "Europe": 0.039,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.016,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.039
+      },
+      {
+        "region": "China",
+        "density": 0.023
+      },
+      {
+        "region": "LatAm",
+        "density": 0.016
+      }
+    ],
+    "facility_concentration_score": 0.055,
+    "facility_by_region": {
+      "China": 6,
+      "Europe": 4,
+      "LatAm": 4
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "TXN": {
+    "n_paragraphs": 103,
+    "geo_mention_density": {
+      "China": 0.039,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "China",
+        "density": 0.039
+      }
+    ],
+    "facility_concentration_score": 0.019,
+    "facility_by_region": {
+      "China": 2
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.062,
+    "revenue_concentration_mentions": 4
+  },
+  "UNH": {
+    "n_paragraphs": 93,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "UPS": {
+    "n_paragraphs": 251,
+    "geo_mention_density": {
+      "China": 0.016,
+      "Russia": 0.0,
+      "Europe": 0.072,
+      "MiddleEast": 0.028,
+      "India": 0.04,
+      "LatAm": 0.016,
+      "Africa": 0.02,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.072
+      },
+      {
+        "region": "India",
+        "density": 0.04
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.028
+      },
+      {
+        "region": "Africa",
+        "density": 0.02
+      },
+      {
+        "region": "China",
+        "density": 0.016
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.364,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "USB": {
+    "n_paragraphs": 89,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "V": {
+    "n_paragraphs": 55,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.655,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.655
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "WM": {
+    "n_paragraphs": 102,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.686,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.686
+      }
+    ],
+    "facility_concentration_score": 0.029,
+    "facility_by_region": {
+      "India": 3
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.182,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 4
+  },
+  "WMT": {
+    "n_paragraphs": 202,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.0,
+      "MiddleEast": 0.0,
+      "India": 0.0,
+      "LatAm": 0.045,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "LatAm",
+        "density": 0.045
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.0,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "XOM": {
+    "n_paragraphs": 68,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.015,
+      "MiddleEast": 0.015,
+      "India": 0.588,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "India",
+        "density": 0.588
+      },
+      {
+        "region": "Europe",
+        "density": 0.015
+      },
+      {
+        "region": "MiddleEast",
+        "density": 0.015
+      }
+    ],
+    "facility_concentration_score": 0.132,
+    "facility_by_region": {
+      "India": 9
+    },
+    "single_source_risk_score": 0.0,
+    "asset_exit_score": 0.091,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  },
+  "ZTS": {
+    "n_paragraphs": 94,
+    "geo_mention_density": {
+      "China": 0.0,
+      "Russia": 0.0,
+      "Europe": 0.021,
+      "MiddleEast": 0.0,
+      "India": 0.011,
+      "LatAm": 0.0,
+      "Africa": 0.0,
+      "SoutheastAsia": 0.0,
+      "Japan_Korea": 0.0
+    },
+    "top_regions": [
+      {
+        "region": "Europe",
+        "density": 0.021
+      },
+      {
+        "region": "India",
+        "density": 0.011
+      }
+    ],
+    "facility_concentration_score": 0.0,
+    "facility_by_region": {},
+    "single_source_risk_score": 0.091,
+    "asset_exit_score": 0.182,
+    "route_sensitivity_score": 0.0,
+    "revenue_concentration_mentions": 0
+  }
+}
