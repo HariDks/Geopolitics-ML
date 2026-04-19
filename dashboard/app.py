@@ -57,14 +57,19 @@ COMPANIES = {
 }
 
 QUICK_SCENARIOS = [
-    {"label": "Russia invasion -> Exxon", "text": "Russia launched full-scale invasion of Ukraine, triggering Western sanctions and corporate exits from Russia", "company": "Exxon Mobil (XOM)"},
-    {"label": "Chip controls -> NVIDIA", "text": "US Bureau of Industry and Security restricted exports of advanced AI chips and semiconductor equipment to China", "company": "NVIDIA (NVDA)"},
-    {"label": "Red Sea -> Costco", "text": "Houthi rebels fired anti-ship missiles at commercial vessels in the Red Sea forcing major shipping lines to reroute around the Cape of Good Hope", "company": "Costco (COST)"},
-    {"label": "Ransomware -> Intel", "text": "DarkSide ransomware group encrypted Colonial Pipeline IT systems forcing shutdown of the largest US fuel pipeline for six days", "company": "Intel (INTC)"},
-    {"label": "OPEC cut -> Boeing", "text": "OPEC announced a surprise production cut of 2 million barrels per day sending oil prices surging 8 percent", "company": "Boeing (BA)"},
-    {"label": "EU DMA -> Apple", "text": "EU passed the Digital Markets Act requiring Big Tech platforms to allow sideloading third-party app stores and interoperability", "company": "Apple (AAPL)"},
-    {"label": "China tariffs -> Walmart", "text": "US imposed 25 percent tariffs on all Chinese imports including electronics semiconductors and consumer goods", "company": "Walmart (WMT)"},
-    {"label": "Xinjiang boycott -> Nike", "text": "Xinjiang forced labor allegations triggered Western brands boycott of Chinese cotton and consumer backlash in China", "company": "Nike (NKE)"},
+    # High impact — dramatic events with clear financial consequences
+    {"label": "BP Rosneft $25B write-down", "text": "BP announced exit from its 19.75 percent Rosneft stake resulting in pre-tax impairment charges of 25.5 billion dollars after Russia invaded Ukraine and Western sanctions forced corporate exits", "company": "Exxon Mobil (XOM)"},
+    {"label": "NotPetya destroys Maersk IT", "text": "NotPetya ransomware destroyed 45000 PCs and 4000 servers at Maersk costing 300 million dollars in lost revenue and IT rebuilding across global shipping operations", "company": "FedEx (FDX)"},
+    # Moderate impact — significant but not catastrophic
+    {"label": "Chip controls hit NVIDIA $400M", "text": "US Bureau of Industry and Security restricted exports of advanced AI chips including A100 and H100 to China reducing NVIDIA revenue by approximately 400 million dollars per quarter", "company": "NVIDIA (NVDA)"},
+    {"label": "Xinjiang boycott wipes H&M from China", "text": "Xinjiang forced labor allegations triggered consumer boycott in China wiping H&M from all Chinese e-commerce platforms and costing Nike 15 percent of Greater China revenue", "company": "Nike (NKE)"},
+    # Supply chain / logistics disruption
+    {"label": "Red Sea rerouting +40% freight", "text": "Houthi rebels fired anti-ship missiles at commercial vessels in the Red Sea forcing rerouting around Cape of Good Hope adding 14 days transit time and surging freight costs 40 percent", "company": "FedEx (FDX)"},
+    {"label": "OPEC cut spikes jet fuel costs", "text": "OPEC announced surprise production cut of 2 million barrels per day sending oil prices surging 8 percent and jet fuel costs spiking forcing airlines to defer aircraft orders", "company": "Boeing (BA)"},
+    # Regulatory / compliance
+    {"label": "EU forces Apple to open App Store", "text": "EU passed Digital Markets Act requiring Apple to allow third-party app stores sideloading and alternative payment systems threatening up to 10 percent of App Store commission revenue", "company": "Apple (AAPL)"},
+    # Broad tariff impact
+    {"label": "25% China tariffs hit Walmart", "text": "US imposed 25 percent tariffs on all Chinese imports forcing Walmart to absorb billions in cost increases on consumer goods electronics and household products sourced from China", "company": "Walmart (WMT)"},
 ]
 
 CHANNEL_DESCRIPTIONS = {
