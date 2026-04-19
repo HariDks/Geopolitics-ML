@@ -170,7 +170,7 @@ if not st.session_state.results:
 
     We wanted to see: **can you build that capability with ML instead of a 40-person team?**
 
-    Over 9 days of development, we ingested data from GDELT, ACLED, Global Trade Alert, OFAC, BIS, and SEC EDGAR.
+    Over several days of development, we ingested data from GDELT, ACLED, Global Trade Alert, OFAC, BIS, and SEC EDGAR.
     We trained a DistilBERT event classifier (95% accuracy on news text), an XGBoost exposure scorer,
     a quantile regression impact estimator, and a retrieval-based strategy recommender. Then we broke it,
     diagnosed why, added lexicon features, and got channel prediction from 50% to 75%.
