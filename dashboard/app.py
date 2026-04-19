@@ -204,22 +204,6 @@ def display_results(results, event_text, company_name, revenue):
     reliability = exp.get("channel_reliability", "unknown")
     mode = exp.get("channel_mode", "unknown")
 
-    mid = imp["impact_mid_pct"]
-    if abs(mid) < 0.3:
-        severity_label, severity_color = "Minimal", "warning"
-    elif mid < -5:
-        severity_label, severity_color = "Severe negative", "error"
-    elif mid < -2:
-        severity_label, severity_color = "Significant negative", "error"
-    elif mid < 0:
-        severity_label, severity_color = "Moderate negative", "warning"
-    elif mid > 5:
-        severity_label, severity_color = "Severe positive", "success"
-    elif mid > 2:
-        severity_label, severity_color = "Significant positive", "success"
-    else:
-        severity_label, severity_color = "Moderate positive", "warning"
-
     company_short = company_name.split(" (")[0]
     ch1_short = ch1.replace("_", " ").title()
     ch1_desc = CHANNEL_DESCRIPTIONS.get(ch1, "")
@@ -228,28 +212,59 @@ def display_results(results, event_text, company_name, revenue):
     elif reliability == "moderate": conf_badge = "Moderate"
     else: conf_badge = "Low (limited signals)"
 
-    # Summary banner
+    # Financial impact scale
+    mid = imp["impact_mid_pct"]
     pct_low = imp['impact_low_pct']
     pct_high = imp['impact_high_pct']
     usd_low = fmt_usd(imp.get('impact_low_usd', 0))
     usd_high = fmt_usd(imp.get('impact_high_usd', 0))
 
-    summary = (
-        f"**{severity_label}** impact on {company_short}, "
-        f"primarily through **{ch1_short.lower()}** ({ch1_desc.lower()}). "
-        f"Estimated range: **{pct_low:+.1f}% to {pct_high:+.1f}%** of revenue "
-        f"({usd_low} to {usd_high} on ${revenue/1e9:.0f}B). "
-        f"Confidence: **{conf_badge}**."
-    )
+    if abs(mid) < 0.3: fin_label = "Limited"
+    elif abs(mid) < 1: fin_label = "Low-to-moderate"
+    elif abs(mid) < 3: fin_label = "Moderate"
+    elif abs(mid) < 7: fin_label = "Significant"
+    else: fin_label = "Severe"
 
-    # Add sign correction note if applied
-    direction = results.get("direction", "mixed")
-    if direction != "mixed":
-        summary += f" *(Direction adjusted: event signals are clearly {direction}.)*"
+    # Operational severity (based on channel type + event signals)
+    high_ops_channels = {"cybersecurity_it", "logistics_operations", "workforce_talent"}
+    med_ops_channels = {"procurement_supply_chain", "capital_allocation_investment"}
+    if ch1 in high_ops_channels:
+        ops_label = "High"
+    elif ch1 in med_ops_channels:
+        ops_label = "Medium-to-high"
+    else:
+        ops_label = "Medium"
 
-    if severity_color == "error": st.error(f"### {summary}")
-    elif severity_color == "success": st.success(f"### {summary}")
-    else: st.warning(f"### {summary}")
+    # Banner color based on financial + operational combined
+    if fin_label in ("Significant", "Severe") or (ops_label == "High" and fin_label != "Limited"):
+        banner_color = "error"
+    elif fin_label == "Limited" and ops_label != "High":
+        banner_color = "warning"
+    else:
+        banner_color = "warning"
+
+    # Summary card — separate financial and operational
+    st.markdown(f"### Estimated impact on {company_short}")
+
+    summary_table = f"""
+| | |
+|---|---|
+| **Financial impact** | {pct_low:+.1f}% to {pct_high:+.1f}% of revenue ({usd_low} to {usd_high} on ${revenue/1e9:.0f}B) |
+| **Financial scale** | {fin_label} |
+| **Primary mechanism** | {ch1_short} — {ch1_desc.lower()} |
+| **Operational severity** | {ops_label} |
+| **Reliability** | {conf_badge} |
+"""
+
+    if banner_color == "error":
+        st.error(summary_table)
+    elif banner_color == "success":
+        st.success(summary_table)
+    else:
+        st.warning(summary_table)
+
+    st.caption("This is a generic estimate based on similar historical events. "
+               "It does not include company-specific exposure data.")
 
     # Explanation
     st.markdown("#### Why this prediction?")
@@ -287,7 +302,14 @@ def display_results(results, event_text, company_name, revenue):
 
     # Diagnostics
     with st.expander("Full diagnostics"):
-        st.markdown(f"**Event:** {evt['category'].replace('_', ' ').title()} ({evt['confidence']:.0%})")
+        st.markdown(f"**Event classification:** {evt['category'].replace('_', ' ').title()} ({evt['confidence']:.0%})")
+        st.markdown(f"**Financial scale:** {fin_label} | **Operational severity:** {ops_label}")
+
+        direction = results.get("direction", "mixed")
+        if direction != "mixed":
+            st.markdown(f"**Sign confidence:** Strengthened by {direction} event-language signals.")
+
+        st.markdown("**All channel probabilities:**")
         st.dataframe(pd.DataFrame([
             {"Channel": ch.replace("_", " ").title(), "Probability": f"{p:.1%}"}
             for ch, p in ranked
