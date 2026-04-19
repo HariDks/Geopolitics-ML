@@ -126,10 +126,10 @@ st.caption("Test how a geopolitical event affects a specific company's business.
 
 # ── Quick Scenarios ──────────────────────────────────────────────────────────
 
-st.markdown("**Try an example:**")
+st.subheader("Try an example")
 cols = st.columns(4)
 for i, scenario in enumerate(QUICK_SCENARIOS):
-    if cols[i % 4].button(scenario["label"], use_container_width=True, key=f"scenario_{i}"):
+    if cols[i % 4].button(scenario["label"], use_container_width=True, key=f"scenario_{i}", type="secondary"):
         st.session_state.event_text = scenario["text"]
         st.session_state.company_name = scenario["company"]
         # Auto-run
@@ -197,18 +197,24 @@ if st.session_state.results:
 
     st.divider()
 
-    # ── Summary card ─────────────────────────────────────────────────────
+    # ── Summary card (THE takeaway — must be first and unmissable) ────────
 
-    st.markdown(f"""
-    ### What this means for {company_short}
+    summary_text = (
+        f"**{severity_label}** impact on {company_short}, "
+        f"primarily through **{ch1_short.lower()}** "
+        f"({ch1_desc.lower()}). "
+        f"Estimated range: **{fmt_usd(imp.get('impact_low_usd', 0))} to "
+        f"{fmt_usd(imp.get('impact_high_usd', 0))}** "
+        f"on ${revenue/1e9:.0f}B revenue. "
+        f"Confidence: **{conf_badge}**."
+    )
 
-    | | |
-    |---|---|
-    | **Likely impact** | {severity_label} ({imp['impact_low_pct']:+.1f}% to {imp['impact_high_pct']:+.1f}%) |
-    | **Main driver** | {ch1_short} — {ch1_desc.lower()} |
-    | **Dollar range** | {fmt_usd(imp.get('impact_low_usd', 0))} to {fmt_usd(imp.get('impact_high_usd', 0))} (on ${revenue/1e9:.0f}B revenue) |
-    | **Confidence** | {conf_badge} |
-    """)
+    if mid < -1:
+        st.error(f"### {summary_text}")
+    elif mid > 1:
+        st.success(f"### {summary_text}")
+    else:
+        st.warning(f"### {summary_text}")
 
     # ── Explanation ──────────────────────────────────────────────────────
 
