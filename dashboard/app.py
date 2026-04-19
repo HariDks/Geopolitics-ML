@@ -46,24 +46,24 @@ COMPANIES = {
     "Other (enter manually)": {"ticker": "", "revenue": 0, "sector": ""},
 }
 
-# Preloaded scenarios — one per severity tier, correct event->company pairing
+# Preloaded scenarios — event text describes what happened, company is who we're analyzing
 PRELOADED = [
-    {"event": "Russia invaded Ukraine forcing BP to exit its 19.75% Rosneft stake resulting in $25.5B pre-tax impairment",
-     "company": "Exxon Mobil (XOM)", "tag": "Severe", "label": "Russia invasion -> Exxon Mobil"},
-    {"event": "NotPetya ransomware destroyed 45,000 PCs and 4,000 servers at Maersk costing $300M in lost revenue and forced complete IT rebuild",
-     "company": "FedEx (FDX)", "tag": "Significant", "label": "NotPetya ransomware -> FedEx"},
-    {"event": "US Bureau of Industry and Security restricted exports of advanced AI chips including A100 and H100 to China reducing revenue by $400M per quarter",
-     "company": "NVIDIA (NVDA)", "tag": "Significant", "label": "Chip export controls -> NVIDIA"},
-    {"event": "Xinjiang forced labor allegations triggered consumer boycott in China wiping H&M from platforms and costing Western brands 15% of Greater China revenue",
-     "company": "Nike (NKE)", "tag": "Moderate", "label": "Xinjiang boycott -> Nike"},
-    {"event": "EU passed Digital Markets Act requiring third-party app stores and alternative payment systems threatening up to 10% of App Store commission revenue",
-     "company": "Apple (AAPL)", "tag": "Moderate", "label": "EU Digital Markets Act -> Apple"},
-    {"event": "Houthi rebels fired anti-ship missiles at commercial vessels in the Red Sea forcing rerouting around Cape of Good Hope adding 14 days transit and 40% freight cost surge",
-     "company": "Costco (COST)", "tag": "Moderate", "label": "Red Sea rerouting -> Costco"},
-    {"event": "OPEC announced surprise production cut of 2 million barrels per day sending oil prices surging 8% and spiking jet fuel costs for airlines globally",
-     "company": "Boeing (BA)", "tag": "Moderate", "label": "OPEC production cut -> Boeing"},
-    {"event": "US imposed 25% tariffs on all Chinese imports forcing retailers to absorb billions in cost increases on consumer goods and electronics",
-     "company": "Walmart (WMT)", "tag": "Moderate", "label": "China tariffs -> Walmart"},
+    {"event": "Russia launched full-scale invasion of Ukraine triggering Western sanctions. Energy companies with Russian operations faced asset freezes and were forced to write down billions in stranded investments",
+     "company": "Exxon Mobil (XOM)", "label": "Russia invasion -> Exxon Mobil"},
+    {"event": "NotPetya ransomware spread globally through a Ukrainian tax software update destroying IT systems at major shipping and logistics companies. FedEx subsidiary TNT Express lost $400M from the attack",
+     "company": "FedEx (FDX)", "label": "NotPetya ransomware -> FedEx"},
+    {"event": "US Bureau of Industry and Security restricted exports of advanced AI chips including A100 and H100 to China. NVIDIA lost access to its second-largest market reducing revenue by approximately $400M per quarter",
+     "company": "NVIDIA (NVDA)", "label": "Chip export controls -> NVIDIA"},
+    {"event": "Xinjiang forced labor allegations triggered massive consumer boycott of Western brands in China. Nike faced backlash losing approximately 15% of Greater China revenue as Chinese consumers switched to local brands",
+     "company": "Nike (NKE)", "label": "Xinjiang boycott -> Nike"},
+    {"event": "EU passed Digital Markets Act requiring Apple to allow third-party app stores sideloading and alternative payment systems. Apple faces compliance costs and potential loss of up to 10% of App Store commission revenue in Europe",
+     "company": "Apple (AAPL)", "label": "EU Digital Markets Act -> Apple"},
+    {"event": "Houthi rebels fired anti-ship missiles at commercial vessels in the Red Sea. Major retailers depending on Asian imports face 40% freight cost surge and 14 extra days of transit time as ships reroute around Africa",
+     "company": "Costco (COST)", "label": "Red Sea rerouting -> Costco"},
+    {"event": "OPEC announced surprise production cut of 2 million barrels per day sending oil prices surging 8%. Airlines face spiking jet fuel costs forcing them to defer new aircraft orders from Boeing",
+     "company": "Boeing (BA)", "label": "OPEC production cut -> Boeing"},
+    {"event": "US imposed 25% tariffs on all Chinese imports. Walmart which sources billions in consumer goods electronics and household products from China faces massive cost increases that must be absorbed or passed to customers",
+     "company": "Walmart (WMT)", "label": "China tariffs -> Walmart"},
 ]
 
 CHANNEL_DESCRIPTIONS = {
@@ -326,11 +326,10 @@ elif page == "Preloaded Examples":
     for scenario in PRELOADED:
         event = scenario["event"]
         company_name = scenario["company"]
-        tag = scenario["tag"]
         label = scenario["label"]
         info = COMPANIES[company_name]
 
-        with st.expander(f"**{label}** — *{tag} impact*"):
+        with st.expander(f"**{label}**"):
             st.markdown(f"**Event:** {event}")
             st.markdown(f"**Company:** {company_name} | ${info['revenue']/1e9:.0f}B revenue | {info['sector']}")
             st.markdown("---")
