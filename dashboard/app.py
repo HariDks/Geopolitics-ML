@@ -106,13 +106,92 @@ def save_feedback(data: dict):
         w.writerow(data)
 
 
+# Negative-signal keywords — if these appear in event text, impact should skew negative
+NEGATIVE_SIGNALS = [
+    "loss", "lost", "losing", "boycott", "restriction", "restricted", "ban", "banned",
+    "sanction", "sanctions", "impairment", "write-down", "write-off", "exit", "exited",
+    "destroy", "destroyed", "attack", "attacked", "ransomware", "malware", "hack",
+    "collapse", "collapsed", "shutdown", "disruption", "disrupted", "crisis",
+    "tariff", "tariffs", "penalty", "fine", "fined", "seized", "frozen", "freeze",
+    "wiped", "wiping", "cost increase", "cost surge", "surging", "spiking",
+    "decline", "declined", "fell", "falling", "reduced", "reducing", "cut",
+    "forced", "forcing", "threatening", "threat",
+]
+
+# Positive-signal keywords — if these dominate, impact could be positive
+POSITIVE_SIGNALS = [
+    "benefit", "surge in demand", "gained", "winning", "opportunity",
+    "deregulation", "liberalization", "price increase", "pricing power",
+]
+
+
+def detect_event_direction(event_text: str) -> str:
+    """Detect whether the event is negative, positive, or mixed for the company."""
+    text_lower = event_text.lower()
+    neg_hits = sum(1 for kw in NEGATIVE_SIGNALS if kw in text_lower)
+    pos_hits = sum(1 for kw in POSITIVE_SIGNALS if kw in text_lower)
+    if neg_hits > pos_hits + 1:
+        return "negative"
+    elif pos_hits > neg_hits + 1:
+        return "positive"
+    return "mixed"
+
+
+def correct_impact_sign(imp: dict, direction: str) -> dict:
+    """
+    Fix the sign of impact estimates when the model gets it wrong.
+    If the event is clearly negative but the model predicts positive,
+    flip the sign. This is a rule-based correction for the model's
+    most common error.
+    """
+    imp = dict(imp)  # don't mutate original
+
+    mid = imp["impact_mid_pct"]
+    low = imp["impact_low_pct"]
+    high = imp["impact_high_pct"]
+
+    if direction == "negative" and mid > 0:
+        # Model predicted positive for a clearly negative event — flip
+        imp["impact_mid_pct"] = -abs(mid)
+        imp["impact_low_pct"] = -abs(high)  # swap: worst case becomes low
+        imp["impact_high_pct"] = -abs(low) if low != 0 else -0.1
+        # Fix USD too
+        for key in ["impact_low_usd", "impact_mid_usd", "impact_high_usd"]:
+            if key in imp and imp[key]:
+                imp[key] = -abs(imp[key])
+        # Re-sort so low < mid < high
+        vals = sorted([imp["impact_low_pct"], imp["impact_mid_pct"], imp["impact_high_pct"]])
+        imp["impact_low_pct"], imp["impact_mid_pct"], imp["impact_high_pct"] = vals[0], vals[1], vals[2]
+        if "impact_low_usd" in imp and imp["impact_low_usd"]:
+            usd_vals = sorted([imp.get("impact_low_usd", 0), imp.get("impact_mid_usd", 0), imp.get("impact_high_usd", 0)])
+            imp["impact_low_usd"], imp["impact_mid_usd"], imp["impact_high_usd"] = usd_vals[0], usd_vals[1], usd_vals[2]
+
+    elif direction == "positive" and mid < 0:
+        # Model predicted negative for a clearly positive event — flip
+        imp["impact_mid_pct"] = abs(mid)
+        imp["impact_low_pct"] = abs(low) if low != 0 else 0.1
+        imp["impact_high_pct"] = abs(high)
+        for key in ["impact_low_usd", "impact_mid_usd", "impact_high_usd"]:
+            if key in imp and imp[key]:
+                imp[key] = abs(imp[key])
+        vals = sorted([imp["impact_low_pct"], imp["impact_mid_pct"], imp["impact_high_pct"]])
+        imp["impact_low_pct"], imp["impact_mid_pct"], imp["impact_high_pct"] = vals[0], vals[1], vals[2]
+
+    return imp
+
+
 def run_analysis(event_text, ticker, revenue):
     clf, scorer, estimator = load_models()
     evt = clf.predict(event_text)
     exp = scorer.score(event_category=evt["category"], ticker=ticker, mention_sentiment=-0.4, event_text=event_text)
     imp = estimator.estimate(event_category=evt["category"], impact_channel=exp["channel_prediction"],
                               ticker=ticker, mention_sentiment=-0.4, revenue_usd=revenue)
-    return {"evt": evt, "exp": exp, "imp": imp}
+
+    # Rule-based sign correction
+    direction = detect_event_direction(event_text)
+    imp = correct_impact_sign(imp, direction)
+
+    return {"evt": evt, "exp": exp, "imp": imp, "direction": direction}
 
 
 def display_results(results, event_text, company_name, revenue):
@@ -150,13 +229,23 @@ def display_results(results, event_text, company_name, revenue):
     else: conf_badge = "Low (limited signals)"
 
     # Summary banner
+    pct_low = imp['impact_low_pct']
+    pct_high = imp['impact_high_pct']
+    usd_low = fmt_usd(imp.get('impact_low_usd', 0))
+    usd_high = fmt_usd(imp.get('impact_high_usd', 0))
+
     summary = (
         f"**{severity_label}** impact on {company_short}, "
         f"primarily through **{ch1_short.lower()}** ({ch1_desc.lower()}). "
-        f"Estimated range: **{fmt_usd(imp.get('impact_low_usd', 0))} to "
-        f"{fmt_usd(imp.get('impact_high_usd', 0))}** on ${revenue/1e9:.0f}B revenue. "
+        f"Estimated range: **{pct_low:+.1f}% to {pct_high:+.1f}%** of revenue "
+        f"({usd_low} to {usd_high} on ${revenue/1e9:.0f}B). "
         f"Confidence: **{conf_badge}**."
     )
+
+    # Add sign correction note if applied
+    direction = results.get("direction", "mixed")
+    if direction != "mixed":
+        summary += f" *(Direction adjusted: event signals are clearly {direction}.)*"
 
     if severity_color == "error": st.error(f"### {summary}")
     elif severity_color == "success": st.success(f"### {summary}")
@@ -190,8 +279,10 @@ def display_results(results, event_text, company_name, revenue):
 
     # Limitation
     st.info(
-        f"**Limitation:** This prediction does not include company-specific exposure data. "
-        f"Actual impact may differ if {company_short} has concentrated operations in the affected region."
+        f"**Important:** Impact estimate is generic — it reflects historical patterns for similar events, "
+        f"not {company_short}'s specific exposure. The model does not know {company_short}'s revenue "
+        f"by geography, supplier network, or asset locations. Actual impact could be significantly "
+        f"larger or smaller depending on the company's real concentration in affected regions."
     )
 
     # Diagnostics
