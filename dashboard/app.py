@@ -119,36 +119,70 @@ def run_analysis(event_text, ticker, revenue):
     return {"evt": evt, "exp": exp, "imp": imp}
 
 
-# ── Header + Landing ─────────────────────────────────────────────────────────
+# ── Header ───────────────────────────────────────────────────────────────────
 
 st.title("Geopolitical Impact Tester")
 
-# Show landing page only when no results are loaded
+# ── Landing page (only on first visit) ───────────────────────────────────────
+
 if not st.session_state.results:
+
+    st.markdown("### What if you could stress-test any company against any geopolitical event?")
     st.markdown("""
-    **Pick a geopolitical event. Pick a company. See what happens.**
-
-    This tool uses ML models trained on **7.76 million geopolitical events** to estimate
-    how a specific event would affect a specific company — which part of the business gets
-    hit, how bad it could be, and why the model thinks so.
-
-    **What you'll get:**
-    - The most likely **impact channel** (supply chain? revenue? assets? reputation?)
-    - A **financial impact range** in dollars
-    - An **explanation** of which keywords in the event drove the prediction
-    - A **confidence level** — the model tells you when it's guessing
-
-    **What this is NOT:**
-    - Not financial advice
-    - Not a crystal ball — it's pattern-matching on historical data
-    - Not perfect — it gets the direction right ~90% of the time, but the specific channel ~62% of the time
-
-    **Your feedback matters.** This model improves with human input. After each analysis,
-    you can tell us if the prediction made sense or not. Every correction makes the next
-    prediction better.
-
-    ---
+    That's exactly what this does. Pick an event. Pick a company. Get an instant analysis
+    of *how* the business gets hit — not just *whether* it does.
     """)
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("""
+        #### What you get
+        - Which part of the business is affected (supply chain? revenue? assets? reputation?)
+        - A dollar-range impact estimate
+        - An explanation showing *why* the model thinks what it thinks
+        - A confidence level — because the model knows when it's guessing
+        """)
+    with col2:
+        st.markdown("""
+        #### What's under the hood
+        - **7.76 million** geopolitical events ingested from 6 data sources
+        - **602 labeled** company-event impact pairs used for training
+        - **4 ML models** chained together: classify the event, score company exposure, estimate financial impact, explain the mechanism
+        - Backtested against **10 real events** across 5 continents — predicted NVIDIA's export control hit within 1.3 percentage points
+        """)
+    with col3:
+        st.markdown("""
+        #### What it's honest about
+        - Gets the **direction right ~90%** of the time (will this hurt or help?)
+        - Gets the **specific channel right ~62-75%** of the time (depends on text quality)
+        - Struggles with companies that have **concentrated geographic exposure** (we'll tell you when)
+        - This is **not financial advice** — it's pattern-matching on historical data
+        """)
+
+    st.markdown("---")
+
+    st.markdown("""
+    #### The story behind this
+
+    This started as a research project inspired by the WEF's *Building Geopolitical Muscle* report (2026),
+    which found that only ~20% of global firms systematically quantify their geopolitical exposure.
+    The other 80% rely on gut feeling and heat maps.
+
+    We wanted to see: **can you build that capability with ML instead of a 40-person team?**
+
+    Over 9 days of development, we ingested data from GDELT, ACLED, Global Trade Alert, OFAC, BIS, and SEC EDGAR.
+    We trained a DistilBERT event classifier (95% accuracy on news text), an XGBoost exposure scorer,
+    a quantile regression impact estimator, and a retrieval-based strategy recommender. Then we broke it,
+    diagnosed why, added lexicon features, and got channel prediction from 50% to 75%.
+
+    The biggest lesson? **The right features matter more than the right model.** Adding 10 curated keyword
+    lists ("impairment" = capital allocation, "ransomware" = cybersecurity) did more than any architecture change.
+
+    **Your feedback makes this better.** After every analysis, you can tell us if the prediction made sense.
+    Every correction helps us understand where the model fails — and that's how it improves.
+    """)
+
+    st.markdown("---")
 
 # ── Quick Scenarios ──────────────────────────────────────────────────────────
 
