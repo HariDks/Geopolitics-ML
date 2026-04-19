@@ -116,6 +116,9 @@ class GeopoliticalRiskPipeline:
         )
 
         return {
+            "disclaimer": "Predictions are based on historical correlations, not causal analysis. "
+                          "Direction accuracy: ~90%. Channel accuracy: ~50%. "
+                          "Companies with concentrated geographic exposure may see larger actual impacts.",
             "input": {
                 "text": text[:200],
                 "ticker": ticker,
