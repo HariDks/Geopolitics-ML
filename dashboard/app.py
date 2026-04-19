@@ -290,14 +290,14 @@ if run or selected_scenario:
     st.divider()
     st.markdown("#### Was this correct?")
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     useful = col1.radio("Useful?", ["--", "Yes", "No"], horizontal=True, key="useful")
     ch_correct = col2.radio("Main channel correct?", ["--", "Yes", "No"], horizontal=True, key="ch_correct")
 
     correct_channel = ""
     comment = ""
     if ch_correct == "No":
-        correct_channel = col3.selectbox("Correct channel",
+        correct_channel = st.selectbox("What should the primary channel be?",
             [""] + [ch.replace("_", " ").title() for ch in CHANNEL_DESCRIPTIONS.keys()], key="corr_ch")
         comment = st.text_input("Optional comment", key="comment")
 
