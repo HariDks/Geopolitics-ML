@@ -132,25 +132,26 @@ for i, scenario in enumerate(QUICK_SCENARIOS):
     if cols[i % 4].button(scenario["label"], use_container_width=True, key=f"scenario_{i}", type="secondary"):
         st.session_state.event_text = scenario["text"]
         st.session_state.company_name = scenario["company"]
-        # Auto-run
+        st.session_state.used_preset = True
         info = COMPANIES[scenario["company"]]
         st.session_state.results = run_analysis(scenario["text"], info["ticker"], info["revenue"])
 
 st.divider()
 
-# ── Input Panel ──────────────────────────────────────────────────────────────
+# ── Custom Input Panel ───────────────────────────────────────────────────────
+
+st.markdown("**Or describe your own scenario:**")
 
 col_text, col_company = st.columns([3, 2])
 
 with col_text:
-    event_text = st.text_area("Event description", value=st.session_state.event_text, height=80,
+    event_text = st.text_area("Event description", height=80,
                                placeholder="Describe a geopolitical event in 1-3 sentences...",
                                key="event_input_main")
 
 with col_company:
     company_keys = list(COMPANIES.keys())
-    default_idx = company_keys.index(st.session_state.company_name) if st.session_state.company_name in company_keys else 0
-    company_name = st.selectbox("Company", company_keys, index=default_idx, key="company_select")
+    company_name = st.selectbox("Company", company_keys, key="company_select")
     info = COMPANIES[company_name]
 
     if company_name == "Other (enter manually)":
@@ -161,11 +162,10 @@ with col_company:
         revenue = info["revenue"]
         st.caption(f"**{ticker}** | ${revenue/1e9:.0f}B revenue | {info['sector']}")
 
-# ── Analyze button ───────────────────────────────────────────────────────────
-
 if st.button("Analyze Impact", type="primary", disabled=not event_text, use_container_width=True):
     st.session_state.event_text = event_text
     st.session_state.company_name = company_name
+    st.session_state.used_preset = False
     st.session_state.results = run_analysis(event_text, ticker, revenue)
 
 # ── Results ──────────────────────────────────────────────────────────────────
