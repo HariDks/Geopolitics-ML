@@ -27,7 +27,17 @@
     "single_source_risk",
     "asset_exit_score",
     "route_sensitivity",
-    "affected_geo_density"
+    "affected_geo_density",
+    "lex_procurement_sup",
+    "lex_revenue_market_",
+    "lex_capital_allocat",
+    "lex_regulatory_comp",
+    "lex_logistics_opera",
+    "lex_innovation_ip",
+    "lex_workforce_talen",
+    "lex_reputation_stak",
+    "lex_financial_treas",
+    "lex_cybersecurity_i"
   ],
   "impact_channels": [
     "procurement_supply_chain",

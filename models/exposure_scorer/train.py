@@ -278,6 +278,74 @@ if PROXY_PATH.exists():
         exposure_proxies = json.load(f)
         exposure_proxies.pop("_description", None)
 
+# ── Channel-specific lexicon features ──────────────────────────────────────
+# Curated keyword lists per channel, derived from distinctive terms in manual labels.
+# Each score = count of matching keywords / total keywords in lexicon.
+
+CHANNEL_LEXICONS = {
+    "revenue_market_access": [
+        "revenue", "sales", "market access", "demand", "customer", "orders",
+        "banned", "boycott", "export", "import ban", "market share", "lost",
+        "decline in sales", "represented", "accounted for", "fell",
+    ],
+    "procurement_supply_chain": [
+        "supply", "supply chain", "supplier", "procurement", "input cost",
+        "raw material", "component", "shortage", "tariff", "duty", "production",
+        "manufacturing", "assembly", "energy cost", "freight", "steel",
+    ],
+    "capital_allocation_investment": [
+        "impairment", "write-down", "write-off", "stake", "asset disposal",
+        "divest", "exit", "pre-tax charge", "billion", "goodwill",
+        "investment", "capex", "suspended", "mine closure", "concession",
+    ],
+    "regulatory_compliance_cost": [
+        "compliance", "regulation", "regulatory", "license", "screening",
+        "data localization", "privacy", "gdpr", "penalty", "fine",
+        "staffing", "approval", "certification", "requirement",
+    ],
+    "logistics_operations": [
+        "rerouting", "route", "shipping", "freight", "transit", "vessel",
+        "red sea", "suez", "cape of good hope", "port", "logistics",
+        "disruption", "delay", "reroute", "stranded",
+    ],
+    "innovation_ip": [
+        "chip", "semiconductor", "export control", "technology", "r&d",
+        "patent", "intellectual property", "joint venture", "jv",
+        "research", "development", "dual-use", "euv", "foundry",
+    ],
+    "workforce_talent": [
+        "employee", "worker", "labor", "workforce", "evacuation", "relocated",
+        "visa", "reserve duty", "talent", "hiring", "headcount",
+        "remote work", "staffing", "immigration",
+    ],
+    "reputation_stakeholder": [
+        "boycott", "reputation", "brand", "consumer backlash", "protest",
+        "public pressure", "esg", "stakeholder", "sponsors of war",
+        "social media", "backlash", "controversy",
+    ],
+    "financial_treasury": [
+        "currency", "fx", "foreign exchange", "repatriation", "devaluation",
+        "lira", "peso", "ruble", "trapped", "frozen", "asset freeze",
+        "swift", "counterparty", "treasury",
+    ],
+    "cybersecurity_it": [
+        "ransomware", "cyberattack", "hack", "malware", "cyber", "breach",
+        "encrypted", "ransom", "incident response", "it systems",
+        "notpetya", "solarwinds", "phishing",
+    ],
+}
+
+
+def compute_lexicon_scores(text: str) -> dict[str, float]:
+    """Compute channel-specific lexicon scores for a text."""
+    text_lower = text.lower() if text else ""
+    scores = {}
+    for channel, keywords in CHANNEL_LEXICONS.items():
+        hits = sum(1 for kw in keywords if kw in text_lower)
+        scores[channel] = hits / len(keywords)
+    return scores
+
+
 # Text channel model for generating text-based probabilities
 _text_model = None
 _text_vectorizer = None
@@ -417,7 +485,11 @@ def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, list
         affected_regions = EVENT_AFFECTED_REGIONS.get(event_id, [])
         affected_geo_density = sum(geo_density.get(r, 0.0) for r in affected_regions)
 
-        # Feature vector (no text model probs — those are blended separately at inference)
+        # Channel-specific lexicon scores from mention_text
+        lex = compute_lexicon_scores(label.get("mention_text", ""))
+        lex_scores = [lex.get(ch, 0.0) for ch in IMPACT_CHANNELS]
+
+        # Feature vector
         features = (
             cat_features  # 8 features: event category one-hot
             + [
@@ -442,6 +514,7 @@ def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, list
                 route_sensitivity,    # shipping route mentions
                 affected_geo_density, # mention density for affected regions
             ]
+            + lex_scores              # 10 features: channel-specific lexicon scores
         )
 
         X_rows.append(features)
@@ -573,6 +646,7 @@ FEATURE_NAMES = (
         "facility_score", "single_source_risk", "asset_exit_score",
         "route_sensitivity", "affected_geo_density",
     ]
+    + [f"lex_{c[:15]}" for c in IMPACT_CHANNELS]
 )
 
 
