@@ -1,0 +1,187 @@
+{
+  "_description": "Geographic revenue segments extracted from EDGAR 10-K inline XBRL",
+  "_companies_found": 15,
+  "_companies_attempted": 100,
+  "AAPL": {
+    "Americas": {
+      "revenue_M": 178353,
+      "pct": 42.0
+    },
+    "Europe": {
+      "revenue_M": 111032,
+      "pct": 26.2
+    },
+    "China": {
+      "revenue_M": 72559,
+      "pct": 17.1
+    },
+    "AsiaPacific": {
+      "revenue_M": 33696,
+      "pct": 7.9
+    },
+    "Japan": {
+      "revenue_M": 28703,
+      "pct": 6.8
+    }
+  },
+  "AMZN": {
+    "Americas": {
+      "revenue_M": 426305,
+      "pct": 72.5
+    },
+    "International": {
+      "revenue_M": 161894,
+      "pct": 27.5
+    }
+  },
+  "PEP": {
+    "Europe": {
+      "revenue_M": 18025,
+      "pct": 54.2
+    },
+    "Americas": {
+      "revenue_M": 10576,
+      "pct": 31.8
+    },
+    "AsiaPacific": {
+      "revenue_M": 4629,
+      "pct": 13.9
+    }
+  },
+  "KO": {
+    "Americas": {
+      "revenue_M": 19586,
+      "pct": 100.0
+    }
+  },
+  "CSCO": {
+    "Americas": {
+      "revenue_M": 33656,
+      "pct": 58.8
+    },
+    "Europe": {
+      "revenue_M": 15135,
+      "pct": 26.5
+    },
+    "China": {
+      "revenue_M": 8417,
+      "pct": 14.7
+    }
+  },
+  "ACN": {
+    "Americas": {
+      "revenue_M": 35056715,
+      "pct": 50.3
+    },
+    "Europe": {
+      "revenue_M": 24643957,
+      "pct": 35.4
+    },
+    "AsiaPacific": {
+      "revenue_M": 9972305,
+      "pct": 14.3
+    }
+  },
+  "LIN": {
+    "Americas": {
+      "revenue_M": 15208,
+      "pct": 50.0
+    },
+    "Europe": {
+      "revenue_M": 8549,
+      "pct": 28.1
+    },
+    "AsiaPacific": {
+      "revenue_M": 6661,
+      "pct": 21.9
+    }
+  },
+  "PM": {
+    "Europe": {
+      "revenue_M": 17111,
+      "pct": 77.9
+    },
+    "Americas": {
+      "revenue_M": 4854,
+      "pct": 22.1
+    }
+  },
+  "UPS": {
+    "U.S.DomesticPackageSegmentMember": {
+      "revenue_M": 60376,
+      "pct": 76.5
+    },
+    "International": {
+      "revenue_M": 18576,
+      "pct": 23.5
+    }
+  },
+  "MDLZ": {
+    "Europe": {
+      "revenue_M": 15027,
+      "pct": 44.1
+    },
+    "Americas": {
+      "revenue_M": 11078,
+      "pct": 32.5
+    },
+    "MiddleEast": {
+      "revenue_M": 7932,
+      "pct": 23.3
+    }
+  },
+  "ZTS": {
+    "International": {
+      "revenue_M": 4254,
+      "pct": 100.0
+    }
+  },
+  "EQIX": {
+    "Americas": {
+      "revenue_M": 4111,
+      "pct": 44.6
+    },
+    "Europe": {
+      "revenue_M": 3130,
+      "pct": 34.0
+    },
+    "AsiaPacific": {
+      "revenue_M": 1976,
+      "pct": 21.4
+    }
+  },
+  "NKE": {
+    "Americas": {
+      "revenue_M": 21608,
+      "pct": 50.5
+    },
+    "Europe": {
+      "revenue_M": 13607,
+      "pct": 31.8
+    },
+    "China": {
+      "revenue_M": 7545,
+      "pct": 17.6
+    }
+  },
+  "COP": {
+    "Europe": {
+      "revenue_M": 6485,
+      "pct": 46.2
+    },
+    "Canada": {
+      "revenue_M": 5636,
+      "pct": 40.2
+    },
+    "AsiaPacific": {
+      "revenue_M": 1913,
+      "pct": 13.6
+    }
+  },
+  "EOG": {
+    "Americas": {
+      "revenue_M": 23916,
+      "pct": 100.0
+    }
+  }
+}
