@@ -1,0 +1,283 @@
+{
+  "_description": "Blind evaluation dataset for channel prediction. 70 event-company pairs across 25 events. Labels frozen BEFORE model evaluation. DO NOT modify after running evaluation.",
+  "_labeling_protocol": "Primary channel = dominant mechanism. Secondary = clearly meaningful alternative. Rationale = 1-2 lines. Confidence = high/medium/low based on clarity of mechanism.",
+  "_created": "2026-04-18",
+  "_label_source": "human judgment based on public reporting, NOT model output",
+  "examples": [
+    {"event_text": "Russia launched full-scale invasion of Ukraine, triggering Western sanctions and corporate exits", "company": "BP", "ticker": "BP",
+     "primary": "capital_allocation_investment", "secondary": "revenue_market_access",
+     "rationale": "BP's $25.5B Rosneft write-down is primarily an asset impairment, revenue loss is secondary", "confidence": "high"},
+
+    {"event_text": "Russia launched full-scale invasion of Ukraine, triggering Western sanctions and corporate exits", "company": "Apple", "ticker": "AAPL",
+     "primary": "procurement_supply_chain", "secondary": null,
+     "rationale": "Apple has no Russia exposure. Minor supply chain concern from global disruption but minimal direct impact", "confidence": "medium"},
+
+    {"event_text": "Russia launched full-scale invasion of Ukraine, triggering Western sanctions and corporate exits", "company": "Maersk", "ticker": "APMM",
+     "primary": "logistics_operations", "secondary": "revenue_market_access",
+     "rationale": "Route disruption and sanctions compliance for shipping. Revenue actually benefited from rate surge", "confidence": "high"},
+
+    {"event_text": "US Bureau of Industry and Security restricted exports of advanced AI chips and semiconductor equipment to China", "company": "NVIDIA", "ticker": "NVDA",
+     "primary": "revenue_market_access", "secondary": "innovation_ip",
+     "rationale": "Cannot sell A100/H100 to Chinese customers. Secondary: restricts competitive positioning in AI chips", "confidence": "high"},
+
+    {"event_text": "US Bureau of Industry and Security restricted exports of advanced AI chips and semiconductor equipment to China", "company": "ASML", "ticker": "ASML",
+     "primary": "revenue_market_access", "secondary": "innovation_ip",
+     "rationale": "Cannot ship EUV lithography to China. China was significant growth market", "confidence": "high"},
+
+    {"event_text": "US Bureau of Industry and Security restricted exports of advanced AI chips and semiconductor equipment to China", "company": "McDonald's", "ticker": "MCD",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "No semiconductor exposure. Minimal impact expected — included as negative case", "confidence": "high"},
+
+    {"event_text": "Houthi rebels fired anti-ship missiles at commercial vessels in the Red Sea forcing rerouting around Cape of Good Hope", "company": "Maersk", "ticker": "APMM",
+     "primary": "logistics_operations", "secondary": "revenue_market_access",
+     "rationale": "Direct route disruption adding 14 days transit. Revenue paradoxically increased from rate surge", "confidence": "high"},
+
+    {"event_text": "Houthi rebels fired anti-ship missiles at commercial vessels in the Red Sea forcing rerouting around Cape of Good Hope", "company": "Costco", "ticker": "COST",
+     "primary": "procurement_supply_chain", "secondary": "logistics_operations",
+     "rationale": "Import-dependent retailer faces higher shipping costs and delays. Not a direct logistics operator", "confidence": "medium"},
+
+    {"event_text": "Houthi rebels fired anti-ship missiles at commercial vessels in the Red Sea forcing rerouting around Cape of Good Hope", "company": "Pfizer", "ticker": "PFE",
+     "primary": "procurement_supply_chain", "secondary": null,
+     "rationale": "API ingredients from India ship through Suez. Route disruption delays pharmaceutical inputs", "confidence": "medium"},
+
+    {"event_text": "OPEC announced a surprise production cut of 2 million barrels per day sending oil prices surging", "company": "Exxon Mobil", "ticker": "XOM",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Higher oil prices directly increase revenue. Exxon benefits from OPEC cuts", "confidence": "high"},
+
+    {"event_text": "OPEC announced a surprise production cut of 2 million barrels per day sending oil prices surging", "company": "Boeing", "ticker": "BA",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Airlines defer orders when fuel costs spike. Boeing's commercial revenue depends on airline capex", "confidence": "medium"},
+
+    {"event_text": "OPEC announced a surprise production cut of 2 million barrels per day sending oil prices surging", "company": "FedEx", "ticker": "FDX",
+     "primary": "procurement_supply_chain", "secondary": "logistics_operations",
+     "rationale": "Fuel is 25% of FedEx operating costs. Higher fuel = compressed margins", "confidence": "high"},
+
+    {"event_text": "EU passed the Digital Markets Act requiring Big Tech platforms to allow sideloading and interoperability", "company": "Apple", "ticker": "AAPL",
+     "primary": "regulatory_compliance_cost", "secondary": "revenue_market_access",
+     "rationale": "Must allow third-party app stores. Compliance cost + potential revenue loss from App Store fees", "confidence": "high"},
+
+    {"event_text": "EU passed the Digital Markets Act requiring Big Tech platforms to allow sideloading and interoperability", "company": "Meta", "ticker": "META",
+     "primary": "regulatory_compliance_cost", "secondary": null,
+     "rationale": "Platform interoperability requirements. Engineering and legal compliance costs", "confidence": "high"},
+
+    {"event_text": "EU passed the Digital Markets Act requiring Big Tech platforms to allow sideloading and interoperability", "company": "Exxon Mobil", "ticker": "XOM",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "DMA irrelevant to oil companies. Negative case — minimal impact expected", "confidence": "high"},
+
+    {"event_text": "SolarWinds disclosed that Russian hackers compromised its Orion software update infiltrating 18000 government and corporate networks", "company": "SolarWinds", "ticker": "SWI",
+     "primary": "cybersecurity_it", "secondary": "reputation_stakeholder",
+     "rationale": "Core IT product was the attack vector. Massive reputational damage", "confidence": "high"},
+
+    {"event_text": "SolarWinds disclosed that Russian hackers compromised its Orion software update infiltrating 18000 government and corporate networks", "company": "Microsoft", "ticker": "MSFT",
+     "primary": "cybersecurity_it", "secondary": null,
+     "rationale": "Microsoft systems were breached. Had to invest in remediation", "confidence": "medium"},
+
+    {"event_text": "DarkSide ransomware group encrypted Colonial Pipeline IT systems forcing shutdown of largest US fuel pipeline", "company": "Colonial Pipeline", "ticker": "COLONIAL",
+     "primary": "cybersecurity_it", "secondary": "logistics_operations",
+     "rationale": "Ransomware attack on IT systems is primary. Pipeline shutdown is secondary operational impact", "confidence": "high"},
+
+    {"event_text": "China imposed tariffs of 218% on Australian wine imports in retaliation", "company": "Treasury Wine Estates", "ticker": "TWE.AX",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Lost 96% of China wine revenue. China was their largest export market", "confidence": "high"},
+
+    {"event_text": "China imposed tariffs of 218% on Australian wine imports in retaliation", "company": "Lockheed Martin", "ticker": "LMT",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Defense contractor with no wine or Australia-China trade exposure. Negative case", "confidence": "high"},
+
+    {"event_text": "India demonetized 500 and 1000 rupee notes invalidating 86 percent of currency in circulation overnight", "company": "DLF Limited", "ticker": "DLF.NS",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Real estate transactions collapsed. Cash-dependent property market froze", "confidence": "high"},
+
+    {"event_text": "India demonetized 500 and 1000 rupee notes invalidating 86 percent of currency in circulation overnight", "company": "Paytm", "ticker": "PAYTM",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Digital payments surged 700%. Positive impact — beneficiary of cash elimination", "confidence": "high"},
+
+    {"event_text": "India demonetized 500 and 1000 rupee notes invalidating 86 percent of currency in circulation overnight", "company": "Apple", "ticker": "AAPL",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "India was less than 2% of Apple revenue in 2016. Minimal impact. Negative case", "confidence": "high"},
+
+    {"event_text": "Javier Milei elected president of Argentina promising dollarization and radical deregulation, immediately devalued peso 50 percent", "company": "YPF", "ticker": "YPF",
+     "primary": "revenue_market_access", "secondary": "financial_treasury",
+     "rationale": "Fuel price deregulation boosted revenue 40%. Peso devaluation affected treasury", "confidence": "high"},
+
+    {"event_text": "Panama Supreme Court ruled Cobre Panama mining concession unconstitutional ordering closure of the 8.6 billion dollar copper mine", "company": "First Quantum Minerals", "ticker": "FM.TO",
+     "primary": "capital_allocation_investment", "secondary": null,
+     "rationale": "Total asset impairment. Company's largest single asset written off", "confidence": "high"},
+
+    {"event_text": "Sudan civil war erupted between the Sudanese Armed Forces and the Rapid Support Forces with fighting across Khartoum", "company": "Zain Group", "ticker": "ZAIN.KW",
+     "primary": "revenue_market_access", "secondary": "workforce_talent",
+     "rationale": "Sudan operations (4M subscribers) disrupted. Revenue fell 71%. Employees at risk", "confidence": "high"},
+
+    {"event_text": "Sudan civil war erupted between the Sudanese Armed Forces and the Rapid Support Forces with fighting across Khartoum", "company": "JPMorgan Chase", "ticker": "JPM",
+     "primary": "financial_treasury", "secondary": null,
+     "rationale": "No material Sudan exposure. Negative case — minimal impact expected", "confidence": "high"},
+
+    {"event_text": "US imposed 25 percent tariffs on all Chinese imports including electronics semiconductors and consumer goods", "company": "Apple", "ticker": "AAPL",
+     "primary": "procurement_supply_chain", "secondary": "revenue_market_access",
+     "rationale": "90%+ iPhones assembled in China. Tariffs raise COGS. Retaliation could block China sales", "confidence": "high"},
+
+    {"event_text": "US imposed 25 percent tariffs on all Chinese imports including electronics semiconductors and consumer goods", "company": "Walmart", "ticker": "WMT",
+     "primary": "procurement_supply_chain", "secondary": "revenue_market_access",
+     "rationale": "Massive China sourcing for consumer goods. Tariffs increase costs, potentially passed to consumers", "confidence": "high"},
+
+    {"event_text": "US imposed 25 percent tariffs on all Chinese imports including electronics semiconductors and consumer goods", "company": "Lockheed Martin", "ticker": "LMT",
+     "primary": "procurement_supply_chain", "secondary": null,
+     "rationale": "Defense procurement has some rare earth/component exposure to China", "confidence": "low"},
+
+    {"event_text": "Iran launched 300 missiles and drones at Israel in direct military attack", "company": "Raytheon RTX", "ticker": "RTX",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Defense company benefits from conflict escalation. Patriot missile demand increases", "confidence": "high"},
+
+    {"event_text": "Iran launched 300 missiles and drones at Israel in direct military attack", "company": "El Al Airlines", "ticker": "ELAL.TA",
+     "primary": "logistics_operations", "secondary": "revenue_market_access",
+     "rationale": "Israeli airline faces airspace closures and route disruptions", "confidence": "high"},
+
+    {"event_text": "Iran launched 300 missiles and drones at Israel in direct military attack", "company": "Goldman Sachs", "ticker": "GS",
+     "primary": "financial_treasury", "secondary": null,
+     "rationale": "Middle East volatility affects commodity trading and M&A pipeline. Minor impact", "confidence": "low"},
+
+    {"event_text": "UK formally withdrew from the European Union ending decades of single market membership", "company": "JPMorgan Chase", "ticker": "JPM",
+     "primary": "regulatory_compliance_cost", "secondary": "workforce_talent",
+     "rationale": "Must establish EU entity, relocate staff, dual regulatory regime. Moved 200B GBP in assets", "confidence": "high"},
+
+    {"event_text": "UK formally withdrew from the European Union ending decades of single market membership", "company": "Ryanair", "ticker": "RYA.L",
+     "primary": "regulatory_compliance_cost", "secondary": "revenue_market_access",
+     "rationale": "Airline licensing, pilot rights, route access all affected by Brexit aviation rules", "confidence": "high"},
+
+    {"event_text": "UK formally withdrew from the European Union ending decades of single market membership", "company": "UnitedHealth", "ticker": "UNH",
+     "primary": "regulatory_compliance_cost", "secondary": null,
+     "rationale": "US domestic health insurer. No EU operations. Negative case", "confidence": "high"},
+
+    {"event_text": "China restricted exports of gallium and germanium critical minerals used in semiconductor and defense manufacturing", "company": "Intel", "ticker": "INTC",
+     "primary": "procurement_supply_chain", "secondary": "innovation_ip",
+     "rationale": "Gallium used in chip manufacturing. Supply constraint on critical input", "confidence": "high"},
+
+    {"event_text": "China restricted exports of gallium and germanium critical minerals used in semiconductor and defense manufacturing", "company": "Lockheed Martin", "ticker": "LMT",
+     "primary": "procurement_supply_chain", "secondary": null,
+     "rationale": "Germanium used in defense optics and infrared systems", "confidence": "medium"},
+
+    {"event_text": "NotPetya cyberattack originating from Ukraine tax software update spread globally destroying IT systems at major corporations", "company": "Maersk", "ticker": "APMM",
+     "primary": "cybersecurity_it", "secondary": "logistics_operations",
+     "rationale": "Rebuilt 45000 PCs in 10 days. $300M cost. IT destruction was primary, operational disruption secondary", "confidence": "high"},
+
+    {"event_text": "NotPetya cyberattack originating from Ukraine tax software update spread globally destroying IT systems at major corporations", "company": "Merck", "ticker": "MRK",
+     "primary": "cybersecurity_it", "secondary": "procurement_supply_chain",
+     "rationale": "Lost $870M from production disruption caused by IT system destruction", "confidence": "high"},
+
+    {"event_text": "European energy crisis intensified as Russia cut natural gas pipeline flows through Nord Stream", "company": "BASF", "ticker": "BAS.DE",
+     "primary": "procurement_supply_chain", "secondary": null,
+     "rationale": "Chemical production requires natural gas as feedstock. Energy costs surged 400%", "confidence": "high"},
+
+    {"event_text": "European energy crisis intensified as Russia cut natural gas pipeline flows through Nord Stream", "company": "Chevron", "ticker": "CVX",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Energy company benefits from higher gas prices. LNG exports to Europe increased", "confidence": "high"},
+
+    {"event_text": "Military coup in Myanmar army detained Aung San Suu Kyi and seized power", "company": "Telenor", "ticker": "TEL.OL",
+     "primary": "capital_allocation_investment", "secondary": "revenue_market_access",
+     "rationale": "Wrote down $780M Myanmar telecom investment. Forced to sell at distressed price", "confidence": "high"},
+
+    {"event_text": "Military coup in Myanmar army detained Aung San Suu Kyi and seized power", "company": "Microsoft", "ticker": "MSFT",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "No material Myanmar exposure. Negative case", "confidence": "high"},
+
+    {"event_text": "Xinjiang forced labor allegations triggered Western brands boycott of Chinese cotton and consumer backlash in China", "company": "H&M", "ticker": "HM-B.ST",
+     "primary": "reputation_stakeholder", "secondary": "revenue_market_access",
+     "rationale": "Wiped from Chinese platforms. Boycott driven by public perception, not government restriction", "confidence": "high"},
+
+    {"event_text": "Xinjiang forced labor allegations triggered Western brands boycott of Chinese cotton and consumer backlash in China", "company": "Nike", "ticker": "NKE",
+     "primary": "reputation_stakeholder", "secondary": "revenue_market_access",
+     "rationale": "Same boycott as H&M but Nike recovered faster with 'brand of China for China' messaging", "confidence": "high"},
+
+    {"event_text": "Israel launched ground invasion of Gaza following Hamas October 7 attack", "company": "McDonald's", "ticker": "MCD",
+     "primary": "reputation_stakeholder", "secondary": "revenue_market_access",
+     "rationale": "MENA boycott over perceived Israel support. Franchisee actions drove consumer backlash", "confidence": "high"},
+
+    {"event_text": "Israel launched ground invasion of Gaza following Hamas October 7 attack", "company": "Intel", "ticker": "INTC",
+     "primary": "workforce_talent", "secondary": "procurement_supply_chain",
+     "rationale": "Intel has major fab in Israel. Employee safety and reserve duty callups", "confidence": "medium"},
+
+    {"event_text": "CFIUS blocked the Qualcomm-Broadcom merger on national security grounds", "company": "Qualcomm", "ticker": "QCOM",
+     "primary": "capital_allocation_investment", "secondary": null,
+     "rationale": "Blocked acquisition is a capital allocation event — deal value destroyed", "confidence": "high"},
+
+    {"event_text": "India mandated data localization for all payment processing companies", "company": "Mastercard", "ticker": "MA",
+     "primary": "regulatory_compliance_cost", "secondary": "revenue_market_access",
+     "rationale": "Must build local data infrastructure. Was briefly banned for non-compliance", "confidence": "high"},
+
+    {"event_text": "India mandated data localization for all payment processing companies", "company": "Procter & Gamble", "ticker": "PG",
+     "primary": "regulatory_compliance_cost", "secondary": null,
+     "rationale": "Consumer goods company. Data localization is irrelevant. Negative case", "confidence": "high"},
+
+    {"event_text": "Global semiconductor shortage disrupted automobile production with multiple factories idled worldwide", "company": "Toyota", "ticker": "TM",
+     "primary": "procurement_supply_chain", "secondary": "revenue_market_access",
+     "rationale": "Cannot get chips to build cars. Production halted, revenue lost", "confidence": "high"},
+
+    {"event_text": "Global semiconductor shortage disrupted automobile production with multiple factories idled worldwide", "company": "TSMC", "ticker": "TSM",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Foundry at maximum utilization. Shortage benefits TSMC through pricing power", "confidence": "high"},
+
+    {"event_text": "Global semiconductor shortage disrupted automobile production with multiple factories idled worldwide", "company": "JPMorgan Chase", "ticker": "JPM",
+     "primary": "financial_treasury", "secondary": null,
+     "rationale": "Bank with no semiconductor exposure. Negative case", "confidence": "high"},
+
+    {"event_text": "EU General Data Protection Regulation took effect imposing strict data privacy rules with fines up to 4 percent of global revenue", "company": "Meta", "ticker": "META",
+     "primary": "regulatory_compliance_cost", "secondary": "revenue_market_access",
+     "rationale": "Ad targeting restrictions + $1.3B fine. Compliance costs of $5B/yr", "confidence": "high"},
+
+    {"event_text": "EU General Data Protection Regulation took effect imposing strict data privacy rules with fines up to 4 percent of global revenue", "company": "Caterpillar", "ticker": "CAT",
+     "primary": "regulatory_compliance_cost", "secondary": null,
+     "rationale": "Industrial equipment. Minimal consumer data. Negative case", "confidence": "high"},
+
+    {"event_text": "Suez Canal blocked for six days by grounded container ship Ever Given disrupting global shipping", "company": "Maersk", "ticker": "APMM",
+     "primary": "logistics_operations", "secondary": "revenue_market_access",
+     "rationale": "Direct shipping disruption. Vessels stranded, rerouting costs. Rate surge beneficial", "confidence": "high"},
+
+    {"event_text": "Suez Canal blocked for six days by grounded container ship Ever Given disrupting global shipping", "company": "Amazon", "ticker": "AMZN",
+     "primary": "procurement_supply_chain", "secondary": "logistics_operations",
+     "rationale": "Import delays for consumer goods. Warehouse stocking affected", "confidence": "medium"},
+
+    {"event_text": "Chile announced nationalization of its lithium industry affecting SQM and Albemarle operations", "company": "Albemarle", "ticker": "ALB",
+     "primary": "capital_allocation_investment", "secondary": "revenue_market_access",
+     "rationale": "Mining concessions threatened. Asset value at risk from nationalization", "confidence": "high"},
+
+    {"event_text": "Chile announced nationalization of its lithium industry affecting SQM and Albemarle operations", "company": "Tesla", "ticker": "TSLA",
+     "primary": "procurement_supply_chain", "secondary": null,
+     "rationale": "Lithium is critical battery input. Supply concentration risk", "confidence": "medium"},
+
+    {"event_text": "US Treasury sanctioned Russian oligarchs and froze assets of major Russian banks", "company": "Citigroup", "ticker": "C",
+     "primary": "financial_treasury", "secondary": "regulatory_compliance_cost",
+     "rationale": "Trapped $7.8B in Russia. Cannot repatriate. Compliance costs for sanctions screening", "confidence": "high"},
+
+    {"event_text": "US Treasury sanctioned Russian oligarchs and froze assets of major Russian banks", "company": "Visa", "ticker": "V",
+     "primary": "revenue_market_access", "secondary": "regulatory_compliance_cost",
+     "rationale": "Exited Russia entirely. Lost payment processing volume", "confidence": "high"},
+
+    {"event_text": "COVID pandemic forced worldwide lockdowns shutting businesses and grounding air travel", "company": "Boeing", "ticker": "BA",
+     "primary": "revenue_market_access", "secondary": "procurement_supply_chain",
+     "rationale": "Airlines cancelled orders. Revenue fell 24%. Also supply chain disruption", "confidence": "high"},
+
+    {"event_text": "COVID pandemic forced worldwide lockdowns shutting businesses and grounding air travel", "company": "Zoom", "ticker": "ZM",
+     "primary": "revenue_market_access", "secondary": null,
+     "rationale": "Beneficiary. Revenue surged 326% as remote work drove adoption", "confidence": "high"},
+
+    {"event_text": "COVID pandemic forced worldwide lockdowns shutting businesses and grounding air travel", "company": "Johnson & Johnson", "ticker": "JNJ",
+     "primary": "procurement_supply_chain", "secondary": "revenue_market_access",
+     "rationale": "Medical device supply chain disrupted. Elective procedure revenue delayed", "confidence": "medium"},
+
+    {"event_text": "Turkey currency crisis lira lost 40 percent of value against dollar amid political pressure on central bank", "company": "BBVA", "ticker": "BBVA",
+     "primary": "financial_treasury", "secondary": null,
+     "rationale": "BBVA owns Garanti Bank in Turkey. EUR 780M loss from lira translation", "confidence": "high"},
+
+    {"event_text": "Turkey currency crisis lira lost 40 percent of value against dollar amid political pressure on central bank", "company": "Coca-Cola", "ticker": "KO",
+     "primary": "financial_treasury", "secondary": "revenue_market_access",
+     "rationale": "Turkey is a meaningful market. FX translation reduces reported revenue", "confidence": "medium"},
+
+    {"event_text": "BRICS expanded to include Saudi Arabia Iran Egypt Ethiopia and UAE", "company": "JPMorgan Chase", "ticker": "JPM",
+     "primary": "financial_treasury", "secondary": null,
+     "rationale": "Potential long-term shift in trade settlement currencies. Minor near-term impact", "confidence": "low"},
+
+    {"event_text": "Indonesia banned nickel ore exports to force domestic processing", "company": "Tesla", "ticker": "TSLA",
+     "primary": "procurement_supply_chain", "secondary": null,
+     "rationale": "Nickel is critical for EV batteries. Indonesia controls 30%+ of global supply", "confidence": "high"}
+  ]
+}
