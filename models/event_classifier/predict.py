@@ -55,16 +55,24 @@ class EventClassifier:
         tokenizer_json = path / "tokenizer.json"
 
         if onnx_path.exists() and tokenizer_json.exists():
-            # Pure ONNX path — no torch import at all
-            import onnxruntime as ort
-            from tokenizers import Tokenizer
-            self._onnx_session = ort.InferenceSession(str(onnx_path))
-            self._rust_tokenizer = Tokenizer.from_file(str(tokenizer_json))
-            self._rust_tokenizer.enable_padding(length=max_length, pad_id=0)
-            self._rust_tokenizer.enable_truncation(max_length=max_length)
-            self._backend = "onnx"
+            try:
+                # Pure ONNX path — no torch import at all
+                import onnxruntime as ort
+                from tokenizers import Tokenizer
+                self._onnx_session = ort.InferenceSession(str(onnx_path))
+                self._rust_tokenizer = Tokenizer.from_file(str(tokenizer_json))
+                self._rust_tokenizer.enable_padding(length=max_length, pad_id=0)
+                self._rust_tokenizer.enable_truncation(max_length=max_length)
+                self._backend = "onnx"
+            except Exception:
+                # ONNX failed (version incompatibility, etc.) — try PyTorch
+                self._try_pytorch(path)
         else:
-            # Fallback to PyTorch
+            self._try_pytorch(path)
+
+    def _try_pytorch(self, path):
+        """Fallback to PyTorch if ONNX fails."""
+        try:
             import torch
             from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
             self._hf_tokenizer = DistilBertTokenizer.from_pretrained(path)
@@ -73,6 +81,31 @@ class EventClassifier:
             self._torch_model.to(self._device)
             self._torch_model.eval()
             self._backend = "pytorch"
+        except ImportError:
+            # Neither ONNX nor PyTorch available — use keyword-based fallback
+            self._backend = "keyword"
+
+    _KEYWORD_MAP = {
+        "trade_policy_actions": ["tariff", "import duty", "trade war", "customs", "anti-dumping", "quota", "trade agreement", "section 301", "export ban", "import ban"],
+        "sanctions_financial_restrictions": ["sanction", "ofac", "asset freeze", "swift", "embargo", "blacklist", "sdn", "blocked persons"],
+        "armed_conflict_instability": ["invasion", "war", "attack", "military", "bombing", "missile", "conflict", "terrorism", "killed", "troops"],
+        "regulatory_sovereignty_shifts": ["regulation", "data localization", "cfius", "nationalization", "fdi", "local content", "privacy law", "compliance"],
+        "technology_controls": ["export control", "chip", "semiconductor", "entity list", "bis", "dual-use", "huawei", "technology restriction"],
+        "resource_energy_disruptions": ["opec", "oil price", "energy crisis", "commodity", "natural gas", "pipeline", "mining", "critical mineral", "lithium"],
+        "political_transitions_volatility": ["election", "coup", "protest", "regime change", "president", "parliament", "constitutional", "populist"],
+        "institutional_alliance_realignment": ["nato", "brexit", "eu withdrawal", "trade bloc", "brics", "alliance", "treaty", "wto"],
+    }
+
+    def _keyword_classify(self, text: str) -> np.ndarray:
+        """Simple keyword-based classifier when neither ONNX nor PyTorch is available."""
+        text_lower = text.lower()
+        scores = np.zeros(len(CATEGORIES))
+        for i, cat in enumerate(CATEGORIES):
+            keywords = self._KEYWORD_MAP.get(cat, [])
+            scores[i] = sum(1 for kw in keywords if kw in text_lower)
+        if scores.sum() == 0:
+            scores = np.ones(len(CATEGORIES))
+        return self._softmax(scores * 3)  # amplify differences
 
     def _softmax(self, logits):
         """Compute softmax from raw logits."""
@@ -90,7 +123,9 @@ class EventClassifier:
                 "all_scores": {"armed_conflict_instability": 0.97, ...}
             }
         """
-        if self._backend == "onnx":
+        if self._backend == "keyword":
+            probs = self._keyword_classify(text)
+        elif self._backend == "onnx":
             enc = self._rust_tokenizer.encode(text)
             input_ids = np.array([enc.ids], dtype=np.int64)
             attention_mask = np.array([enc.attention_mask], dtype=np.int64)
@@ -126,7 +161,9 @@ class EventClassifier:
         for i in range(0, len(texts), batch_size):
             batch_texts = texts[i : i + batch_size]
 
-            if self._backend == "onnx":
+            if self._backend == "keyword":
+                probs = np.array([self._keyword_classify(t) for t in batch_texts])
+            elif self._backend == "onnx":
                 batch_probs = []
                 for text in batch_texts:
                     enc = self._rust_tokenizer.encode(text)
