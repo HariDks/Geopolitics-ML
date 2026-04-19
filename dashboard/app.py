@@ -369,63 +369,135 @@ st.sidebar.caption("[GitHub](https://github.com/HariDks/Geopolitics-ML) | Built 
 # ════════════════════════════════════════════════════════════════════════════
 
 if page == "Overview":
+
+    # ── Hero ──
     st.title("Geopolitical Impact Tester")
-
-    st.markdown("### What if you could stress-test any company against any geopolitical event?")
     st.markdown("""
-    That's exactly what this does. Pick an event. Pick a company. Get an instant analysis
-    of *how* the business gets hit — not just *whether* it does.
+    **Understand how global events affect real companies — in seconds.**
+
+    Not just *whether* it hurts, but *how* it hurts:
+    through supply chains, revenue, assets, or reputation.
     """)
 
-    col1, col2, col3 = st.columns(3)
+    st.markdown("---")
+
+    # ── Start here ──
+    st.subheader("Start here")
+    st.markdown("Explore how different geopolitical events affect companies.")
+
+    col1, col2 = st.columns(2)
     with col1:
-        st.markdown("""
-        #### What you get
-        - Which part of the business is affected (supply chain? revenue? assets? reputation?)
-        - A dollar-range impact estimate
-        - An explanation showing *why* the model thinks what it thinks
-        - A confidence level — because the model knows when it's guessing
-        """)
+        st.markdown("**Explore Real Events**")
+        st.caption("Test the model on curated scenarios across industries. Use the sidebar -> **Preloaded Examples**")
     with col2:
-        st.markdown("""
-        #### What's under the hood
-        - **7.76 million** geopolitical events from 6 data sources
-        - **602 labeled** company-event impact pairs
-        - **4 ML models** chained: classify event, score exposure, estimate impact, explain mechanism
-        - Backtested against **10 real events** across 5 continents
-        """)
-    with col3:
-        st.markdown("""
-        #### What it's honest about
-        - Gets the **direction right ~90%** of the time
-        - Gets the **specific channel right ~62-75%** (depends on text quality)
-        - Struggles with **concentrated geographic exposure**
-        - This is **not financial advice** — it's pattern-matching on historical data
-        """)
+        st.markdown("**Run Custom Analysis**")
+        st.caption("Describe any event and analyze its impact on a company. Use the sidebar -> **Custom Analysis**")
 
     st.markdown("---")
 
+    # ── What this tool does ──
+    st.subheader("What this tool does")
     st.markdown("""
-    #### The story behind this
+    This system analyzes how geopolitical events translate into business impact.
 
-    This started as a research project inspired by the WEF's *Building Geopolitical Muscle* report (2026),
-    which found that only ~20% of global firms systematically quantify their geopolitical exposure.
-
-    We wanted to see: **can you build that capability with ML instead of a 40-person team?**
-
-    Over several days of development, we ingested data from GDELT, ACLED, Global Trade Alert, OFAC, BIS, and SEC EDGAR.
-    We trained a DistilBERT event classifier (95% accuracy on news text), an XGBoost exposure scorer,
-    a quantile regression impact estimator, and a retrieval-based strategy recommender.
-
-    The biggest lesson? **The right features matter more than the right model.** Adding 10 curated keyword
-    lists ("impairment" = capital allocation, "ransomware" = cybersecurity) did more than any architecture change.
-
-    **Your feedback makes this better.** After every analysis, you can tell us if the prediction made sense.
-    Every correction helps the model improve.
+    For any event and company, it estimates:
+    - **Which part of the business is affected** — supply chain, revenue, assets, reputation
+    - **The likely financial impact** — range shown as % of revenue and dollar estimate
+    - **The underlying mechanism** — how the event actually affects operations
+    - **How confident the system is** — based on the quality of available signals
     """)
 
     st.markdown("---")
-    st.markdown("**Ready?** Use the sidebar to navigate to **Preloaded Examples** or **Custom Analysis**.")
+
+    # ── How to interpret results ──
+    st.subheader("How to interpret the output")
+    st.markdown("""
+    Each result includes:
+    - A **financial impact estimate** based on patterns from similar historical events
+    - A **primary mechanism** — the main way the business is affected
+    - An **operational severity** rating — how disruptive the event is operationally
+    - A **reliability level** — higher when event descriptions are detailed
+
+    Think of this as a **structured first-pass analysis** — not a final answer.
+    """)
+
+    st.markdown("---")
+
+    # ── System insight ──
+    st.subheader("System insight")
+    st.info("""
+    The model is strongest at identifying *how* events affect companies
+    when the mechanism is clearly described in text.
+
+    It is less reliable when company-specific exposure is unknown —
+    for example, where revenue comes from or where operations are concentrated.
+
+    In those cases, the system provides a **generic estimate** based on similar events.
+    """)
+
+    st.markdown("---")
+
+    # ── What powers this ──
+    st.subheader("What powers this")
+    st.markdown("""
+    - **7.7 million** geopolitical events across multiple global data sources
+    - **600+** labeled company-event impact examples
+    - A multi-stage system that:
+      - classifies the event
+      - estimates exposure patterns
+      - predicts financial impact
+      - explains the mechanism
+    """)
+
+    st.markdown("---")
+
+    # ── What it gets right ──
+    st.subheader("What this gets right (and where it struggles)")
+    st.markdown("""
+    **Correctly identifies** whether an event is likely to help or hurt (~90% of the time)
+
+    **Captures the main business mechanism** (~62-75% accuracy, depending on text quality)
+
+    **Less reliable** when company exposure is unclear (e.g., concentrated geographic operations)
+
+    **Does not fully capture** second-order effects (e.g., commodity price shifts or market reactions)
+    """)
+
+    st.markdown("---")
+
+    # ── Why this exists ──
+    st.subheader("Why this exists")
+    st.markdown("""
+    Most companies do not systematically quantify geopolitical risk.
+    They rely on judgment, intuition, and static frameworks.
+
+    This project explores whether that process can be partially automated
+    using machine learning and structured reasoning.
+
+    The key takeaway:
+
+    **Understanding the *mechanism* of impact is easier than estimating its *magnitude*** —
+    especially without detailed company exposure data.
+    """)
+
+    st.markdown("---")
+
+    # ── Feedback ──
+    st.subheader("Help improve this system")
+    st.markdown("""
+    Your feedback highlights where the model gets things wrong —
+    and that's how it improves.
+
+    After running an analysis, you can:
+    - Mark whether the result was useful
+    - Correct the primary mechanism
+    - Share what was missed
+    """)
+
+    st.markdown("---")
+
+    st.caption("This tool is designed to explore patterns in how geopolitical events affect companies. "
+               "It is not financial advice.")
 
 
 # ════════════════════════════════════════════════════════════════════════════
