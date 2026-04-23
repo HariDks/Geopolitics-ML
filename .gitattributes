@@ -1,0 +1,6 @@
+# Tell GitHub these are generated files, not source code
+# This fixes the language breakdown (97.8% HTML -> mostly Python)
+backtest/figures/*.html linguist-generated
+index/*.html linguist-generated
+*.csv linguist-generated
+*.json linguist-generated

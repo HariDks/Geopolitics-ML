@@ -37,7 +37,7 @@ sub_names = {
 # ── Main GRI chart ──
 fig = make_subplots(
     rows=3, cols=1,
-    row_heights=[0.5, 0.3, 0.2],
+    row_heights=[0.45, 0.25, 0.3],
     subplot_titles=("Geopolitical Risk Index (GRI)", "Sub-Indices", "Event Volume"),
     vertical_spacing=0.08,
 )
@@ -61,22 +61,24 @@ fig.add_hline(y=55, line_dash="dash", line_color="orange", opacity=0.3, row=1, c
 
 # Key event annotations
 events_to_annotate = [
-    ("2022-02-24", "Russia invades\nUkraine"),
-    ("2022-10-07", "US chip\nexport controls"),
-    ("2023-10-07", "Hamas\nattack"),
-    ("2023-12-15", "Red Sea\nattacks begin"),
-    ("2025-04-02", "US tariffs\n2025"),
+    ("2022-02-24", "Russia invades Ukraine", -60),
+    ("2022-10-07", "US chip export controls", -45),
+    ("2023-10-07", "Hamas attack", -55),
+    ("2023-12-15", "Red Sea attacks", -40),
+    ("2025-04-02", "US tariffs 2025", -50),
 ]
-for date_str, label in events_to_annotate:
+for date_str, label, y_offset in events_to_annotate:
     date_val = pd.Timestamp(date_str)
     gri_row = gri[gri["event_date"] == date_val]
     if not gri_row.empty:
         fig.add_annotation(
             x=date_val, y=gri_row.iloc[0]["gri"],
             text=label, showarrow=True, arrowhead=2,
-            arrowsize=0.8, arrowcolor="#c0392c",
-            font=dict(size=9, color="#c0392c"),
-            ax=0, ay=-40,
+            arrowsize=0.7, arrowcolor="#888",
+            font=dict(size=9, color="#555"),
+            bgcolor="rgba(255,255,255,0.8)",
+            bordercolor="#ccc", borderwidth=1, borderpad=3,
+            ax=0, ay=y_offset,
             row=1, col=1,
         )
 
@@ -95,28 +97,33 @@ for col in sub_cols:
             hovertemplate=f"{sub_names[col]}: %{{y:.1f}}<extra></extra>",
         ), row=2, col=1)
 
-# Event volume
-fig.add_trace(go.Bar(
+# Event volume — use area chart instead of bars (bars are invisible at this date density)
+fig.add_trace(go.Scatter(
     x=gri["event_date"], y=gri["total_events"],
+    mode="lines",
     name="Daily Events",
-    marker_color="rgba(52, 152, 219, 0.4)",
+    line=dict(color="#3498db", width=0.5),
+    fill="tozeroy",
+    fillcolor="rgba(52, 152, 219, 0.3)",
     hovertemplate="Events: %{y:,}<extra></extra>",
 ), row=3, col=1)
 
 fig.update_layout(
     title=dict(
-        text="<b>Geopolitical Risk Index (GRI)</b><br>"
-             "<span style='font-size:13px;color:#777'>A daily composite score of global geopolitical risk, "
-             "computed from 7.76M events across GDELT and ACLED</span>",
+        text="<b>Geopolitical Risk Index (GRI)</b>",
         x=0.5,
-        font=dict(size=22),
+        font=dict(size=20),
     ),
-    height=900,
+    height=950,
     width=1200,
     showlegend=True,
-    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+    legend=dict(
+        orientation="h", yanchor="top", y=-0.08, xanchor="center", x=0.5,
+        font=dict(size=10),
+    ),
     font=dict(family="Arial", size=11),
     hovermode="x unified",
+    margin=dict(t=80, b=100),
     xaxis3=dict(title=""),
     yaxis1=dict(title="GRI (0-100)", range=[30, 90]),
     yaxis2=dict(title="Sub-Index", range=[30, 90]),

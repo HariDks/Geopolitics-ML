@@ -34,3 +34,6 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
+# ONNX training data (large, regenerable)
+models/event_classifier/saved/model.onnx.data
+*.onnx.data
