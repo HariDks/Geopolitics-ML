@@ -99,11 +99,27 @@ def fmt_usd(val):
 
 
 def save_feedback(data: dict):
+    """Save feedback to both CSV (legacy) and database (new)."""
+    # Legacy CSV
     exists = FEEDBACK_PATH.exists()
     with open(FEEDBACK_PATH, "a", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(data.keys()))
         if not exists: w.writeheader()
         w.writerow(data)
+
+    # Database correction (if prediction was logged)
+    pred_id = data.get("prediction_id", "")
+    if pred_id:
+        try:
+            from pipelines.prediction_logger import log_correction
+            log_correction(
+                prediction_id=pred_id,
+                useful=data.get("useful", ""),
+                correct_channel=data.get("suggested_channel", ""),
+                notes=data.get("comment", ""),
+            )
+        except Exception:
+            pass  # DB not available (Streamlit Cloud)
 
 
 # Negative-signal keywords — if these appear in event text, impact should skew negative
@@ -180,7 +196,7 @@ def correct_impact_sign(imp: dict, direction: str) -> dict:
     return imp
 
 
-def run_analysis(event_text, ticker, revenue):
+def run_analysis(event_text, ticker, revenue, company_name=""):
     clf, scorer, estimator = load_models()
     evt = clf.predict(event_text)
     exp = scorer.score(event_category=evt["category"], ticker=ticker, mention_sentiment=-0.4, event_text=event_text)
@@ -191,7 +207,23 @@ def run_analysis(event_text, ticker, revenue):
     direction = detect_event_direction(event_text)
     imp = correct_impact_sign(imp, direction)
 
-    return {"evt": evt, "exp": exp, "imp": imp, "direction": direction}
+    results = {"evt": evt, "exp": exp, "imp": imp, "direction": direction}
+
+    # Log prediction to database
+    try:
+        from pipelines.prediction_logger import log_prediction
+        pred_id = log_prediction(
+            input_text=event_text,
+            input_ticker=ticker,
+            input_company=company_name,
+            input_revenue=revenue,
+            results=results,
+        )
+        results["prediction_id"] = pred_id
+    except Exception:
+        results["prediction_id"] = ""
+
+    return results
 
 
 def display_results(results, event_text, company_name, revenue):
@@ -348,6 +380,7 @@ def display_results(results, event_text, company_name, revenue):
         if useful != "--" or ch_correct != "--":
             save_feedback({
                 "timestamp": datetime.now().isoformat(),
+                "prediction_id": results.get("prediction_id", ""),
                 "event_text": event_text[:500],
                 "company": company_name,
                 "predicted_channel_1": ch1, "predicted_channel_2": ch2,
@@ -537,7 +570,7 @@ elif page == "Preloaded Examples":
             st.markdown("---")
 
             # Run on demand
-            results = run_analysis(event, info["ticker"], info["revenue"])
+            results = run_analysis(event, info["ticker"], info["revenue"], company_name)
             display_results(results, event, company_name, info["revenue"])
 
 
@@ -565,6 +598,6 @@ elif page == "Custom Analysis":
         st.caption(f"**{ticker}** | ${revenue/1e9:.0f}B revenue | {info['sector']}")
 
     if st.button("Analyze Impact", type="primary", disabled=not event_text, use_container_width=True):
-        results = run_analysis(event_text, ticker, revenue)
+        results = run_analysis(event_text, ticker, revenue, company_name)
         st.divider()
         display_results(results, event_text, company_name, revenue)

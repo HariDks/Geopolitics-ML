@@ -147,11 +147,21 @@ class EventClassifier:
                 probs = torch.softmax(outputs.logits, dim=-1).squeeze().cpu().numpy()
 
         pred_idx = probs.argmax()
+        confidence = float(probs[pred_idx])
         all_scores = {cat: float(round(probs[i], 4)) for i, cat in enumerate(CATEGORIES)}
+
+        # Confidence calibration: flag low-confidence predictions
+        if confidence < 0.4:
+            confidence_level = "low"
+        elif confidence < 0.7:
+            confidence_level = "moderate"
+        else:
+            confidence_level = "high"
 
         return {
             "category": CATEGORIES[pred_idx],
-            "confidence": float(round(probs[pred_idx], 4)),
+            "confidence": round(confidence, 4),
+            "confidence_level": confidence_level,
             "all_scores": all_scores,
         }
 

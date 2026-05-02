@@ -97,6 +97,68 @@ CREATE TABLE IF NOT EXISTS strategies (
 CREATE INDEX IF NOT EXISTS idx_strategies_event   ON strategies(event_category);
 CREATE INDEX IF NOT EXISTS idx_strategies_channel ON strategies(impact_channel);
 
+-- ─── PREDICTIONS LOG ────────────────────────────────────────────────────────
+-- Every prediction the system makes, with full inputs and outputs.
+
+CREATE TABLE IF NOT EXISTS predictions (
+    prediction_id       TEXT PRIMARY KEY,
+    timestamp           TEXT DEFAULT (datetime('now')),
+    user_id             TEXT,
+    input_text          TEXT NOT NULL,
+    input_ticker        TEXT,
+    input_company       TEXT,
+    input_revenue       REAL,
+    predicted_category  TEXT,
+    predicted_category_confidence REAL,
+    predicted_channel_1 TEXT,
+    predicted_channel_2 TEXT,
+    predicted_channel_confidence REAL,
+    channel_mode        TEXT,               -- text_rich / text_partial / text_poor
+    channel_reliability TEXT,               -- high / moderate / low
+    predicted_impact_low  REAL,
+    predicted_impact_mid  REAL,
+    predicted_impact_high REAL,
+    predicted_severity    TEXT,              -- Limited / Low-to-moderate / Moderate / etc.
+    predicted_ops_severity TEXT,            -- High / Medium-to-high / Medium
+    model_version       TEXT DEFAULT 'v1'
+);
+
+CREATE INDEX IF NOT EXISTS idx_pred_ticker ON predictions(input_ticker);
+CREATE INDEX IF NOT EXISTS idx_pred_date   ON predictions(timestamp);
+
+-- ─── CORRECTIONS ────────────────────────────────────────────────────────────
+-- Human corrections linked to specific predictions.
+
+CREATE TABLE IF NOT EXISTS corrections (
+    correction_id   TEXT PRIMARY KEY,
+    prediction_id   TEXT REFERENCES predictions(prediction_id),
+    timestamp       TEXT DEFAULT (datetime('now')),
+    reviewer_id     TEXT,
+    useful          TEXT,                   -- Yes / No
+    correct_category TEXT,                  -- NULL if category was correct
+    correct_channel  TEXT,                  -- NULL if channel was correct
+    actual_impact_pct REAL,                -- actual revenue delta if known
+    notes           TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_corr_pred ON corrections(prediction_id);
+
+-- ─── MODEL VERSIONS ─────────────────────────────────────────────────────────
+-- Track retraining runs and accuracy over time.
+
+CREATE TABLE IF NOT EXISTS model_versions (
+    version_id      TEXT PRIMARY KEY,
+    trained_at      TEXT DEFAULT (datetime('now')),
+    training_data_size INTEGER,
+    gold_labels     INTEGER,
+    weak_labels     INTEGER,
+    holdout_accuracy_category  REAL,
+    holdout_accuracy_channel   REAL,
+    holdout_coverage_impact    REAL,
+    split_type      TEXT DEFAULT 'temporal',  -- temporal / random
+    notes           TEXT
+);
+
 -- ─── INGESTION LOG ───────────────────────────────────────────────────────────
 -- Track ingestion runs for idempotency and debugging.
 
