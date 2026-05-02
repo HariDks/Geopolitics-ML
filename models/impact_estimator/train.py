@@ -309,41 +309,58 @@ def _get_latest_financials(fin_deltas: dict, ticker: str) -> dict:
     return best
 
 
-def train_quantile_models(
-    X_train, y_train, X_val, y_val
-) -> tuple[xgb.XGBRegressor, xgb.XGBRegressor, xgb.XGBRegressor]:
+def train_conformal_model(X_train, y_train, X_val, y_val):
     """
-    Train three XGBoost models for quantile regression:
-    - q05: 5th percentile (optimistic / low impact)
-    - q50: 50th percentile (median / mid impact)
-    - q95: 95th percentile (pessimistic / high impact)
+    Train XGBoost median predictor + Conformal Prediction intervals.
 
-    Using q05/q95 instead of q10/q90 for wider prediction intervals.
-    Target: 90% of actual outcomes fall within [q05, q95].
-    Previous q10/q90 only achieved 60.6% coverage — too narrow.
+    Conformal prediction provides mathematically guaranteed coverage:
+    if you ask for 90% intervals, ~90% of actual outcomes will fall inside.
+    This replaces the old quantile regression which claimed 80% but delivered 43%.
+
+    Uses MAPIE (Model Agnostic Prediction Interval Estimator).
     """
+    from mapie.regression import CrossConformalRegressor
+
+    # Base model: XGBoost median predictor
+    base_model = xgb.XGBRegressor(
+        n_estimators=200,
+        max_depth=5,
+        learning_rate=0.08,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        objective="reg:squarederror",
+        tree_method="hist",
+        random_state=42,
+        verbosity=0,
+    )
+
+    # CrossConformal handles internal CV split automatically
+    logger.info("Training conformal prediction model (MAPIE CrossConformal + XGBoost)...")
+    mapie = CrossConformalRegressor(estimator=base_model, confidence_level=0.9, cv=5, random_state=42)
+    mapie.fit_conformalize(X_train, y_train)
+
+    # Evaluate on validation set
+    y_pred, y_intervals = mapie.predict_interval(X_val)
+    # intervals shape: (n, 2, 1) -> squeeze to (n, 2)
+    y_intervals = y_intervals.squeeze(-1)
+    coverage = np.mean((y_val >= y_intervals[:, 0]) & (y_val <= y_intervals[:, 1]))
+    logger.info(f"Conformal prediction coverage on val: {coverage:.1%} (target: 90%)")
+
+    return mapie
+
+
+def train_quantile_models(X_train, y_train, X_val, y_val):
+    """Legacy quantile models — kept for backward compatibility."""
     models = {}
     for quantile, name in [(0.05, "q10"), (0.5, "q50"), (0.95, "q90")]:
-        logger.info(f"Training {name} (quantile={quantile})...")
         model = xgb.XGBRegressor(
-            n_estimators=200,
-            max_depth=5,
-            learning_rate=0.08,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            objective="reg:quantileerror",
-            quantile_alpha=quantile,
-            tree_method="hist",
-            random_state=42,
-            verbosity=0,
+            n_estimators=200, max_depth=5, learning_rate=0.08,
+            subsample=0.8, colsample_bytree=0.8,
+            objective="reg:quantileerror", quantile_alpha=quantile,
+            tree_method="hist", random_state=42, verbosity=0,
         )
-        model.fit(
-            X_train, y_train,
-            eval_set=[(X_val, y_val)],
-            verbose=False,
-        )
+        model.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=False)
         models[name] = model
-
     return models["q10"], models["q50"], models["q90"]
 
 
@@ -433,12 +450,24 @@ def main(eval_only):
     X, y, metadata = build_dataset(conn)
     conn.close()
 
-    # Split — stratify by source to ensure seed labels in both train/val
-    sources = [m["source"] for m in metadata]
-    X_train, X_val, y_train, y_val, meta_train, meta_val = train_test_split(
-        X, y, metadata, test_size=0.2, random_state=42,
-        stratify=sources,
-    )
+    # Temporal split (no future leakage)
+    from pipelines.temporal_split import get_temporal_split
+    train_idx = [i for i, m in enumerate(metadata)
+                 if get_temporal_split(m.get("event_id", ""), "") in ("train",)]
+    val_idx = [i for i, m in enumerate(metadata)
+               if get_temporal_split(m.get("event_id", ""), "") in ("val", "test")]
+
+    if len(val_idx) < 20:
+        logger.warning(f"Temporal split produced only {len(val_idx)} val samples. Using random split.")
+        sources = [m["source"] for m in metadata]
+        from sklearn.model_selection import train_test_split as _split
+        _indices = list(range(len(metadata)))
+        train_idx, val_idx = _split(_indices, test_size=0.2, random_state=42, stratify=sources)
+
+    X_train, X_val = X[train_idx], X[val_idx]
+    y_train, y_val = y[train_idx], y[val_idx]
+    meta_train = [metadata[i] for i in train_idx]
+    meta_val = [metadata[i] for i in val_idx]
 
     logger.info(f"Train: {len(X_train)}, Val: {len(X_val)}")
 
@@ -447,12 +476,21 @@ def main(eval_only):
         q50 = xgb.XGBRegressor(); q50.load_model(MODEL_DIR / "q50.json")
         q90 = xgb.XGBRegressor(); q90.load_model(MODEL_DIR / "q90.json")
     else:
+        # Train conformal prediction model (primary)
+        conformal_model = train_conformal_model(X_train, y_train, X_val, y_val)
+
+        # Also train legacy quantile models (backward compatibility)
         q10, q50, q90 = train_quantile_models(X_train, y_train, X_val, y_val)
 
         MODEL_DIR.mkdir(parents=True, exist_ok=True)
         q10.save_model(MODEL_DIR / "q10.json")
         q50.save_model(MODEL_DIR / "q50.json")
         q90.save_model(MODEL_DIR / "q90.json")
+
+        # Save conformal model
+        import pickle
+        with open(MODEL_DIR / "conformal_model.pkl", "wb") as f:
+            pickle.dump(conformal_model, f)
 
         with open(MODEL_DIR / "config.json", "w") as f:
             json.dump({

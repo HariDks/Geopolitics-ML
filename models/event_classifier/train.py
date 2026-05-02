@@ -91,7 +91,7 @@ class EventTextDataset(Dataset):
         }
 
 
-def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[str], list[int]]:
+def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY, train_cutoff: str = "2022-12-31") -> tuple[list[str], list[int]]:
     """
     Load balanced training data from DB sources.
 
@@ -110,9 +110,7 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
 
     # ── ACLED: best source for armed_conflict, political_transitions, institutional ──
     # Cap ACLED at 500 per category so news-style augmentation has enough weight.
-    # Without this, 5000 ACLED-format examples teach the model that armed_conflict
-    # always looks like "On [date], [actors] [action] in [location]" and it fails
-    # on news headlines like "Russian forces invaded Ukraine".
+    # Temporal filter: only use events up to train_cutoff date.
     acled_cap = min(max_per_cat, 500)
     for cat in ["armed_conflict_instability", "political_transitions_volatility",
                 "institutional_alliance_realignment"]:
@@ -122,9 +120,10 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
                AND event_category = ?
                AND description_text IS NOT NULL
                AND LENGTH(description_text) > 30
+               AND event_date <= ?
                ORDER BY RANDOM()
                LIMIT ?""",
-            (cat, acled_cap),
+            (cat, train_cutoff, acled_cap),
         ).fetchall()
 
         for r in rows:
@@ -133,9 +132,7 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
             category_counts[cat] += 1
 
     # ── GTA: best source for trade_policy, regulatory, technology ──
-    # Cap GTA at 500 per category so news-style augmentation (~750 oversampled)
-    # has enough relative weight. Without this cap, 5000 GTA-format examples
-    # drown out news examples and the model can't classify news-style tariff text.
+    # Temporal filter + cap at 500 per category.
     gta_cap = min(max_per_cat, 500)
     for cat in ["trade_policy_actions", "regulatory_sovereignty_shifts", "technology_controls"]:
         rows = conn.execute(
@@ -144,9 +141,10 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
                AND event_category = ?
                AND description_text IS NOT NULL
                AND LENGTH(description_text) > 10
+               AND event_date <= ?
                ORDER BY RANDOM()
                LIMIT ?""",
-            (cat, gta_cap),
+            (cat, train_cutoff, gta_cap),
         ).fetchall()
 
         for r in rows:
@@ -154,44 +152,48 @@ def load_training_data(conn, max_per_cat: int = MAX_PER_CATEGORY) -> tuple[list[
             labels.append(CAT2IDX[cat])
             category_counts[cat] += 1
 
-    # ── OFAC: sanctions ──
+    # ── OFAC: sanctions (temporal filter) ──
     rows = conn.execute(
         """SELECT description_text FROM geopolitical_events
            WHERE source = 'ofac'
            AND description_text IS NOT NULL
            AND LENGTH(description_text) > 20
+           AND event_date <= ?
            ORDER BY RANDOM()
            LIMIT ?""",
-        (max_per_cat,),
+        (train_cutoff, max_per_cat),
     ).fetchall()
     for r in rows:
         texts.append(r["description_text"][:512])
         labels.append(CAT2IDX["sanctions_financial_restrictions"])
         category_counts["sanctions_financial_restrictions"] += 1
 
-    # ── BIS: technology controls ──
+    # ── BIS: technology controls (temporal filter) ──
     rows = conn.execute(
         """SELECT description_text FROM geopolitical_events
            WHERE source = 'bis'
            AND description_text IS NOT NULL
            AND LENGTH(description_text) > 10
+           AND event_date <= ?
            ORDER BY RANDOM()
            LIMIT ?""",
-        (max_per_cat,),
+        (train_cutoff, max_per_cat),
     ).fetchall()
     for r in rows:
         texts.append(r["description_text"][:512])
         labels.append(CAT2IDX["technology_controls"])
         category_counts["technology_controls"] += 1
 
-    # ── EDGAR mentions: non-boilerplate, augments all categories ──
+    # ── EDGAR mentions: non-boilerplate, augments all categories (temporal filter) ──
     rows = conn.execute(
         """SELECT mention_text, primary_category FROM geopolitical_mentions
            WHERE specificity_score > 30
+           AND filing_date <= ?
            AND primary_category IN ({})
            ORDER BY specificity_score DESC""".format(
             ",".join(f"'{c}'" for c in CATEGORIES)
         ),
+        (train_cutoff,),
     ).fetchall()
     for r in rows:
         cat = r["primary_category"]
@@ -275,10 +277,12 @@ def train_model(
         device = torch.device("cpu")
     logger.info(f"Using device: {device}")
 
-    # Train/val split (stratified)
+    # Train/val split — use random split since training data is already temporally
+    # filtered (only pre-cutoff events). News augmentation has no dates.
     train_texts, val_texts, train_labels, val_labels = train_test_split(
         texts, labels, test_size=val_split, stratify=labels, random_state=42,
     )
+    logger.info(f"Training data filtered to events before {train_cutoff}")
 
     logger.info(f"Train: {len(train_texts)}, Val: {len(val_texts)}")
 

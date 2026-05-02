@@ -776,15 +776,34 @@ def main(eval_only):
     X, y_channel, y_severity, metadata = build_feature_matrix(conn)
     conn.close()
 
-    # Stratified split
-    X_train, X_val, y_ch_train, y_ch_val, y_sev_train, y_sev_val, meta_train, meta_val = (
-        train_test_split(
-            X, y_channel, y_severity, metadata,
+    # Temporal split (no future leakage)
+    from pipelines.temporal_split import get_temporal_split
+    train_idx = [i for i, m in enumerate(metadata)
+                 if get_temporal_split(m.get("event_id", ""), "") in ("train",)]
+    val_idx = [i for i, m in enumerate(metadata)
+               if get_temporal_split(m.get("event_id", ""), "") in ("val", "test")]
+
+    # Fallback to random split if temporal produces too few val samples
+    if len(val_idx) < 20:
+        logger.warning(f"Temporal split produced only {len(val_idx)} val samples. Using random split.")
+        from sklearn.model_selection import train_test_split as _split
+        train_idx, val_idx = [], []
+        _X_train, _X_val, _y_train, _y_val, _m_train, _m_val = _split(
+            list(range(len(metadata))), y_channel, metadata,
             test_size=0.2, stratify=y_channel, random_state=42,
         )
-    )
+        train_idx, val_idx = list(_X_train), list(_X_val)
 
-    logger.info(f"Train: {len(X_train)}, Val: {len(X_val)}")
+    X_train = X[train_idx]
+    X_val = X[val_idx]
+    y_ch_train = y_channel[train_idx]
+    y_ch_val = y_channel[val_idx]
+    y_sev_train = y_severity[train_idx]
+    y_sev_val = y_severity[val_idx]
+    meta_train = [metadata[i] for i in train_idx]
+    meta_val = [metadata[i] for i in val_idx]
+
+    logger.info(f"Train: {len(X_train)}, Val: {len(X_val)} (temporal split)")
 
     if eval_only:
         MODEL_DIR.mkdir(parents=True, exist_ok=True)
