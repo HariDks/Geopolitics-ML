@@ -280,88 +280,7 @@ def lf_revenue_drop_with_event(row) -> int:
     return ABSTAIN
 
 
-# ── Additional cross-cutting LFs to increase overlap ──────────────────────────
-
-def lf_moderate_negative_car(row) -> int:
-    """Moderate stock drop (3-10%) → revenue_market_access."""
-    if -0.10 < row["car_1_5"] < -0.03:
-        return CH2IDX["revenue_market_access"]
-    return ABSTAIN
-
-
-def lf_moderate_positive_car(row) -> int:
-    """Moderate stock jump (3-10%) → revenue_market_access (beneficiary)."""
-    if 0.03 < row["car_1_5"] < 0.10:
-        return CH2IDX["revenue_market_access"]
-    return ABSTAIN
-
-
-def lf_conflict_with_negative_car(row) -> int:
-    """Conflict event + stock dropped → procurement_supply_chain."""
-    if row["event_category"] == "armed_conflict_instability" and row["car_1_5"] < -0.02:
-        return CH2IDX["procurement_supply_chain"]
-    return ABSTAIN
-
-
-def lf_conflict_with_positive_car(row) -> int:
-    """Conflict event + stock rose → revenue_market_access (defense beneficiary)."""
-    if row["event_category"] == "armed_conflict_instability" and row["car_1_5"] > 0.03:
-        return CH2IDX["revenue_market_access"]
-    return ABSTAIN
-
-
-def lf_trade_with_negative_car(row) -> int:
-    """Trade policy + stock dropped → revenue_market_access."""
-    if row["event_category"] == "trade_policy_actions" and row["car_1_5"] < -0.02:
-        return CH2IDX["revenue_market_access"]
-    return ABSTAIN
-
-
-def lf_tech_with_negative_car(row) -> int:
-    """Tech controls + stock dropped → revenue_market_access."""
-    if row["event_category"] == "technology_controls" and row["car_1_5"] < -0.02:
-        return CH2IDX["revenue_market_access"]
-    return ABSTAIN
-
-
-def lf_energy_with_positive_car(row) -> int:
-    """Energy event + stock rose → revenue_market_access (energy beneficiary)."""
-    if row["event_category"] == "resource_energy_disruptions" and row["car_1_5"] > 0.02:
-        return CH2IDX["revenue_market_access"]
-    return ABSTAIN
-
-
-def lf_political_with_negative_car(row) -> int:
-    """Political event + stock dropped → capital_allocation_investment."""
-    if row["event_category"] == "political_transitions_volatility" and row["car_1_5"] < -0.03:
-        return CH2IDX["capital_allocation_investment"]
-    return ABSTAIN
-
-
-def lf_any_event_tiny_reaction(row) -> int:
-    """Any event with near-zero stock reaction → no meaningful exposure.
-    Assign revenue_market_access as default 'mild' channel."""
-    if abs(row["car_1_5"]) < 0.01:
-        return CH2IDX["revenue_market_access"]
-    return ABSTAIN
-
-
-def lf_sanctions_with_car(row) -> int:
-    """Sanctions + any meaningful stock reaction → regulatory_compliance_cost."""
-    if row["event_category"] == "sanctions_financial_restrictions" and abs(row["car_1_5"]) > 0.02:
-        return CH2IDX["regulatory_compliance_cost"]
-    return ABSTAIN
-
-
-def lf_30d_diverges_from_5d(row) -> int:
-    """If 30-day return reverses 5-day → capital_allocation (initial panic, then recovery or vice versa)."""
-    if row["car_1_5"] < -0.05 and row["car_1_30"] > 0:
-        return CH2IDX["capital_allocation_investment"]
-    return ABSTAIN
-
-
 ALL_LFS = [
-    # Original LFs
     lf_large_negative_car, lf_large_positive_car,
     lf_conflict_event, lf_sanctions_event, lf_trade_policy_event,
     lf_tech_controls_event, lf_regulatory_event, lf_energy_event,
@@ -369,13 +288,6 @@ ALL_LFS = [
     lf_high_spec_mention, lf_impairment_text, lf_supply_text,
     lf_cyber_text, lf_logistics_text,
     lf_revenue_drop_with_event,
-    # New cross-cutting LFs
-    lf_moderate_negative_car, lf_moderate_positive_car,
-    lf_conflict_with_negative_car, lf_conflict_with_positive_car,
-    lf_trade_with_negative_car, lf_tech_with_negative_car,
-    lf_energy_with_positive_car, lf_political_with_negative_car,
-    lf_any_event_tiny_reaction, lf_sanctions_with_car,
-    lf_30d_diverges_from_5d,
 ]
 
 
