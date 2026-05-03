@@ -50,6 +50,14 @@ class EventClassifier:
         self._device = None
         self._hf_tokenizer = None
         self._rust_tokenizer = None
+        self._temperature = 1.0  # default: no scaling
+
+        # Load temperature scaling calibration if available
+        cal_path = path / "calibration.json"
+        if cal_path.exists():
+            import json as _json
+            with open(cal_path) as f:
+                self._temperature = _json.load(f).get("temperature", 1.0)
 
         onnx_path = path / "model.onnx"
         tokenizer_json = path / "tokenizer.json"
@@ -108,8 +116,9 @@ class EventClassifier:
         return self._softmax(scores * 3)  # amplify differences
 
     def _softmax(self, logits):
-        """Compute softmax from raw logits."""
-        exp = np.exp(logits - np.max(logits))
+        """Compute temperature-scaled softmax from raw logits."""
+        scaled = logits / self._temperature
+        exp = np.exp(scaled - np.max(scaled))
         return exp / exp.sum()
 
     def predict(self, text: str, max_length: int = 256) -> dict:

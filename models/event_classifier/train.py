@@ -417,6 +417,71 @@ def evaluate(model, data_loader, device, loss_fn=None) -> tuple[list, list, floa
     return all_preds, all_labels, avg_loss
 
 
+def calibrate_temperature(model, data_loader, device) -> float:
+    """Learn optimal temperature for calibrated confidence scores.
+
+    Temperature scaling (Guo et al., 2017): divides logits by a scalar T
+    before softmax. T > 1 softens probabilities (reduces overconfidence),
+    T < 1 sharpens them. Optimized to minimize negative log-likelihood
+    on the validation set.
+
+    Returns the optimal temperature value.
+    """
+    import torch.nn as nn
+    from scipy.optimize import minimize_scalar
+
+    model.eval()
+    all_logits = []
+    all_labels = []
+
+    with torch.no_grad():
+        for batch in data_loader:
+            input_ids = batch["input_ids"].to(device)
+            attention_mask = batch["attention_mask"].to(device)
+            outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+            all_logits.append(outputs.logits.cpu())
+            all_labels.append(batch["labels"])
+
+    logits = torch.cat(all_logits, dim=0)
+    labels = torch.cat(all_labels, dim=0)
+
+    def nll_at_temperature(T):
+        scaled = logits / T
+        log_probs = torch.log_softmax(scaled, dim=-1)
+        return -log_probs[range(len(labels)), labels].mean().item()
+
+    result = minimize_scalar(nll_at_temperature, bounds=(0.1, 10.0), method="bounded")
+    optimal_T = result.x
+
+    # Calibration report
+    probs_before = torch.softmax(logits, dim=-1)
+    probs_after = torch.softmax(logits / optimal_T, dim=-1)
+    preds = logits.argmax(dim=-1)
+    correct = (preds == labels).float()
+
+    # Bin predictions by confidence and measure actual accuracy
+    print(f"\n{'='*60}")
+    print(f"TEMPERATURE SCALING CALIBRATION")
+    print(f"{'='*60}")
+    print(f"  Optimal temperature: {optimal_T:.3f}")
+    print(f"  (T > 1 = model was overconfident, T < 1 = underconfident)")
+
+    print(f"\n  {'Bin':>12s} {'Before':>10s} {'After':>10s} {'Actual':>10s} {'Count':>6s}")
+    print(f"  {'-'*50}")
+    for lo, hi in [(0.0, 0.3), (0.3, 0.5), (0.5, 0.7), (0.7, 0.9), (0.9, 1.0)]:
+        conf_before = probs_before.max(dim=-1).values
+        conf_after = probs_after.max(dim=-1).values
+        mask = (conf_after >= lo) & (conf_after < hi)
+        if mask.sum() > 0:
+            avg_conf_before = conf_before[mask].mean().item()
+            avg_conf_after = conf_after[mask].mean().item()
+            actual_acc = correct[mask].mean().item()
+            n = mask.sum().item()
+            print(f"  {lo:.1f}-{hi:.1f}:    {avg_conf_before:>8.1%}  {avg_conf_after:>8.1%}  {actual_acc:>8.1%}  {n:>5d}")
+
+    return optimal_T
+
+
 def print_evaluation(val_true, val_preds):
     """Print detailed classification report and confusion matrix."""
     print("\n" + "=" * 70)
@@ -495,6 +560,13 @@ def main(epochs, batch_size, lr, max_per_cat, max_length, eval_only, model_path)
     val_loader = DataLoader(val_dataset, batch_size=batch_size)
     val_preds, val_true, _ = evaluate(model, val_loader, device)
     print_evaluation(val_true, val_preds)
+
+    # Temperature scaling calibration
+    optimal_T = calibrate_temperature(model, val_loader, device)
+    cal_path = MODEL_DIR / "calibration.json"
+    with open(cal_path, "w") as f:
+        json.dump({"temperature": round(optimal_T, 4)}, f)
+    logger.info(f"Temperature scaling saved to {cal_path} (T={optimal_T:.3f})")
 
     logger.info(f"Model saved to {MODEL_DIR}")
     logger.info("Done.")
