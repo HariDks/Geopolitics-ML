@@ -1,0 +1,15 @@
+{
+  "model_3a": {
+    "type": "market_reaction",
+    "target": "car_1_5 * 100",
+    "samples": 1775,
+    "mae": 1.590000033378601,
+    "direction_accuracy": 0.699
+  },
+  "model_3b": {
+    "type": "revenue_impact",
+    "target": "revenue_delta_pct",
+    "samples": 18,
+    "mae": 46.959999084472656
+  }
+}
