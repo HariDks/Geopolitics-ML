@@ -253,9 +253,22 @@ def gics_sector(code: str) -> int:
         return 0
 
 
+WEAK_LABELS_PROBS_PATH = ROOT_DIR / "data" / "seed_labels" / "weak_labels_probs.csv"
+
+
 def load_seed_labels() -> list[dict]:
     """Load seed labels from CSV."""
     with open(SEED_LABELS_PATH) as f:
+        reader = csv.DictReader(f)
+        return list(reader)
+
+
+def load_weak_labels() -> list[dict]:
+    """Load weak labels with Snorkel probability distributions."""
+    if not WEAK_LABELS_PROBS_PATH.exists():
+        logger.warning(f"No weak labels found at {WEAK_LABELS_PROBS_PATH}")
+        return []
+    with open(WEAK_LABELS_PROBS_PATH) as f:
         reader = csv.DictReader(f)
         return list(reader)
 
@@ -373,14 +386,15 @@ def _get_text_channel_probs(mention_text: str) -> np.ndarray:
     return _text_model.predict_proba(X)[0]
 
 
-def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, list[dict]]:
+def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, list[dict]]:
     """
-    Build feature matrix from all available data sources.
+    Build feature matrix from seed labels + Snorkel weak labels.
 
     Returns:
         X: feature matrix (n_samples, n_features)
         y_channel: channel labels (n_samples,) — integer encoded
         y_severity: severity scores (n_samples,) — mention_sentiment as proxy
+        sample_weights: confidence weights (n_samples,) — 1.0 for seed, Snorkel confidence for weak
         metadata: list of dicts with sample info for debugging
     """
     seed_labels = load_seed_labels()
@@ -528,7 +542,107 @@ def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, list
             "source": "seed_label",
         })
 
-    # ── Source 2: Oversample underrepresented channels ──
+    # ── Source 2: Snorkel weak labels (confidence-weighted) ──
+    weak_labels = load_weak_labels()
+    weak_count = 0
+    for label in weak_labels:
+        event_id = label["event_id"]
+        ticker = label["company_ticker"]
+        channel = label["predicted_channel"]
+
+        if channel not in CHANNEL2IDX:
+            continue
+
+        # Skip if already in seed labels
+        if any(m["event_id"] == event_id and m["ticker"] == ticker and m["source"] == "seed_label"
+               for m in metadata):
+            continue
+
+        # Event category (one-hot)
+        event_cat = label.get("event_category", EVENT_TO_CATEGORY.get(event_id, ""))
+        cat_features = [1.0 if c == event_cat else 0.0 for c in EVENT_CATEGORIES]
+
+        # Company sector
+        sector = gics_sector(label.get("sector_gics", ""))
+
+        # Sentiment proxy from stock direction
+        car_5 = safe_float(label.get("car_1_5"), 0.0)
+        sentiment = -0.3 if car_5 < 0 else 0.1
+
+        # Event study data
+        es_event_id = _map_to_event_study_id(event_id)
+        es = event_studies.get((es_event_id or event_id, ticker), {})
+        es_car_5 = es.get("car_1_5", car_5) or car_5
+        es_car_30 = es.get("car_1_30", 0.0) or 0.0
+
+        # Financial context — use latest available
+        fd = {}
+        for key, val in fin_deltas.items():
+            if key[0] == ticker:
+                fd = val
+                break
+        rev_yoy = fd.get("revenue_yoy_pct", 0.0) or 0.0
+        gm = fd.get("gross_margin", 0.0) or 0.0
+        gm_delta = fd.get("gross_margin_delta_pp", 0.0) or 0.0
+        rev_standalone = fd.get("revenue_standalone", 0.0) or 0.0
+        log_rev = np.log1p(abs(rev_standalone) / 1e6) if rev_standalone else 0.0
+
+        # Mention signals
+        ms = mention_signals.get((ticker, event_cat), {})
+        mention_count = ms.get("mention_count", 0) or 0
+        avg_specificity = ms.get("avg_specificity", 0.0) or 0.0
+        max_specificity = ms.get("max_specificity", 0.0) or 0.0
+        avg_keywords = ms.get("avg_keywords", 0.0) or 0.0
+
+        # Geographic concentration
+        geo_conc = compute_geo_concentration(ticker, event_id)
+
+        # Exposure proxies
+        proxy = exposure_proxies.get(ticker, {})
+        facility_score = proxy.get("facility_concentration_score", 0.0)
+        single_source = proxy.get("single_source_risk_score", 0.0)
+        asset_exit = proxy.get("asset_exit_score", 0.0)
+        route_sensitivity = proxy.get("route_sensitivity_score", 0.0)
+
+        geo_density = proxy.get("geo_mention_density", {})
+        affected_regions = EVENT_AFFECTED_REGIONS.get(event_id, [])
+        affected_geo_density = sum(geo_density.get(r, 0.0) for r in affected_regions)
+
+        # Lexicon scores from mention text
+        lex = compute_lexicon_scores(label.get("mention_text", ""))
+        lex_scores = [lex.get(ch, 0.0) for ch in IMPACT_CHANNELS]
+
+        features = (
+            cat_features
+            + [
+                sector, sentiment, car_5, es_car_5, es_car_30,
+                rev_yoy, gm, gm_delta, log_rev,
+                mention_count, avg_specificity, max_specificity, avg_keywords,
+                0.0,  # rev_delta (not available for weak labels)
+                geo_conc, facility_score, single_source, asset_exit,
+                route_sensitivity, affected_geo_density,
+            ]
+            + lex_scores
+        )
+
+        # Snorkel confidence as sample weight
+        snorkel_conf = safe_float(label.get("snorkel_confidence"), 0.5)
+
+        X_rows.append(features)
+        y_channel.append(CHANNEL2IDX[channel])
+        y_severity.append(sentiment)
+        metadata.append({
+            "event_id": event_id,
+            "ticker": ticker,
+            "channel": channel,
+            "source": "weak_label",
+            "sample_weight": snorkel_conf,
+        })
+        weak_count += 1
+
+    logger.info(f"  Weak labels added: {weak_count}")
+
+    # ── Source 3: Oversample underrepresented channels ──
     # With only 163 seed labels, some channels have 1-5 examples.
     # Duplicate minority channel examples with small noise to help the model.
     channel_counts = {}
@@ -570,11 +684,18 @@ def build_feature_matrix(conn) -> tuple[np.ndarray, np.ndarray, np.ndarray, list
     y_ch = np.array(y_channel, dtype=np.int32)
     y_sev = np.array(y_severity, dtype=np.float32)
 
+    # Build sample weights: 1.0 for seed/augmented, Snorkel confidence for weak
+    weights = np.ones(len(metadata), dtype=np.float32)
+    for i, m in enumerate(metadata):
+        if m["source"] == "weak_label":
+            weights[i] = m.get("sample_weight", 0.5)
+
     logger.info(f"Built feature matrix: {X.shape[0]} samples, {X.shape[1]} features")
     logger.info(f"  Seed labels: {sum(1 for m in metadata if m['source'] == 'seed_label')}")
-    logger.info(f"  Negative examples: {sum(1 for m in metadata if m['source'] == 'event_study_negative')}")
+    logger.info(f"  Weak labels: {sum(1 for m in metadata if m['source'] == 'weak_label')}")
+    logger.info(f"  Augmented: {sum(1 for m in metadata if m['source'] == 'augmented')}")
 
-    return X, y_ch, y_sev, metadata
+    return X, y_ch, y_sev, weights, metadata
 
 
 def _map_to_event_study_id(event_id: str) -> str | None:
@@ -651,8 +772,13 @@ FEATURE_NAMES = (
 )
 
 
-def train_channel_classifier(X_train, y_train, X_val, y_val) -> xgb.XGBClassifier:
-    """Train XGBoost classifier for impact channel prediction."""
+def train_channel_classifier(X_train, y_train, X_val, y_val, sample_weight=None) -> xgb.XGBClassifier:
+    """Train XGBoost classifier for impact channel prediction.
+
+    sample_weight: per-sample confidence weights. Seed labels get 1.0,
+    weak labels get their Snorkel confidence (0.5-1.0). This lets the
+    model learn more from high-confidence labels and less from uncertain ones.
+    """
     model = xgb.XGBClassifier(
         n_estimators=200,
         max_depth=6,
@@ -672,6 +798,7 @@ def train_channel_classifier(X_train, y_train, X_val, y_val) -> xgb.XGBClassifie
 
     model.fit(
         X_train, y_train,
+        sample_weight=sample_weight,
         eval_set=[(X_val, y_val)],
         verbose=False,
     )
@@ -679,7 +806,7 @@ def train_channel_classifier(X_train, y_train, X_val, y_val) -> xgb.XGBClassifie
     return model
 
 
-def train_severity_regressor(X_train, y_train, X_val, y_val) -> xgb.XGBRegressor:
+def train_severity_regressor(X_train, y_train, X_val, y_val, sample_weight=None) -> xgb.XGBRegressor:
     """Train XGBoost regressor for severity score prediction."""
     model = xgb.XGBRegressor(
         n_estimators=150,
@@ -696,6 +823,7 @@ def train_severity_regressor(X_train, y_train, X_val, y_val) -> xgb.XGBRegressor
 
     model.fit(
         X_train, y_train,
+        sample_weight=sample_weight,
         eval_set=[(X_val, y_val)],
         verbose=False,
     )
@@ -773,7 +901,7 @@ def evaluate_severity_regressor(model, X_val, y_val):
 def main(eval_only):
     """Train or evaluate the exposure scorer."""
     conn = get_db_connection()
-    X, y_channel, y_severity, metadata = build_feature_matrix(conn)
+    X, y_channel, y_severity, sample_weights, metadata = build_feature_matrix(conn)
     conn.close()
 
     # Temporal split (no future leakage)
@@ -800,10 +928,14 @@ def main(eval_only):
     y_ch_val = y_channel[val_idx]
     y_sev_train = y_severity[train_idx]
     y_sev_val = y_severity[val_idx]
+    w_train = sample_weights[train_idx]
     meta_train = [metadata[i] for i in train_idx]
     meta_val = [metadata[i] for i in val_idx]
 
-    logger.info(f"Train: {len(X_train)}, Val: {len(X_val)} (temporal split)")
+    # Report weight distribution
+    seed_w = sum(1 for i in train_idx if metadata[i]["source"] == "seed_label")
+    weak_w = sum(1 for i in train_idx if metadata[i]["source"] == "weak_label")
+    logger.info(f"Train: {len(X_train)} ({seed_w} seed + {weak_w} weak + {len(X_train)-seed_w-weak_w} augmented), Val: {len(X_val)}")
 
     if eval_only:
         MODEL_DIR.mkdir(parents=True, exist_ok=True)
@@ -812,13 +944,13 @@ def main(eval_only):
         reg = xgb.XGBRegressor()
         reg.load_model(MODEL_DIR / "severity_regressor.json")
     else:
-        # Train channel classifier
-        logger.info("Training channel classifier...")
-        clf = train_channel_classifier(X_train, y_ch_train, X_val, y_ch_val)
+        # Train channel classifier with confidence-weighted samples
+        logger.info("Training channel classifier (with sample weights)...")
+        clf = train_channel_classifier(X_train, y_ch_train, X_val, y_ch_val, sample_weight=w_train)
 
-        # Train severity regressor
-        logger.info("Training severity regressor...")
-        reg = train_severity_regressor(X_train, y_sev_train, X_val, y_sev_val)
+        # Train severity regressor with confidence-weighted samples
+        logger.info("Training severity regressor (with sample weights)...")
+        reg = train_severity_regressor(X_train, y_sev_train, X_val, y_sev_val, sample_weight=w_train)
 
         # Save models
         MODEL_DIR.mkdir(parents=True, exist_ok=True)
