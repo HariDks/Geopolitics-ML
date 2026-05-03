@@ -158,6 +158,24 @@ class EventClassifier:
         else:
             confidence_level = "high"
 
+        # Embedding backup: when primary classifier is uncertain, consult similar events
+        if confidence_level == "low":
+            try:
+                from models.event_classifier.embedding_backup import EmbeddingBackup
+                backup = EmbeddingBackup()
+                backup_result = backup.classify(text, k=5)
+                if backup_result["confidence"] >= 0.6:
+                    # Embedding backup is more confident — use its answer
+                    return {
+                        "category": backup_result["category"],
+                        "confidence": round(backup_result["confidence"], 4),
+                        "confidence_level": "moderate",
+                        "all_scores": all_scores,
+                        "source": "embedding_backup",
+                    }
+            except Exception:
+                pass  # Backup not available
+
         return {
             "category": CATEGORIES[pred_idx],
             "confidence": round(confidence, 4),
