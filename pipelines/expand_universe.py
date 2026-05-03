@@ -67,15 +67,19 @@ EXPANSION_TICKERS = [
 
 
 def run_event_studies(tickers: list[str], limit: int = None):
-    """Run event studies for new tickers against existing events."""
+    """
+    Run event studies for new tickers against existing events.
+
+    TCP safety: downloads one ticker's full history at a time, then
+    processes all 20 events locally (no network). Adds 0.5s delay between
+    tickers to avoid rate limiting. Uses yfinance's internal session
+    which reuses connections.
+    """
+    import time
+    import pandas as pd
     import yfinance as yf
 
     conn = get_db_connection()
-
-    # Get existing events
-    events = conn.execute(
-        "SELECT DISTINCT event_id, event_date, event_category FROM event_studies LIMIT 1"
-    ).fetchall()
 
     # Get all event dates
     event_list = conn.execute("""
@@ -87,18 +91,23 @@ def run_event_studies(tickers: list[str], limit: int = None):
         tickers = tickers[:limit]
 
     logger.info(f"Running event studies for {len(tickers)} tickers across {len(event_list)} events...")
+    logger.info(f"  TCP safety: 1 download per ticker, 0.5s delay between tickers")
 
     stored = 0
+    skipped = 0
     for i, ticker in enumerate(tickers):
-        if (i + 1) % 50 == 0:
-            logger.info(f"  [{i+1}/{len(tickers)}] {ticker}")
+        if (i + 1) % 10 == 0 or i == 0:
+            logger.info(f"  [{i+1}/{len(tickers)}] {ticker} (stored: {stored})")
 
         try:
+            # ONE network call per ticker — download full history
             stock = yf.Ticker(ticker)
             hist = stock.history(period="max")
             if hist.empty:
+                skipped += 1
                 continue
 
+            # Process all 20 events LOCALLY (no network calls)
             for event in event_list:
                 event_id = event["event_id"]
                 event_date = event["event_date"]
@@ -111,10 +120,11 @@ def run_event_studies(tickers: list[str], limit: int = None):
                 if existing:
                     continue
 
-                # Find pre/post prices
                 try:
-                    import pandas as pd
                     ed = pd.Timestamp(event_date)
+                    # Match timezone of yfinance index
+                    if hist.index.tz is not None:
+                        ed = ed.tz_localize(hist.index.tz)
                     pre = hist.loc[:ed].tail(1)
                     post_5 = hist.loc[ed:].head(6).tail(1)
                     post_30 = hist.loc[ed:].head(31).tail(1)
@@ -131,9 +141,9 @@ def run_event_studies(tickers: list[str], limit: int = None):
 
                     conn.execute(
                         """INSERT OR IGNORE INTO event_studies
-                           (event_id, event_date, ticker, pre_close, post_5d_close,
-                            post_30d_close, car_1_5, car_1_30)
-                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                           (event_id, event_date, event_category, ticker,
+                            pre_close, post_5d_close, post_30d_close, car_1_5, car_1_30)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                         (event_id, event_date, "", ticker, pre_close, post_5_close,
                          post_30_close, car_5, car_30),
                     )
@@ -142,15 +152,19 @@ def run_event_studies(tickers: list[str], limit: int = None):
                     continue
 
         except Exception as e:
+            skipped += 1
             continue
 
-        # Commit every 10 tickers
+        # Commit every 10 tickers to avoid losing progress
         if (i + 1) % 10 == 0:
             conn.commit()
 
+        # Rate limit: 0.5s between tickers to avoid yfinance throttling
+        time.sleep(0.5)
+
     conn.commit()
     conn.close()
-    logger.info(f"Stored {stored} new event study records")
+    logger.info(f"Stored {stored} new event study records ({skipped} tickers skipped)")
 
 
 @click.command()
