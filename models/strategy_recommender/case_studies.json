@@ -2112,6 +2112,105 @@
       "outcome": "Minimal financial impact \u2014 Russia was small market for wind. Redirected to US IRA-driven demand.",
       "cost": "Minor write-downs",
       "timeline": "Exit March 2022"
+    },
+    {
+      "company": "FedEx",
+      "year": 2022,
+      "event": "Russia-Ukraine invasion \u2014 logistics exit",
+      "category": "armed_conflict_instability",
+      "channel": "logistics_operations",
+      "action": "Suspended all services to Russia and Belarus. Rerouted European air freight around Russian airspace.",
+      "outcome": "Longer flight times for Asia-Europe routes increased fuel costs. Russia was <1% of revenue.",
+      "cost": "Higher fuel costs from airspace rerouting",
+      "timeline": "Suspended March 2022"
+    },
+    {
+      "company": "UPS",
+      "year": 2022,
+      "event": "Russia-Ukraine invasion \u2014 logistics exit",
+      "category": "armed_conflict_instability",
+      "channel": "logistics_operations",
+      "action": "Suspended package delivery to Russia and Ukraine. Diverted cargo planes around closed Russian airspace.",
+      "outcome": "Asia-Europe transit times increased 2-4 hours. Minimal revenue impact.",
+      "cost": "Incremental fuel and rerouting costs",
+      "timeline": "Suspended March 2022"
+    },
+    {
+      "company": "PayPal",
+      "year": 2022,
+      "event": "Russia sanctions \u2014 fintech exit",
+      "category": "sanctions_financial_restrictions",
+      "channel": "revenue_market_access",
+      "action": "Shut down PayPal services in Russia entirely. Allowed withdrawals for a transition period.",
+      "outcome": "Lost Russian user base. Swift compliance maintained relationship with global banking partners.",
+      "cost": "Minor \u2014 Russia was small market",
+      "timeline": "Shutdown March 2022"
+    },
+    {
+      "company": "Netflix",
+      "year": 2022,
+      "event": "Russia-Ukraine invasion \u2014 media exit",
+      "category": "armed_conflict_instability",
+      "channel": "revenue_market_access",
+      "action": "Suspended Russian service. Had previously refused to carry Russian state propaganda channels as required by law.",
+      "outcome": "Lost ~700K Russian subscribers. Compliance with Russian broadcast law was already a friction point.",
+      "cost": "~$10M monthly revenue loss",
+      "timeline": "Suspended March 2022"
+    },
+    {
+      "company": "Porsche",
+      "year": 2022,
+      "event": "Russia-Ukraine invasion \u2014 luxury auto",
+      "category": "armed_conflict_instability",
+      "channel": "revenue_market_access",
+      "action": "Stopped all vehicle deliveries and exports to Russia. Suspended Porsche Experience Center in Moscow.",
+      "outcome": "Russia was ~3% of deliveries. IPO proceeded successfully in Sept 2022 despite geopolitical turmoil.",
+      "cost": "~3% delivery volume loss",
+      "timeline": "Suspended March 2022"
+    },
+    {
+      "company": "Broadcom",
+      "year": 2023,
+      "event": "US chip export controls expansion",
+      "category": "technology_controls",
+      "channel": "innovation_ip",
+      "action": "Restricted sales of advanced networking and AI accelerator chips to China. Maintained legacy product sales.",
+      "outcome": "China revenue declined. Pivoted to VMware acquisition and enterprise software strategy.",
+      "cost": "China networking revenue at risk",
+      "timeline": "Expanded controls Oct 2023"
+    },
+    {
+      "company": "IKEA",
+      "year": 2020,
+      "event": "COVID-19 supply chain disruptions",
+      "category": "armed_conflict_instability",
+      "channel": "procurement_supply_chain",
+      "action": "Diversified suppliers beyond China. Invested in regional distribution centers to reduce single-point dependencies.",
+      "outcome": "Initially faced 2-3 month delays on popular items. Post-COVID supply chain more resilient.",
+      "cost": "Distribution center investment",
+      "timeline": "Disruptions March 2020 onwards"
+    },
+    {
+      "company": "Amazon",
+      "year": 2022,
+      "event": "European energy crisis \u2014 data center costs",
+      "category": "resource_energy_disruptions",
+      "channel": "procurement_supply_chain",
+      "action": "Accelerated renewable energy procurement for European data centers. Signed long-term power purchase agreements.",
+      "outcome": "Locked in energy costs below spot. AWS European margins maintained despite energy price spikes.",
+      "cost": "Long-term PPA commitments",
+      "timeline": "PPAs signed through 2022"
+    },
+    {
+      "company": "Stellantis",
+      "year": 2025,
+      "event": "US tariffs April 2025 \u2014 auto sector",
+      "category": "trade_policy_actions",
+      "channel": "procurement_supply_chain",
+      "action": "Temporarily laid off 900 workers at Canadian Windsor plant making minivans for US market due to tariff uncertainty.",
+      "outcome": "Evaluated shifting North American production mix. USMCA compliance became critical planning factor.",
+      "cost": "Production disruption + worker layoffs",
+      "timeline": "Layoffs April 2025"
     }
   ]
 }
