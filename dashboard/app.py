@@ -288,10 +288,15 @@ def display_results(results, event_text, company_name, revenue):
         ({usd_low} to {usd_high} on ${revenue/1e9:.0f}B)
         """)
     with col2:
+        interval_method = imp.get("interval_method", "quantile")
+        interval_label = "90% conformal" if interval_method == "conformal_90pct" else "quantile"
+        market_rxn = imp.get("market_reaction_pct")
+        market_line = f"\n        **Market reaction (Model 3A):** {market_rxn:+.1f}%" if market_rxn is not None else ""
         st.markdown(f"""
         **Financial scale:** {fin_label}\n
         **Operational severity:** {ops_label}\n
-        **Reliability:** {conf_badge}
+        **Reliability:** {conf_badge}\n
+        **Interval method:** {interval_label}{market_line}
         """)
 
     # ── SECTION 3: Event interpretation ──
@@ -318,6 +323,32 @@ def display_results(results, event_text, company_name, revenue):
     with st.expander("Historical context"):
         st.markdown(f"Similar events in the **{event_cat_display.lower()}** category have historically "
                     f"affected companies through {ch1_short.lower()} and {ch2_short.lower()} channels.")
+
+    # ── SECTION 4b: Strategy recommendations (RAG) ──
+    with st.expander("Recommended strategies (based on historical precedents)"):
+        try:
+            from models.strategy_recommender.rag_recommend import RAGRecommender
+            rag = RAGRecommender()
+            recs = rag.recommend(
+                event_text=event_text,
+                company=company_short,
+                sector=str(exp.get("gics_sector", "")),
+                channel=ch1,
+                k=3,
+            )
+            if recs:
+                for i, r in enumerate(recs):
+                    prec = r["precedent"]
+                    st.markdown(f"**{i+1}. {r['strategy']}**")
+                    st.caption(
+                        f"Precedent: {prec['company']} ({prec['year']}) — {prec['event'][:80]}. "
+                        f"Outcome: {prec['outcome'][:100]}. "
+                        f"Relevance: {r['relevance']:.0%}"
+                    )
+            else:
+                st.markdown("No close historical precedents found for this event-company combination.")
+        except Exception as e:
+            st.markdown("Strategy recommendations unavailable (case study index not built).")
 
     # ── SECTION 5: Channel breakdown ──
     st.markdown("#### Channel breakdown")
@@ -406,6 +437,33 @@ with st.sidebar.expander("Model performance"):
     - With secondary: **75%**
     - Direction: **90%**
     """)
+
+with st.sidebar.expander("Risk context (macro indices)"):
+    try:
+        from pipelines.utils import get_db_connection as _get_conn
+        _conn = _get_conn()
+        gpr = _conn.execute("""
+            SELECT value FROM macro_indices
+            WHERE index_name = 'gpr_daily' ORDER BY date DESC LIMIT 1
+        """).fetchone()
+        epu = _conn.execute("""
+            SELECT value FROM macro_indices
+            WHERE index_name = 'epu_us' ORDER BY date DESC LIMIT 1
+        """).fetchone()
+        _conn.close()
+        gpr_val = gpr[0] if gpr else None
+        epu_val = epu[0] if epu else None
+        if gpr_val is not None:
+            gpr_level = "Elevated" if gpr_val > 120 else "Normal" if gpr_val < 80 else "Above average"
+            st.metric("Geopolitical Risk Index (GPR)", f"{gpr_val:.0f}", delta=gpr_level)
+        if epu_val is not None:
+            epu_level = "High uncertainty" if epu_val > 150 else "Normal" if epu_val < 100 else "Elevated"
+            st.metric("Economic Policy Uncertainty (EPU)", f"{epu_val:.0f}", delta=epu_level)
+        if gpr_val is None and epu_val is None:
+            st.caption("No macro index data available")
+    except Exception:
+        st.caption("Macro indices unavailable")
+
 st.sidebar.caption("[GitHub](https://github.com/HariDks/Geopolitics-ML)")
 
 # ════════════════════════════════════════════════════════════════════════════

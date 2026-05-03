@@ -61,10 +61,22 @@ IMPACT_CHANNELS = [
 
 
 class ImpactEstimator:
-    """Estimate financial impact ranges using quantile regression."""
+    """Estimate financial impact ranges using Model 3A (market) + 3B (revenue with conformal intervals)."""
 
     def __init__(self, model_path: str | Path | None = None):
+        import pickle
         path = Path(model_path) if model_path else MODEL_DIR
+
+        # Try loading split models (3A market + 3B revenue with conformal)
+        self._use_conformal = False
+        if (path / "model_3a_market.json").exists() and (path / "conformal_3b.pkl").exists():
+            self.model_3a = xgb.XGBRegressor()
+            self.model_3a.load_model(path / "model_3a_market.json")
+            with open(path / "conformal_3b.pkl", "rb") as f:
+                self.conformal_3b = pickle.load(f)
+            self._use_conformal = True
+
+        # Fallback to quantile models
         self.q10 = xgb.XGBRegressor(); self.q10.load_model(path / "q10.json")
         self.q50 = xgb.XGBRegressor(); self.q50.load_model(path / "q50.json")
         self.q90 = xgb.XGBRegressor(); self.q90.load_model(path / "q90.json")
@@ -148,23 +160,79 @@ class ImpactEstimator:
             dtype=np.float32,
         ).reshape(1, -1)
 
-        low = float(self.q10.predict(features)[0])
-        mid = float(self.q50.predict(features)[0])
-        high = float(self.q90.predict(features)[0])
+        # Use conformal prediction if available (guaranteed coverage intervals)
+        if self._use_conformal:
+            try:
+                # Model 3A: market reaction (point estimate)
+                cat_only = np.array(
+                    [1.0 if c == event_category else 0.0 for c in EVENT_CATEGORIES]
+                    + [car_1_30, abs(car_1_5)],
+                    dtype=np.float32,
+                ).reshape(1, -1)
+                market_pct = float(self.model_3a.predict(cat_only)[0])
 
-        # Ensure ordering: low <= mid <= high
-        low, mid, high = sorted([low, mid, high])
+                # Model 3B: revenue impact with conformal intervals
+                # 3B features: event cats (8) + channels (10) + [sector, sentiment,
+                # car_5, geo_conc, facility, single_src, asset_exit, route] + lexicon (10) = 36
+                from models.exposure_scorer.train import (
+                    compute_geo_concentration, exposure_proxies as _proxies,
+                    compute_lexicon_scores,
+                )
+                geo_conc = 0.0
+                proxy = _proxies.get(ticker, {})
+                facility = proxy.get("facility_concentration_score", 0.0)
+                single_src = proxy.get("single_source_risk_score", 0.0)
+                asset_exit = proxy.get("asset_exit_score", 0.0)
+                route = proxy.get("route_sensitivity_score", 0.0)
+                lex_scores = [0.0] * len(IMPACT_CHANNELS)  # no event text available here
 
-        # Confidence based on interval width — narrower = more confident
-        width = high - low
-        confidence = max(0.3, min(0.95, 1.0 - width / 50.0))
+                features_3b = np.array(
+                    [1.0 if c == event_category else 0.0 for c in EVENT_CATEGORIES]
+                    + [1.0 if c == impact_channel else 0.0 for c in IMPACT_CHANNELS]
+                    + [gics_sector, mention_sentiment, car_1_5, geo_conc,
+                       facility, single_src, asset_exit, route]
+                    + lex_scores,
+                    dtype=np.float32,
+                ).reshape(1, -1)
 
-        result = {
-            "impact_low_pct": round(low, 2),
-            "impact_mid_pct": round(mid, 2),
-            "impact_high_pct": round(high, 2),
-            "confidence": round(confidence, 2),
-        }
+                y_pred, y_intervals = self.conformal_3b.predict_interval(features_3b)
+                y_intervals = y_intervals.squeeze(-1)
+                mid = float(y_pred[0])
+                low = float(y_intervals[0, 0])
+                high = float(y_intervals[0, 1])
+                low, mid, high = sorted([low, mid, high])
+
+                width = high - low
+                confidence = max(0.3, min(0.95, 1.0 - width / 50.0))
+
+                result = {
+                    "impact_low_pct": round(low, 2),
+                    "impact_mid_pct": round(mid, 2),
+                    "impact_high_pct": round(high, 2),
+                    "market_reaction_pct": round(market_pct, 2),
+                    "confidence": round(confidence, 2),
+                    "interval_method": "conformal_90pct",
+                }
+            except Exception:
+                # Fall through to quantile fallback
+                self._use_conformal = False
+
+        if not self._use_conformal:
+            low = float(self.q10.predict(features)[0])
+            mid = float(self.q50.predict(features)[0])
+            high = float(self.q90.predict(features)[0])
+
+            low, mid, high = sorted([low, mid, high])
+            width = high - low
+            confidence = max(0.3, min(0.95, 1.0 - width / 50.0))
+
+            result = {
+                "impact_low_pct": round(low, 2),
+                "impact_mid_pct": round(mid, 2),
+                "impact_high_pct": round(high, 2),
+                "confidence": round(confidence, 2),
+                "interval_method": "quantile",
+            }
 
         if revenue_usd > 0:
             result["impact_low_usd"] = round(revenue_usd * low / 100)
