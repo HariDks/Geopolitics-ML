@@ -1,0 +1,656 @@
+[
+  {
+    "company": "BP",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -8.0,
+    "reasoning": "BP 2021 rev ~$157B, $25.5B write-down = ~16% of rev, but one-time charge not recurring revenue. Revenue impact ~-8% from lost Rosneft dividends",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Shell",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -1.5,
+    "reasoning": "Shell 2021 rev ~$261B, $3.9B impairment <2%. Recurring revenue impact minimal \u2014 Russia was ~5% of production",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Renault",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -8.0,
+    "reasoning": "Russia was ~8% of Renault global sales",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Carlsberg",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -10.0,
+    "reasoning": "Russia was ~10% of Carlsberg revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "TotalEnergies",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -3.0,
+    "reasoning": "$3.7B write-down, Russia ~3% of production",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Heineken",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -2.0,
+    "reasoning": "Russia was ~2% of Heineken revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Danone",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -5.0,
+    "reasoning": "Russia was ~5% of Danone revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Wintershall Dea",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -30.0,
+    "reasoning": "\u20ac5.3B write-off was ~30% of company value",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Equinor",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -1.5,
+    "reasoning": "$1.1B write-off, Equinor rev ~$90B, Russia was ~1.5% of production",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "ExxonMobil",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "$3.4B on ~$400B rev, Sakhalin was ~1% of production",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Mercedes-Benz",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "\u20ac700M write-off, MB rev ~\u20ac150B, Russia ~1% of sales",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Siemens Gamesa",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -0.5,
+    "reasoning": "Russia minimal market for wind",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "McDonald's",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -9.0,
+    "reasoning": "Russia/Ukraine were ~9% of systemwide revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Visa",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -4.0,
+    "reasoning": "Lost ~4% of global net revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Harley-Davidson",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -3.0,
+    "reasoning": "$45-55M tariff cost on ~$5.5B revenue \u2248 1%, but EU was ~15% of sales, partial redirect",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Qualcomm",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -12.0,
+    "reasoning": "Revenue dropped 12% in fiscal 2019",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Intel",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -12.0,
+    "reasoning": "China revenue declined from ~27% to ~15% of total",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Applied Materials",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -8.0,
+    "reasoning": "China revenue fell from 33% to ~25%",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Lam Research",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -10.0,
+    "reasoning": "~30% of China revenue restricted",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Ikea",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -3.5,
+    "reasoning": "Lost ~\u20ac1.5B = ~3.5% of global revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Nestl\u00e9",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -2.0,
+    "reasoning": "Russia was ~2% of sales",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Unilever",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -1.5,
+    "reasoning": "Russia was ~1.5% of revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Adidas",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -4.0,
+    "reasoning": "\u20ac250M on ~\u20ac22B revenue \u2248 1%, but Russia/CIS was ~4% of sales",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Spotify",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "Russia was <1% of revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Airbnb",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -72.0,
+    "reasoning": "Revenue dropped 72% in April 2020",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Delta Air Lines",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -65.0,
+    "reasoning": "$12.4B loss on ~$19B pre-COVID revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "KLA Corporation",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -10.0,
+    "reasoning": "China revenue dropped from 30% to ~20%",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Tokyo Electron",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -25.0,
+    "reasoning": "China was 25% of revenue, advanced equipment restricted",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Mastercard",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -2.0,
+    "reasoning": "Lost ~2% of global transactions",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Volvo Cars",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -5.0,
+    "reasoning": "US was ~15% of sales, major tariff impact on imports",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "NBA",
+    "channel": "reputation_stakeholder",
+    "revenue_delta_pct": -3.0,
+    "reasoning": "$200M on ~$8B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Marriott",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -60.0,
+    "reasoning": "RevPAR dropped 60% in 2020",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Disney",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -30.0,
+    "reasoning": "Parks revenue fell 85%, parks ~37% of total \u2248 30% total",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Louis Vuitton (LVMH)",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -2.0,
+    "reasoning": "Margin compression, US ~25% of sales but absorbed costs",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Ericsson",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "Lost ~1% of revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Netflix",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -0.5,
+    "reasoning": "~$10M/month on ~$30B/yr",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Porsche",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -3.0,
+    "reasoning": "~3% of deliveries",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "ASML",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -8.0,
+    "reasoning": "Additional $2B+ at risk on ~$25B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale",
+    "channel": "financial_treasury",
+    "revenue_delta_pct": -5.0,
+    "reasoning": "$1.34B settlement on ~$25B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "BNP Paribas",
+    "channel": "financial_treasury",
+    "revenue_delta_pct": -18.0,
+    "reasoning": "$8.9B penalty on ~$50B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Standard Chartered",
+    "channel": "financial_treasury",
+    "revenue_delta_pct": -7.0,
+    "reasoning": "$1.1B on ~$15B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "ODP (T\u00fcrk Telekom investors)",
+    "channel": "financial_treasury",
+    "revenue_delta_pct": -40.0,
+    "reasoning": "Unhedged investors lost 40%+ on FX",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "UniCredit",
+    "channel": "financial_treasury",
+    "revenue_delta_pct": -2.0,
+    "reasoning": "\u20ac1.3B provisions on ~\u20ac18B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Uniper",
+    "channel": "financial_treasury",
+    "revenue_delta_pct": -100.0,
+    "reasoning": "Nationalized \u2014 total loss",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Citigroup",
+    "channel": "financial_treasury",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "$1B+ write-downs on ~$75B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Lloyd's of London",
+    "channel": "financial_treasury",
+    "revenue_delta_pct": -5.0,
+    "reasoning": "$10B+ claims across market",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Volkswagen",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -3.0,
+    "reasoning": "~\u20ac2B on ~\u20ac250B = ~1%, but energy costs +40% on manufacturing",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Deere & Company",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -3.0,
+    "reasoning": "Revenue dipped 3%",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Costco",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -0.3,
+    "reasoning": "Margins compressed 0.3%",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Caterpillar",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "~$300M on ~$54B revenue, revenue flat vs prior growth",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Whirlpool",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -2.0,
+    "reasoning": "$150M higher costs on ~$20B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "3M",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -1.9,
+    "reasoning": "Revenue declined 1.9%",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Toyota",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -5.0,
+    "reasoning": "~$1.5B lost production on ~$280B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Ford",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -5.0,
+    "reasoning": "$2.5B EBIT impact on ~$136B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "ArcelorMittal",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -20.0,
+    "reasoning": "European steel output fell 20%",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Norsk Hydro",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -10.0,
+    "reasoning": "European aluminum output fell 50%, Europe ~20% of total",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Nike",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "Transition costs minimal, China sourcing fell 10pp",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Target",
+    "channel": "procurement_supply_chain",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "China sourcing fell from ~30% to ~25%, margin compression",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Maersk",
+    "channel": "logistics_operations",
+    "revenue_delta_pct": 10.0,
+    "reasoning": "Counterintuitively positive from rate surge",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Hapag-Lloyd",
+    "channel": "logistics_operations",
+    "revenue_delta_pct": 15.0,
+    "reasoning": "Profits exceeded expectations from rate surge",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "ZIM Integrated Shipping",
+    "channel": "logistics_operations",
+    "revenue_delta_pct": 86.0,
+    "reasoning": "Revenue surged 86%",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Tesla",
+    "channel": "logistics_operations",
+    "revenue_delta_pct": -2.0,
+    "reasoning": "Lost ~5,000 vehicles, ~0.3% of annual production",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "FedEx",
+    "channel": "logistics_operations",
+    "revenue_delta_pct": -0.5,
+    "reasoning": "Russia <1% of revenue, rerouting costs",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "UPS",
+    "channel": "logistics_operations",
+    "revenue_delta_pct": -0.5,
+    "reasoning": "Minimal revenue impact",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Colonial Pipeline",
+    "channel": "cybersecurity_it",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "$4.4M ransom but operational losses for 6 days",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Merck",
+    "channel": "cybersecurity_it",
+    "revenue_delta_pct": -0.5,
+    "reasoning": "$870M on ~$48B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Norsk Hydro",
+    "channel": "cybersecurity_it",
+    "revenue_delta_pct": -2.0,
+    "reasoning": "$70M on ~$18B revenue, 3 months recovery",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "JBS",
+    "channel": "cybersecurity_it",
+    "revenue_delta_pct": -0.1,
+    "reasoning": "$11M on ~$53B revenue, 2-day disruption",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "SolarWinds",
+    "channel": "cybersecurity_it",
+    "revenue_delta_pct": -15.0,
+    "reasoning": "Stock dropped 40%, lost government contracts",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Change Healthcare (UnitedHealth)",
+    "channel": "cybersecurity_it",
+    "revenue_delta_pct": -0.3,
+    "reasoning": "$872M on ~$370B UHG revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "MGM Resorts",
+    "channel": "cybersecurity_it",
+    "revenue_delta_pct": -7.0,
+    "reasoning": "$100M on ~$14B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Caesars Entertainment",
+    "channel": "cybersecurity_it",
+    "revenue_delta_pct": -0.1,
+    "reasoning": "$15M on ~$11B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Meta",
+    "channel": "regulatory_compliance_cost",
+    "revenue_delta_pct": -1.0,
+    "reasoning": "\u20ac1.2B on ~$117B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Amazon",
+    "channel": "regulatory_compliance_cost",
+    "revenue_delta_pct": -0.2,
+    "reasoning": "\u20ac746M on ~$500B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Google",
+    "channel": "regulatory_compliance_cost",
+    "revenue_delta_pct": -0.5,
+    "reasoning": "\u20ac1.49B on ~$260B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "ByteDance",
+    "channel": "regulatory_compliance_cost",
+    "revenue_delta_pct": -8.0,
+    "reasoning": "~$6B revenue loss from India ban",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "WhatsApp (Meta)",
+    "channel": "regulatory_compliance_cost",
+    "revenue_delta_pct": -0.2,
+    "reasoning": "\u20ac225M on ~$117B Meta revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Uber",
+    "channel": "regulatory_compliance_cost",
+    "revenue_delta_pct": -3.0,
+    "reasoning": "UK costs +15-20%, UK ~10% of global = ~2-3% total impact",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "NVIDIA",
+    "channel": "innovation_ip",
+    "revenue_delta_pct": -6.0,
+    "reasoning": "~$400M/quarter on ~$27B annual = ~6%",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "ASML",
+    "channel": "innovation_ip",
+    "revenue_delta_pct": -15.0,
+    "reasoning": "Lost EUV China sales ~15% of advanced equipment revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Huawei",
+    "channel": "innovation_ip",
+    "revenue_delta_pct": -30.0,
+    "reasoning": "International smartphone market share collapsed",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Pfizer",
+    "channel": "innovation_ip",
+    "revenue_delta_pct": 50.0,
+    "reasoning": "$37B vaccine revenue from $2B investment",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Moderna",
+    "channel": "innovation_ip",
+    "revenue_delta_pct": 99.0,
+    "reasoning": "Revenue went from $60M to $18.5B",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Nike",
+    "channel": "reputation_stakeholder",
+    "revenue_delta_pct": -15.0,
+    "reasoning": "15% China revenue dip",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "H&M",
+    "channel": "reputation_stakeholder",
+    "revenue_delta_pct": -20.0,
+    "reasoning": "China e-commerce wiped, multi-year decline",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Boohoo",
+    "channel": "reputation_stakeholder",
+    "revenue_delta_pct": -10.0,
+    "reasoning": "Stock fell 42%, revenue impact estimated ~10%",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Volkswagen",
+    "channel": "reputation_stakeholder",
+    "revenue_delta_pct": -5.0,
+    "reasoning": "$30B costs but spread over years, revenue grew from EV pivot",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "Boeing",
+    "channel": "reputation_stakeholder",
+    "revenue_delta_pct": -25.0,
+    "reasoning": "737 MAX revenue essentially zero during 20-month grounding",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "EPAM Systems",
+    "channel": "workforce_talent",
+    "revenue_delta_pct": -15.0,
+    "reasoning": "Stock fell 44%, $100M+ costs on ~$3.8B revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "GlobalLogic (Hitachi)",
+    "channel": "workforce_talent",
+    "revenue_delta_pct": -2.0,
+    "reasoning": "$50M+ on ~$1.6B GlobalLogic revenue",
+    "source": "manual_from_case_study"
+  },
+  {
+    "company": "First Quantum Minerals",
+    "category": "political_transitions_volatility",
+    "channel": "capital_allocation_investment",
+    "revenue_delta_pct": -1.0,
+    "source": "1% of global",
+    "event": "Panama mining contract ruling"
+  },
+  {
+    "company": "Yum China",
+    "category": "political_transitions_volatility",
+    "channel": "revenue_market_access",
+    "revenue_delta_pct": -1.0,
+    "source": "1% of revenue",
+    "event": "Myanmar coup"
+  },
+  {
+    "company": "Twitter/X",
+    "category": "regulatory_sovereignty_shifts",
+    "channel": "regulatory_compliance_cost",
+    "revenue_delta_pct": -6.0,
+    "source": "6% of global revenue",
+    "event": "EU Digital Services Act enforcement"
+  }
+]

@@ -1,0 +1,1026 @@
+[
+  {
+    "company": "BP",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -8.0,
+    "exposure_pct": 16,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Shell",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -1.5,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Renault",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -8.0,
+    "exposure_pct": 8,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Carlsberg",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -10.0,
+    "exposure_pct": 10,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "TotalEnergies",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -3.0,
+    "exposure_pct": 3,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Heineken",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -2.0,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Danone",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -5.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Wintershall Dea",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -30.0,
+    "exposure_pct": 30,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Equinor",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -1.5,
+    "exposure_pct": 1.5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "ExxonMobil",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -1.0,
+    "exposure_pct": 1,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Mercedes-Benz",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -1.0,
+    "exposure_pct": 1,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Siemens Gamesa",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -0.5,
+    "exposure_pct": 0.5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "McDonald's",
+    "channel": "revenue_market_access",
+    "rev_pct": -9.0,
+    "exposure_pct": 9,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Visa",
+    "channel": "revenue_market_access",
+    "rev_pct": -4.0,
+    "exposure_pct": 4,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Harley-Davidson",
+    "channel": "revenue_market_access",
+    "rev_pct": -3.0,
+    "exposure_pct": 15,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Qualcomm",
+    "channel": "revenue_market_access",
+    "rev_pct": -12.0,
+    "exposure_pct": 25,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Intel",
+    "channel": "revenue_market_access",
+    "rev_pct": -12.0,
+    "exposure_pct": 27,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Applied Materials",
+    "channel": "revenue_market_access",
+    "rev_pct": -8.0,
+    "exposure_pct": 33,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Lam Research",
+    "channel": "revenue_market_access",
+    "rev_pct": -10.0,
+    "exposure_pct": 30,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Ikea",
+    "channel": "revenue_market_access",
+    "rev_pct": -3.5,
+    "exposure_pct": 3.5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Nestl\u00e9",
+    "channel": "revenue_market_access",
+    "rev_pct": -2.0,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Unilever",
+    "channel": "revenue_market_access",
+    "rev_pct": -1.5,
+    "exposure_pct": 1.5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Adidas",
+    "channel": "revenue_market_access",
+    "rev_pct": -4.0,
+    "exposure_pct": 4,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Spotify",
+    "channel": "revenue_market_access",
+    "rev_pct": -1.0,
+    "exposure_pct": 1,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Airbnb",
+    "channel": "revenue_market_access",
+    "rev_pct": -72.0,
+    "exposure_pct": 90,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Delta Air Lines",
+    "channel": "revenue_market_access",
+    "rev_pct": -65.0,
+    "exposure_pct": 95,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "KLA Corporation",
+    "channel": "revenue_market_access",
+    "rev_pct": -10.0,
+    "exposure_pct": 30,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Tokyo Electron",
+    "channel": "revenue_market_access",
+    "rev_pct": -25.0,
+    "exposure_pct": 25,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Mastercard",
+    "channel": "revenue_market_access",
+    "rev_pct": -2.0,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Volvo Cars",
+    "channel": "revenue_market_access",
+    "rev_pct": -5.0,
+    "exposure_pct": 15,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "NBA",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -3.0,
+    "exposure_pct": 3,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Marriott",
+    "channel": "revenue_market_access",
+    "rev_pct": -60.0,
+    "exposure_pct": 90,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Disney",
+    "channel": "revenue_market_access",
+    "rev_pct": -30.0,
+    "exposure_pct": 37,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Louis Vuitton (LVMH)",
+    "channel": "revenue_market_access",
+    "rev_pct": -2.0,
+    "exposure_pct": 25,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Ericsson",
+    "channel": "revenue_market_access",
+    "rev_pct": -1.0,
+    "exposure_pct": 1,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Netflix",
+    "channel": "revenue_market_access",
+    "rev_pct": -0.5,
+    "exposure_pct": 0.5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Porsche",
+    "channel": "revenue_market_access",
+    "rev_pct": -3.0,
+    "exposure_pct": 3,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "ASML",
+    "channel": "revenue_market_access",
+    "rev_pct": -8.0,
+    "exposure_pct": 15,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale",
+    "channel": "financial_treasury",
+    "rev_pct": -5.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "BNP Paribas",
+    "channel": "financial_treasury",
+    "rev_pct": -18.0,
+    "exposure_pct": 18,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Standard Chartered",
+    "channel": "financial_treasury",
+    "rev_pct": -7.0,
+    "exposure_pct": 7,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "ODP (T\u00fcrk Telekom investors)",
+    "channel": "financial_treasury",
+    "rev_pct": -40.0,
+    "exposure_pct": 40,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "UniCredit",
+    "channel": "financial_treasury",
+    "rev_pct": -2.0,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Uniper",
+    "channel": "financial_treasury",
+    "rev_pct": -100.0,
+    "exposure_pct": 100,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Citigroup",
+    "channel": "financial_treasury",
+    "rev_pct": -1.0,
+    "exposure_pct": 1,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Lloyd's of London",
+    "channel": "financial_treasury",
+    "rev_pct": -5.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Volkswagen",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -3.0,
+    "exposure_pct": 3,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Deere & Company",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -3.0,
+    "exposure_pct": 3,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Costco",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -0.3,
+    "exposure_pct": 0.3,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Caterpillar",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -1.0,
+    "exposure_pct": 1,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Whirlpool",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -2.0,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "3M",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -1.9,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Toyota",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -5.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Ford",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -5.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "ArcelorMittal",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -20.0,
+    "exposure_pct": 20,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Norsk Hydro",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -10.0,
+    "exposure_pct": 10,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Nike",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -1.0,
+    "exposure_pct": 15,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Target",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -1.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Maersk",
+    "channel": "logistics_operations",
+    "rev_pct": 10.0,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Hapag-Lloyd",
+    "channel": "logistics_operations",
+    "rev_pct": 15.0,
+    "exposure_pct": 15,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "ZIM Integrated Shipping",
+    "channel": "logistics_operations",
+    "rev_pct": 86.0,
+    "exposure_pct": 50,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Tesla",
+    "channel": "logistics_operations",
+    "rev_pct": -2.0,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Colonial Pipeline",
+    "channel": "cybersecurity_it",
+    "rev_pct": -1.0,
+    "exposure_pct": 100,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Merck",
+    "channel": "cybersecurity_it",
+    "rev_pct": -0.5,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Norsk Hydro",
+    "channel": "cybersecurity_it",
+    "rev_pct": -2.0,
+    "exposure_pct": 10,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "JBS",
+    "channel": "cybersecurity_it",
+    "rev_pct": -0.1,
+    "exposure_pct": 0.5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "SolarWinds",
+    "channel": "cybersecurity_it",
+    "rev_pct": -15.0,
+    "exposure_pct": 40,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Change Healthcare (UnitedHealth)",
+    "channel": "cybersecurity_it",
+    "rev_pct": -0.3,
+    "exposure_pct": 100,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "MGM Resorts",
+    "channel": "cybersecurity_it",
+    "rev_pct": -7.0,
+    "exposure_pct": 50,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Caesars Entertainment",
+    "channel": "cybersecurity_it",
+    "rev_pct": -0.1,
+    "exposure_pct": 10,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Meta",
+    "channel": "regulatory_compliance_cost",
+    "rev_pct": -1.0,
+    "exposure_pct": 1,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Amazon",
+    "channel": "regulatory_compliance_cost",
+    "rev_pct": -0.2,
+    "exposure_pct": 0.2,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Google",
+    "channel": "regulatory_compliance_cost",
+    "rev_pct": -0.5,
+    "exposure_pct": 0.5,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "ByteDance",
+    "channel": "regulatory_compliance_cost",
+    "rev_pct": -8.0,
+    "exposure_pct": 30,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "WhatsApp (Meta)",
+    "channel": "regulatory_compliance_cost",
+    "rev_pct": -0.2,
+    "exposure_pct": 1,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Uber",
+    "channel": "regulatory_compliance_cost",
+    "rev_pct": -3.0,
+    "exposure_pct": 10,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "NVIDIA",
+    "channel": "innovation_ip",
+    "rev_pct": -6.0,
+    "exposure_pct": 25,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "ASML",
+    "channel": "innovation_ip",
+    "rev_pct": -15.0,
+    "exposure_pct": 15,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Huawei",
+    "channel": "innovation_ip",
+    "rev_pct": -30.0,
+    "exposure_pct": 50,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Pfizer",
+    "channel": "innovation_ip",
+    "rev_pct": 50.0,
+    "exposure_pct": 100,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Moderna",
+    "channel": "innovation_ip",
+    "rev_pct": 99.0,
+    "exposure_pct": 100,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "Nike",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -15.0,
+    "exposure_pct": 15,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "H&M",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -20.0,
+    "exposure_pct": 20,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Boohoo",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -10.0,
+    "exposure_pct": 30,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "Volkswagen",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -5.0,
+    "exposure_pct": 3,
+    "exposure_level": "low",
+    "source": "case_study"
+  },
+  {
+    "company": "Boeing",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -25.0,
+    "exposure_pct": 50,
+    "exposure_level": "high",
+    "source": "case_study"
+  },
+  {
+    "company": "EPAM Systems",
+    "channel": "workforce_talent",
+    "rev_pct": -15.0,
+    "exposure_pct": 30,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "GlobalLogic (Hitachi)",
+    "channel": "workforce_talent",
+    "rev_pct": -2.0,
+    "exposure_pct": 20,
+    "exposure_level": "medium",
+    "source": "case_study"
+  },
+  {
+    "company": "MCD",
+    "channel": "revenue_market_access",
+    "rev_pct": -2.0,
+    "exposure_pct": 9,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "IKEA",
+    "channel": "revenue_market_access",
+    "rev_pct": -8.0,
+    "exposure_pct": 3.5,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "ASML",
+    "channel": "revenue_market_access",
+    "rev_pct": -15.0,
+    "exposure_pct": 15,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "AMD",
+    "channel": "revenue_market_access",
+    "rev_pct": -5.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "TSLA",
+    "channel": "revenue_market_access",
+    "rev_pct": -13.0,
+    "exposure_pct": 13,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "AMAT",
+    "channel": "revenue_market_access",
+    "rev_pct": -10.0,
+    "exposure_pct": 33,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "LRCX",
+    "channel": "revenue_market_access",
+    "rev_pct": -15.0,
+    "exposure_pct": 30,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "KLAC",
+    "channel": "revenue_market_access",
+    "rev_pct": -7.0,
+    "exposure_pct": 30,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "INTC",
+    "channel": "revenue_market_access",
+    "rev_pct": -3.0,
+    "exposure_pct": 27,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "MU",
+    "channel": "revenue_market_access",
+    "rev_pct": -8.0,
+    "exposure_pct": 8,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "BN.PA",
+    "channel": "revenue_market_access",
+    "rev_pct": -5.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "HM-B.ST",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -5.0,
+    "exposure_pct": 20,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "NKE",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -24.0,
+    "exposure_pct": 15,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "NBA",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -10.0,
+    "exposure_pct": 3,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "ITX.MC",
+    "channel": "revenue_market_access",
+    "rev_pct": -2.5,
+    "exposure_pct": 2.5,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "ERIC-B.ST",
+    "channel": "innovation_ip",
+    "rev_pct": 6.0,
+    "exposure_pct": 6,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "CSCO",
+    "channel": "innovation_ip",
+    "rev_pct": -8.0,
+    "exposure_pct": 8,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "HUAWEI_CBG",
+    "channel": "revenue_market_access",
+    "rev_pct": -48.0,
+    "exposure_pct": 50,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "BA",
+    "channel": "revenue_market_access",
+    "rev_pct": -25.0,
+    "exposure_pct": 25,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "AAPL",
+    "channel": "procurement_supply_chain",
+    "rev_pct": -6.0,
+    "exposure_pct": 20,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "CAT",
+    "channel": "revenue_market_access",
+    "rev_pct": -2.0,
+    "exposure_pct": 2,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "YPF",
+    "channel": "revenue_market_access",
+    "rev_pct": 40.0,
+    "exposure_pct": 60,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "AAPL",
+    "channel": "revenue_market_access",
+    "rev_pct": -8.0,
+    "exposure_pct": 20,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "TWE.AX",
+    "channel": "revenue_market_access",
+    "rev_pct": -96.0,
+    "exposure_pct": 96,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "LOBSTER_AU",
+    "channel": "revenue_market_access",
+    "rev_pct": -94.0,
+    "exposure_pct": 94,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "MSIL.NS",
+    "channel": "revenue_market_access",
+    "rev_pct": -4.0,
+    "exposure_pct": 4,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "TITAN.NS",
+    "channel": "revenue_market_access",
+    "rev_pct": -5.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "DLF.NS",
+    "channel": "capital_allocation_investment",
+    "rev_pct": -40.0,
+    "exposure_pct": 40,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "VOW3.DE",
+    "channel": "revenue_market_access",
+    "rev_pct": -5.0,
+    "exposure_pct": 5,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "ZIM.TA",
+    "channel": "logistics_operations",
+    "rev_pct": 20.0,
+    "exposure_pct": 50,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "ESLT",
+    "channel": "revenue_market_access",
+    "rev_pct": 12.0,
+    "exposure_pct": 50,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "MNDY",
+    "channel": "workforce_talent",
+    "rev_pct": 35.0,
+    "exposure_pct": 10,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "MCD",
+    "channel": "reputation_stakeholder",
+    "rev_pct": -3.0,
+    "exposure_pct": 9,
+    "exposure_level": "low",
+    "source": "gold"
+  },
+  {
+    "company": "TOURISM_IL",
+    "channel": "revenue_market_access",
+    "rev_pct": -80.0,
+    "exposure_pct": 80,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "RI.PA",
+    "channel": "revenue_market_access",
+    "rev_pct": -26.0,
+    "exposure_pct": 26,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "MC.PA",
+    "channel": "revenue_market_access",
+    "rev_pct": -11.0,
+    "exposure_pct": 11,
+    "exposure_level": "medium",
+    "source": "gold"
+  },
+  {
+    "company": "SAIC",
+    "channel": "revenue_market_access",
+    "rev_pct": -50.0,
+    "exposure_pct": 50,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "LT_EXPORTS",
+    "channel": "revenue_market_access",
+    "rev_pct": -71.0,
+    "exposure_pct": 71,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "ZAIN.KW",
+    "channel": "revenue_market_access",
+    "rev_pct": -71.0,
+    "exposure_pct": 71,
+    "exposure_level": "high",
+    "source": "gold"
+  },
+  {
+    "company": "TRADE_BILATERAL",
+    "channel": "revenue_market_access",
+    "rev_pct": -87.0,
+    "exposure_pct": 87,
+    "exposure_level": "high",
+    "source": "gold"
+  }
+]
